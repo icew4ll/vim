@@ -1,0 +1,6 @@
+# install nightmare.js
+mkdir scraping-project
+cd scraping-project
+npm init -y
+
+yarn add -D nightmare d3-dsv

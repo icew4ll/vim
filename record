@@ -1,0 +1,62 @@
+# termtosvg
+pip3 install --user termtosvg
+# start recording
+termtosvg
+
+# install
+sudo apt install pulseaudio-utils lame mpg123 vorbis-tools
+pacmd list-sinks | grep -e 'name:' -e 'index' -e 'Speakers'
+parec -d alsa_output.pci-0000_00_1b.0.analog-stereo.monitor | lame -r -V0 - out.mp3
+parec -d alsa_output.pci-0000_00_1b.0.analog-stereo.monitor | oggenc - -r -o file.ogg
+
+# display all soundcards and digital audio devices
+arecord -l
+
+# display all PCMs defined
+record -L
+
+# copy
+arecord -d 10 -c 2 -f S16_LE -r 44100 -t wav -D copy foobar.wav
+
+# find monitor device
+pacmd list | grep "\.monitor"
+
+# record audio
+pacat --record -d alsa_output.pci-0000_00_1b.0.analog-stereo.monitor > dump.raw
+
+sudo apt install sox
+sox -t raw -r 44100 -e signed-integer -L -b 16 -c 2 dump.raw output.wav
+
+# record sound output
+arecord -vv -fdat stack.wav
+
+# install vorbis tools
+sudo apt install vorbis-tools
+arecord -f cd -t raw | oggenc - -r -o file.ogg
+
+
+# add loopback device
+sudo modprobe snd-aloop
+
+# list devices
+arecord -L
+
+# edit .asoundrc to make loopback soundcard default
+.asoundrc
+pcm.!default {
+  type hw
+    card 1
+    device 0
+}
+
+# or
+pcm.copy {
+  type plug
+    slave {
+      pcm hw
+    }
+  route_policy copy
+}
+
+# set capture source to 4
+amixer cset numid=27,iface=MIXER,name='Capture Source" 4

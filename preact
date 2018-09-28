@@ -1,0 +1,21 @@
+v .babelrc
+{
+  "presets": [
+    ['es2015', { 'modules': false }],
+    'stage-0',
+    'react',
+  ],
+  "plugins": [
+  ["transform-react-jsx", { "pragma":"h" }],
+  ["react-hot-loader/babel"],
+  ]
+}
+
+v webpack.config.js
+resolve: {
+    extensions: ['.js', '.json'],
+    alias: {
+      'react': 'preact-compat',
+      'react-dom': 'preact-compat',
+    },
+  },

@@ -1,0 +1,98 @@
+# install diesel ubuntu 18 {{{
+# https://github.com/diesel-rs/diesel/blob/master/guide_drafts/backend_installation.md
+# http://spejss.com/index.php/2017/12/06/how-to-use-diesel-orm-in-rust/
+sudo apt update
+sudo apt install postgresql postgresql-contrib libpq-dev sqlite3 libsqlite3-dev mysql-server libmysqlclient-dev net-tools
+cargo install diesel_cli cargo-edit
+cargo add diesel
+cargo add diesel_infer_schema
+cargo add dotenv
+[dependencies]
+diesel = { version = "1.3.0", features = ["mysql"] }
+diesel_infer_schema = { version = "1.3.0", features = ["mysql"] }
+dotenv = "0.13.0"
+[dependencies]
+diesel = { version = "1.3.0", features = ["postgres"] }
+diesel_infer_schema = { version = "1.3.0", features = ["postgres"] }
+dotenv = "0.13.0"
+# export db url
+psql postgres://USERNAME:PASSWORD@babar.elephantsql.com:5432/jszlmeae
+echo DB_URL=postgres://username:password@localhost/diesel_demo > .env
+# set password with \password test_user
+sudo -u dsel psql -c "\password dsel"
+# login to db
+psql -U dsel -d dsel -h 127.0.0.1 -W
+sudo -u dsel psql postgres://dsel:yo@localhost/dsel
+diesel setup --database-url postgres://dsel:yo@localhost/dsel
+set -gx DATABASE_URL postgres://dsel:yo@localhost/dsel
+# echo DB_URL=mysql://username:password@localhost:port/db_name > .env
+# }}}
+# postgres usage {{{
+# switching to postgres account
+sudo -i -u postgres
+psql --version
+psql
+# exit
+Ctrl + D
+# access psql prompt
+sudo -u postgres psql --version
+# tell diesel where to find db
+echo DATABASE_URL=postgres://username:password@localhost/diesel_demo > .env
+# verify postgres listening port 5432
+sudo netstat -tupln | grep 5432
+# create psql role
+# man createuser
+sudo -u postgres createuser --interactive
+name: dsel
+superuser: yes
+# create db
+sudo -u postgres createdb dsel
+# for "ident" based authentication:
+# name of Linux user = name postgres role = name postgres db
+sudo adduser dsel
+# open psql with user dsel and list users
+sudo -u dsel psql -c "\du"
+# open psql with user dsel and list dbs
+sudo -u dsel psql -c "\du"
+# verify connection info
+\conninfo
+You are connected to database "dsel" as user "dsel" via socket in "/var/run/postgresql" at port "5432"
+# see tables
+\d
+\dt
+# }}}
+# install docker {{{
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+sh -c "/etc/apt/sources.list.d/docker.list"
+sudo sh -c 'echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic edge" > /etc/apt/sources.list.d/docker.list'
+bat /etc/apt/sources.list.d/docker.list
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt update
+sudo apt install docker-ce
+sudo docker run hello-world
+# enable nonroot user to run docker
+sudo groupadd docker
+echo $USER
+sudo usermod -aG docker $USER
+grep 'docker' /etc/group
+# restart
+docker run hello-world
+# run pgadmin4
+docker run --rm -p 5050:5050 thajeztah/pgadmin4
+http://0.0.0.0:5050/browser/
+# }}}
+# other {{{
+# install muro example
+git clone https://github.com/OUISRC/muro.git
+cd muro
+cargo install diesel_cli --no-default-features --features postgres sqlite
+diesel setup
+cargo run
+
+// another shell  nodejs(v10.1.0 on my machine)
+
+cd muro/webapp
+npm install
+npm run dev
+# }}}

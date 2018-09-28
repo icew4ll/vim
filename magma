@@ -1,0 +1,25 @@
+# dev deps
+yarn add -D json-loader css-loader sass-loader to-string-loader raw-loader file-loader url-loader style-loader string-replace-loader source-map-loader node-sass
+
+yarn add -D copy-webpack-plugin html-webpack-plugin script-ext-html-webpack-plugin webpack-merge rimraf assets-webpack-plugin add-asset-html-webpack-plugin
+
+yarn add -D ts-node tslint typescript @types/node @types/webpack @types/uglify-js @types/source-map
+
+yarn add -D v8-lazy-parse-webpack-plugin webpack-md5-hash
+
+# tsx inferno loaders
+yarn add -D yarn add -D babel-preset-es2015 babel-preset-stage-3 babel-plugin-inferno ts-loader babel-loader babel-core
+
+# inferno
+yarn add inferno-component inferno mobx inferno-mobx  
+
+# beta
+yarn add -D awesome-typescript-loader@3.0.0-beta.18
+yarn add -D webpack@2.2.0
+yarn add -D webpack-dev-middleware@1.9.0
+yarn add -D webpack-dev-server@2.2.0
+yad webpack-dll-bundles-plugin@1.0.0-beta.5
+yad extract-text-webpack-plugin@2.0.0-beta.5
+codelyzer@2.0.0-beta.4
+
+parse5 protractor npm-run-all istanbul-instrumenter-loader imports-loader find-root expose-loader exports-loader

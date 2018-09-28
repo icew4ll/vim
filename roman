@@ -1,0 +1,24 @@
+function convertToRoman (num) {
+  let romans = [['I', 'V', 'X'], ['X', 'L', 'C'], ['C', 'D', 'M'], ['M']]
+  function getOutput (number, one, five, ten) {
+    let romanMap = {
+      0: () => '',
+      1: one => `${one}`,
+      2: one => romanMap[1](one) + romanMap[1](one),
+      3: one => romanMap[2](one) + romanMap[1](one),
+      4: (one, five) => romanMap[1](one) + `${five}`,
+      5: (one, five) => `${five}`,
+      6: (one, five) => romanMap[5](one, five) + romanMap[1](one),
+      7: (one, five) => romanMap[5](one, five) + romanMap[2](one),
+      8: (one, five) => romanMap[5](one, five) + romanMap[3](one),
+      9: (one, five, ten) => romanMap[1](one) + `${ten}`
+    }
+    return romanMap[number](one, five, ten)
+  }
+  return ('' + num)
+    .split('')
+    .reverse()
+    .reduce((acc, curr, ix) => {
+      return getOutput(curr, ...romans[ix]) + acc
+    }, '')
+}

@@ -1,0 +1,68 @@
+# Permission denied (publickey)
+# location of public key
+/root/.ssh/id_rsa.pub
+# acceptable public keys
+~/.ssh/authorized_keys
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/UzB5rRW+vS8ogZNUKLGUJ6bT7ko4S/Q41Spsl5Z6cnf0V+N6QPdy1iZ8H6AkhUb4/zNWlRU8dQCv70NmKO5jzklebiqNdtk127bMdvJHwUt7AnrfGt4u7Kl80hmTmSwa8X2NUulw986waGe8nPoyik2VDRj9eedmaktFYjQVRhd9f4We6zqpEphrtzW5dt9MWR7Tlc5rQ6Uds0wUaGsR2dGFJX0y+nnfz8PLpGlmei5TLdslKYDozsR1YxMq+esdU+DjyT8UZJGxvavWvfg4+/YNSquFA/31oa3vP1tvyH9yIaS/7Ig5jNvm7xFzzhN3Q9/42vmJCA6Oi2VpRN6OAAS5EmVClP/pm/07J7pDPvAYP2vCNIRBpe1h80CrSzkGs1F/8Y9QnUxV55hGwtPwWAU2AvFr22FSj5T3D5YRRjYiKEjPYvm4AsxOAtPkJfGgrFDocqu4uIB7z+CR+cs0/yzE/OVTk57pq3+7B8vkywkVkBCzsvdNusC91n+hkY1fCATj9PLlX3HHSN3DF/6u9h5rVkrao2VVZeXkHk6ruQhKfgKyqLs/DSAh0lh2QLruwTY5CxWv8sDLhdfHe6GB1E7A255gwlwVEv9ccdDi6j+zVji+Hm7w9InZXs9ynHLKFcmWe5w9q7reFxH58K1Z1kqDmh7scfeK7F6HWA3dDw== siliconmagi@yandex.com
+
+# strict host checking
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Offending key in /home/ramesh/.ssh/known_hosts: 6
+# remove offending key
+ssh-keygen -R [offending ip]
+sed -i '6d' ~/.ssh/known_hosts
+sed -i '442d' ~/.ssh/known_hosts
+sed -i '445d' ~/.ssh/known_hosts
+sed -i '444d' ~/.ssh/known_hosts
+
+# disable strict host checking
+#~/.ssh/config
+sudo chmod 400 ~/.ssh/config
+v ~/.ssh/config
+Host *
+    StrictHostKeyChecking no
+
+# enable ssh listening on port 22 debian9
+# must complete to rsync to local
+sudo apt-get install openssh-client openssh-server
+ssh 'ice@localhost'
+
+# save password to ssh agent
+eval `ssh-agent`
+ssh-add ~/.ssh/id_rsa
+ssh-add -l
+
+# create ssh key for upload github w/o passwords
+ssh-keygen -t rsa -b 4096 -C "email@yandex.com"
+> enter for default location
+> input password
+
+# start ssh agent
+eval "$(ssh-agent -s)"
+
+# add key to ssh agent
+# ssh-add ~/.ssh/id_rsa
+# ssh-agent $SHELL
+# ssh-add
+ssh-add -k ~/.ssh/id_rsa
+
+# copy content of id_rsa.pub to clipboard
+xclip -sel clip < ~/.ssh/id_rsa.pub
+
+# github settings
+github > settings > ssh & gpg keys > new ssh key > add title > copy key > add key > confirm pass
+
+# v .git/config
+url = git@github.com:user/vim.git
+
+# troubleshoot
+# verify ssh agent service on
+eval `ssh-agent -s`
+
+# list ssh keys
+ssh-add -l
+
+# add ssh key
+ssh-add ~/.ssh/id_rsa

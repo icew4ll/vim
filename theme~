@@ -1,0 +1,10 @@
+# install theme
+mkdir ~/.themes
+mkdir ~/.icons
+cd ~/.icons
+wget https://www.gnome-look.org/p/1166289/startdownload?file_id=1520791181&file_name=papirus-icon-theme-20180311.tar.xz&file_type=application/x-xz&file_size=7920728&url=https%3A%2F%2Fdl.opendesktop.org%2Fapi%2Ffiles%2Fdownloadfile%2Fid%2F1520791181%2Fs%2Fa916d908f9be87092e6bbe49e5be3f5c%2Ft%2F1520913993%2Fu%2F438078%2Fpapirus-icon-theme-20180311.tar.xz
+tar xf papirus-icon-theme-20180311.tar.xz
+sudo add-apt-repository ppa:noobslab/themes && sudo apt update
+sudo add-apt-repository ppa:noobslab/icons && sudo apt update
+sudo apt install arc-flatabulous-theme
+sudo apt install Crunchy-green

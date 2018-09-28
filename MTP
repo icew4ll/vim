@@ -1,0 +1,38 @@
+# MTP debian 9 {{{
+sudo apt install android-tools-adb
+adb start-server
+[confirm connection on phone]
+adb shell
+adb pull /sdcard/DCIM
+# }}}
+
+
+## MTP UBUNTU 14.04 ##
+
+sudo apt-get install libmtp-common mtp-tools libmtp-dev libmtp-runtime libmtp9
+
+sudo apt-get dist-upgrade
+
+sudo vim /etc/fuse.conf
+> uncomment "user_allow_other"
+
+lsusb
+> verify:  "vendor id" + "product id" 05c6:6765
+
+sudo vim /lib/udev/rules.d/69-mtp.rules
+
+>
+# One Plus One
+ATTR{idVendor}=="05c6", ATTR{idProduct}=="6765", SYMLINK+="libmtp-%k", ENV{ID_MTP_DEVICE}="1", ENV{ID_MEDIA_PLAYER}="1"
+>
+
+sudo vim /etc/udev/rules.d/51-android.rules
+
+>
+ATTR{idVendor}=="05c6", ATTR{idProduct}=="6765", MODE=”0666"
+>
+
+sudo service udev restart
+
+# work?
+/usr/lib/udev/rules.d/69-libmtp.rules

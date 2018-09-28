@@ -1,0 +1,102 @@
+# list global packages
+yarn global list
+
+# update neovim
+yarn global upgrade neovim
+
+# install
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update && sudo apt-get install yarn
+
+# update packages
+yarn global add npm-check-updates
+cd proj
+ncu
+yarn global add yarn-update
+yarn upgrade-interactive
+
+# check package version info
+yarn info inferno
+
+# yarn install deps
+yarn install
+
+# yarn add package
+yarn add -D
+yarn add
+
+# yarn global add
+yarn global add
+yarn global ls
+
+# yarn remove
+yarn remove
+
+# upgrade packages
+yarn upgrade
+
+# eslint
+yarn global add babel-eslint eslint eslint-config-vue eslint-plugin-html eslint-plugin-react eslint-plugin-vue
+
+# vendor
+yarn global add surge svgo typescript vue-cli ts-node
+
+# yarn install dev deps vue
+yarn add -D babel-helper-vue-jsx-merge-props babel-plugin-syntax-jsx babel-plugin-transform-runtime babel-plugin-transform-vue-jsx chalk css-loader eslint-config-vue eslint-plugin-vue friendly-errors-webpack-plugin postcss-loader postcss-nested style-loader vue-loader vue-template-compiler
+
+# yarn install mobx
+yarn add -D babel-core babel-loader babel-preset-es2015 babel-preset-stage-0
+yarn add -D babel babel-eslint babel-preset-es2015-minimal babel-register babel-plugin-transform-decorators-legacy babel-plugin-transform-react-jsx copy-webpack-plugin chai cross-env eslint eslint-loader eslint-plugin-import eslint-plugin-react html-webpack-plugin css-loader style-loader rimraf opener file-loader json-loader mkdirp offline-plugin raw-loader source-map-loader superstatic url-loader webpack-manifest-plugin
+
+yarn add -D babel-polyfill
+yarn add whatwg-fetch
+
+npm view extract-text-webpack-plugin
+yarn add -D extract-text-webpack-plugin@2.0.0-beta.4
+
+yarn add material-design-lite preact preact-compat preact-mdl react-helmet react-router
+
+npm view webpack
+npm view webpack-dev-server
+yarn add -D webpack@2.2.0-rc.3 webpack-dev-server@2.2.0-rc.0
+
+yarn add -D babel-plugin-transform-async-to-generator babel-plugin-transform-decorators-legacy babel-polyfill
+
+yarn add -D babel-preset-react react-hot-loader react-router-loader
+
+yarn add mobx mobx-react mobx-react-devtools
+
+yarn add axios faker moment package
+
+npm view react-router
+yarn add react-router@4.0.0-alpha.6
+
+npm view react-hot-loader
+yarn add -D react-hot-loader@3.0.0-beta.6
+
+yarn add styled-components
+
+# preact
+yarn add -D babel-plugin-transform-react-jsx
+yarn add preact preact-compat preact-mdl
+
+# aliasing via webpack
+{
+  "resolve": {
+    "alias": {
+      "react": "preact-compat",
+      "react-dom": "preact-compat"
+    }
+  }
+}
+
+{
+  "plugins": [
+    ["transform-react-jsx", { "pragma":"h" }]
+  ]
+}
+
+
+
+

@@ -1,0 +1,123 @@
+# Ubuntu Gnome 17.10 Install
+# install vim with xterm clipboard
+sudo apt-get install vim-gnome
+
+# check clipboard
+vim --version | grep clipboard
+
+# check python providers
+:echo has("python")
+:echo has("python3")
+
+# install plug.vim
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# update plugins
+PlugUpdate
+
+# upgrade plug.vim
+PlugUpgrade
+
+# plug.vim status
+PlugStatus
+
+# fish install
+sudo apt-add-repository ppa:fish-shell/release-2
+sudo apt-get update
+sudo apt-get install fish
+
+# make fish shell
+# requires relogin
+chsh -s /usr/bin/fish
+
+# fish config file
+mkdir -p ~/.config/fish
+vim ~/.config/fish/config.fish
+set -g -x PATH /usr/local/bin $PATH
+
+# fish config
+fish_config
+http://localhost:8000/
+
+# update completions
+# location ~/.config/fish/completions
+fish_update_completions
+
+# getting back to bash
+bash
+exit to return to fish shell
+
+# neofetch
+sudo apt install neofetch
+
+# Rust Install
+curl -sf -L https://static.rust-lang.org/rustup.sh | sh
+
+# NVM install
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+
+# Fisher install
+curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher
+
+# Fisher install plugins
+fisher nvm fzf
+
+# install fzf utils for fish
+__fzf_install
+
+# RipGrep
+cargo install ripgrep
+
+# keybindings
+Ctrl-t  Ctrl-f  Find a file.
+Ctrl-r  Ctrl-r  Similar to ^
+Ctrl-x  Alt-x Does the reverse isearch, and immediately executes command.
+Alt-c Alt-d cd into sub-directories (recursively searched).
+Alt-Shift-c Alt-Shift-d cd into sub-directories, including hidden ones.
+
+# check nvm versions
+nvm ls-remote
+
+# install
+nvm install 7.9.0
+nvm alias default 7.9.0
+nvm use default
+
+# check install node versions via nvm
+nvm ls
+node -v
+
+# YCM install
+# install vim and YCM via Plug first
+# install code completion libraries
+sudo apt-get install build-essential cmake
+sudo apt-get install python-dev python3-dev
+
+# install code completion libs
+# install nvm and typescript
+npm install -g typescript
+
+# install racer
+cargo install racer
+
+# fetch rust source
+rustup component add rust-src
+
+# setup RUST_SRC_PATH env var to point to Rust src installation
+export RUST_SRC_PATH=/home/zeal/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src
+
+# install ycm with racer js ts completion
+cd /home/zeal/.vim/plugged/YouCompleteMe
+./install.py --racer-completer --tern-completer
+
+# install git
+sudo apt-get install git
+git config --global user.name "user"
+git config --global user.email "email@yandex.com"
+
+# install flash
+sudo apt-get install flashplugin-installer
+
+# errors were encountered while processing dput
+sudo apt-get autoremove dput

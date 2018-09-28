@@ -1,0 +1,24 @@
+# list files tar.gz
+tar -ztvf blackbox_exporter-0.12.0.linux-amd64.tar.gz
+
+# extract files in tar.gz to current directory
+tar --strip-components=1 -zxvf blackbox_exporter-0.12.0.linux-amd64.tar.gz
+
+# zip multiple files
+7z a -tzip logs.zip 2*.log
+
+# make zip
+zip -r rmMail.zip rmMail
+
+# install unrar
+sudo apt install p7zip-full p7zip-rar
+
+# extract zip
+7z x file.zip
+
+# extract
+7z x test.rar -ofolder
+
+# unrar
+sudo apt install unrar
+unrar e file.rar ./dd

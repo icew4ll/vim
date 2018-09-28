@@ -1,0 +1,25 @@
+# install psql9.6 on ubuntu 16.04.3
+sudo add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install postgresql-9.6
+
+# logging in
+sudo -i -u postgres
+psql
+sudo -u postgres psql
+
+# create user
+createuser -P -s -e flask
+
+# list users
+# psql shell
+\du
+
+# createdb
+# match with role created above
+createdb flask
+
+# list db
+# psql shell
+\l

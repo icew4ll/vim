@@ -1,0 +1,19 @@
+# new reagent project
+lein new figwheel zerg -- --reagent
+cd zerg
+lein figwheel
+v project.clj
+:figwheel {:nrepl-port 7888
+}
+:nrepl-port 7888 //uncomment
+echo 7888 > .nrepl-port
+v src/reagent/core.cljs 
+
+# create production build
+lein do clean, cljsbuild once min
+v /home/oak/git/zerg/resources/public/index.html
+v /home/oak/git/zerg/resources/public/css/style.css
+v /home/oak/git/zerg/resources/public/js/compiled/zerg.js
+
+
+

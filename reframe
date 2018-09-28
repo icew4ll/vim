@@ -1,0 +1,14 @@
+# create new re-frame project
+lein new re-frame mazda +routes +re-frisk
+lein new re-frame terra +routes +re-frisk +garden
+
+# copy files from sagitta
+mkdir -p resources/public/css; v resources/public/css/style.css
+mkdir dev; v dev/user.clj
+echo 7888 > .nrepl-port
+
+# copy index.html
+# v resources/public/index.html
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+

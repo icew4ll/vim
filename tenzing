@@ -1,0 +1,15 @@
+# make new proj
+lein new tenzing ninja +reagent +sass
+
+# new boot proj 
+boot -d seancorfield/boot-new new \
+     -t tenzing \
+     -a +reagent \
+     -n gaiden 
+
+# run boot dev in project directory
+cd gaiden;
+boot dev
+
+# live edit cljs
+v src/cljs/gaiden/app.cljs

@@ -1,0 +1,3 @@
+wget https://az764295.vo.msecnd.net/stable/24f62626b222e9a8313213fb64b10d741a326288/code_1.24.1-1528912196_amd64.deb
+sudo dpkg -i code_1.24.1-1528912196_amd64.deb
+sudo apt install -f

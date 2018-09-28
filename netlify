@@ -1,0 +1,2 @@
+# install cli
+npm install netlify-cli -g

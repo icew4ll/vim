@@ -1,0 +1,86 @@
+# install typescript ide{{{
+# preqs
+npm install -g typescript
+npm install -g typescript-formatter
+# vim plugins preqs
+Plug 'Quramy/tsuquyomi'
+Plug 'leafgarland/typescript-vim'
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi']
+autocmd FileType typescript setlocal completeopt+=menu,preview
+
+# }}}
+
+
+# check tss server in vim
+:echo tsuquyomi#config#tsscmd()
+
+# enable tslint vim
+yarn global add tslint tslint-react typescript-formatter
+
+# typescript-formatter works with 'Chiel92/vim-autoformat' to autoformat tscode in vim
+
+# Vim plugin Typescript omnicompletion Quramy/tsuquyomi
+# Auto Import on function
+:TsuImport
+
+# Omnicompletion
+Ctrl + o
+
+# cannot find module
+v tsconfig.json
+"include": [
+  "types/*",
+  "src/**/*",
+  "node_modules/@types"
+],
+# v types/module_name.d.ts
+  declare module "amazon-cognito-identity-js" {
+    export class CognitoUser {
+      /**
+       * Returns the current session details.
+       */
+      public getSession(callback: Function): void;
+    }
+
+# install in dev deps
+    yarn add -D ts-loader typescript tslint
+      yarn add inferno-create-element
+
+# v tsconfig.json
+      {
+        "version": "2.1.4",
+        "compilerOptions": {
+          "outDir": "./dist/",
+          "target": "es5",
+          "module": "es6",
+          "sourceMap": true,
+          "lib": [
+            "es6",
+          "es7",
+          "dom"
+          ],
+          "noUnusedLocals": true,
+          "strictNullChecks": false,
+          "removeComments": false,
+          "jsx": "react",
+          "jsxFactory": "createElement",
+          "types": [
+            "inferno"
+          ]
+        },
+        "include": [
+          "src/**/*"
+        ],
+        "exclude": [
+          "node_modules",
+        "dist"
+        ]
+      }
+
+# v webpack.config.js
+resolve: {
+extensions : ["", ".js", ".jsx", ".ts", ".tsx"]
+         },
+
+

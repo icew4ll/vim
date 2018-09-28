@@ -1,0 +1,11 @@
+# iscsi
+iscsiadm -m session -P 3
+iscsiadm -m session
+iscsiadm -m discovery -o show
+iscsiadm -m node -o show
+iscsiadm -m session -o show
+
+# login authentication failed
+# Error: Login Failed due to authentication error
+Equallogic > grpadmin > Access > Set Access type
+Check: "Allow simultaneous connections from initiators with different IQN's"

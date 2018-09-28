@@ -1,0 +1,233 @@
+# count lines in file
+cat hyper2 | wc -l
+
+# join lines with semicolon
+echo 'lines' | paste -sd ";" - > join
+
+# count files in directory
+ls -A | wc -l
+
+# find file, cat it and grep for field
+find /www/example/freedoc.com -name 'wp-config.php' -exec cat {} \; | grep DB_USER
+
+# get pid
+top
+
+# find process on port
+sudo ss -lptn 'sport = :36184'
+bowl:36184
+
+# check running process of pid
+ls -la /proc/1608/exe
+ls -la /proc/1850/exe
+/www/a-mail/jajp-jung.info/public_html/wordpress/wp-content/uploads/.gta/m
+kill -9 1850
+
+# concat new lines into one line, delimited with " "
+cat test | paste -sd " " - > test2
+
+# address already in use
+# grep for port and optionally send kill signal to end port processes
+bind: Address already in use
+channel_setup_fwd_listener_tcpip: cannot listen to port: 9050
+sudo lsof -i :9050
+lsof -ti:9050 | xargs kill -9
+
+# sort lines in file except for the first line (ie headers)
+sh -c '(head -n 2 list && tail -n +3 list | sort) > sort2'
+
+# type = cat, prints contents of file
+type file
+
+# make new symlink
+ln -s /path/to/file /path/to/symlink
+
+# create or update symlink
+ln -sf /path/to/file /path/to/symlink
+
+# selinux
+setenforce 0
+getenforce
+cat /etc/sysconfig/selinux
+cat /etc/selinux/config
+SELINUX=enforcing
+
+# does work official redhat site
+sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+cp /etc/selinux/config /etc/selinux/config.bak
+
+# compare if files are different
+cksum file1
+cksum file2
+
+# compare two files and output matches
+# output everyline in d4list found in ticklist to compared4
+grep -Ff d4list ticklist > compared42
+
+# compare two files
+diff -y compared4 ticklist
+
+# testing
+awk 'NR==FNR{f[$1];next}!($1 in f)' A.txt B.txt
+
+# awk test
+diff -y compared4 ticklist | awk '{print $1}'
+
+# replace top line of file
+var="movie.MOV"
+sed -i "1s/.*/$var/" file.txt
+
+# mount everythin on fstab
+mount -a
+
+# linux change timezone
+cd /etc
+mv localtime localtime.bak.20180610
+ln -s /usr/share/zoneinfo/Japan /etc/localtime
+date
+
+# list all services
+service --status-all
+
+# remove ppa
+sudo add-apt-repository --remove ppa:tiheum/equinox
+
+# pip installs
+pi fuzzyfinder prompt_toolkit
+
+# install net-tools, cifs
+sudo apt install cifs-utils net-tools p7zip-full p7zip-rar checkinstall build-essential cmake expect
+#no matching cipher found. Their offer: aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se
+sudo vim /etc/ssh/ssh_config
+# uncomment the following line
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc
+
+# list all active ssh connections
+sudo netstat -atp | grep 'ESTABLISHED.*ssh ' | awk '{print $5}'|
+ sed 's/:ssh//'
+
+# size of all folders: folder depth=1
+du -h --max-depth=1 | sort -hr
+
+# change user password
+passwd ecoreglobal.co010001
+
+# list hourly cron jobs
+ls -la /etc/cron.hourly/
+
+# list daily cron jobs
+ls -la /etc/cron.daily/
+
+# list weekly cron jobs
+ls -la /etc/cron.weekly/
+
+# list monthly cron jobs
+ls -la /etc/cron.monthly/
+
+# list crontab
+less /etc/crontab
+
+# find all user ids
+cut -d: -f1,3 /etc/passwd | grep '945'
+awk -F: '{printf "%s:%s\n",$1,$3}' /etc/passwd | grep '945'
+
+#https://anandarajpandey.com/2014/05/23/linux-how-to-create-ftp-user/
+# create group
+groupadd lpdengineerin101
+# create user
+useradd lpdengineerin101 -p pass -g lpdengineerin101 -d /www/example/lpdengineering.com -s /bin/false
+# set permissions
+chown lpdengineerin101:lpdengineerin101 /www/example/lpdengineering.com/public_html
+
+# list all users
+cut -d: -f1 /etc/passwd | grep 'lpd'
+
+# view groups
+vim /etc/group
+
+# check PID command
+ps -a 301
+pmap 301
+
+# list all installed packages
+apt list --installed
+
+# raid 5 enter raid boot, f2, select all drives, start initialization
+
+# check is process listening on port
+netstat -an|grep :3179
+# check port
+telnet localhost 5044
+# systemctl all services
+systemctl list-units -t service --all
+# list active services
+systemctl list-units -t service
+# status of service
+systemctl status sshd.service
+# enable service on boot
+systemctl enable sshd.service
+# disable service from boot
+systemctl disable sshd.service
+
+# check processes
+service --status-all
+
+# check centos version
+cat /etc/*release
+
+# Address already in use: make_sock: could not bind to address 0.0.0.0:80
+fuser -k -n tcp 80
+
+# free memory %
+free | grep Mem | awk '{print $3/$2 * 100.0}'
+
+# memory info
+cat /proc/meminfo
+
+# get os info
+lsb_release -a
+
+# get kernel info
+uname -r
+
+# centos
+# config httpd.conf
+/usr/local/apache2/conf/httpd.conf
+
+# ssl centos
+# copy server.crt server.key
+/usr/local/apache2/conf/
+
+# customize by removing comment from line with #Include
+# conf/extra/httpd-ssl.conf
+/usr/local/apache2/conf/httpd.conf
+
+# version
+rpm --query centos-release
+
+# bloguru
+centos-release-5-10.el5.centos
+
+# logs failover
+smtp logs
+
+# Ubuntu Gnome 17.04
+
+# location of binaries
+/usr/bin/
+/usr/local/bin/
+
+# location PPA
+ls /etc/apt/sources.list.d
+
+# disk usage
+sudo apt install ncdu
+
+# empty trash
+rm -rf ~/.local/share/Trash/*
+
+# which users logged in:
+w
+
+# check permissions
+ls -lah fileOrDirectory

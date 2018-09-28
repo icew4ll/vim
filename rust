@@ -1,0 +1,161 @@
+# install jupyter repl
+cargo install evcxr_repl
+sudo apt install libzmq3-dev jupyter-notebook
+cargo install evcxr_jupyter
+evcxr_jupyter --install
+
+# remove borrow expecting string
+note: expected type `std::string::String`
+        found type `&std::string::String`
+send: &str, expect: &str
+
+# slice
+fn main() {
+    let a = vec![1, 2, 3, 4, 5];
+
+    // With a start and an end
+    println!("{:?}", &a[1..4]);
+
+    // With just a start
+    println!("{:?}", &a[2..]);
+
+    // With just an end
+    println!("{:?}", &a[..3]);
+
+    // All elements
+    println!("{:?}", &a[..]);
+}
+
+# hashmap
+https://doc.rust-lang.org/rust-by-example/std/hash.html
+
+# enum
+https://doc.rust-lang.org/rust-by-example/custom_types/enum.html
+https://doc.rust-lang.org/book/first-edition/enums.html
+https://stevedonovan.github.io/rust-gentle-intro/2-structs-enums-lifetimes.html
+https://stackoverflow.com/questions/29088633/grouping-structs-with-enums
+
+# slice vec
+let slice = &listcfg[0..2].to_vec();
+
+# convert String to &str
+&String
+
+# ggez, amethyst dep
+sudo apt-get install libsdl2-dev
+sudo apt install libasound2-dev libx11-xcb-dev
+# sdl lib for game dev
+sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libvorbis-dev libmodplug-dev
+
+# sniffer
+sudo apt install libpcap-dev libseccomp-dev
+cargo install sniffglue
+
+# rust
+// convert string to int
+let i1 = &t2[0].0.parse::<i32>().unwrap();
+let i2 = i1 + 1;
+println!("{}", i2);
+# iterate vector print elements
+mailq.iter().map(|x| &x.1).for_each(|x| println!("{:?}", x));
+# iterate vec, return vec
+let q = mailq.iter().map(|x| &x.1).collect::<Vec<_>>();
+println!("{:?}", q);
+
+# install racer
+rustup self update
+rustup update nightly
+rustup component add rustfmt-preview --toolchain stable
+rustup component add rls-preview --toolchain nightly
+rustup component add rust-analysis --toolchain nightly
+rustup component add rust-src --toolchain nightly
+rustup component add rls-preview
+rustup component add rust-analysis
+rustup component add rust-src
+cargo install racer
+echo $RUST_SRC_PATH
+ls /home/fish/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src
+
+"warning: build failed, waiting for other jobs to finish..."
+remove packages from Cargo.toml, one is blocking the build
+
+# rust
+# install csv
+cargo add 'csv@1.0.0-beta.5'
+
+# cannot build
+cargo clean
+
+# required for rustfmt
+rustup component add rustfmt-preview --toolchain stable
+
+# IDE VIM
+= note: /usr/bin/ld: cannot find -lpq
+/usr/bin/ld: cannot find -lmysqlclient
+collect2: error: ld returned 1 exit status
+sudo apt install libpq-dev
+sudo apt install libmysqlclient-dev
+rustup self update
+rustup update nightly
+rustup component add rls-preview --toolchain nightly
+rustup component add rust-analysis --toolchain nightly
+rustup component add rust-src --toolchain nightly
+
+# install rust
+curl https://sh.rustup.rs -sSf | sh
+
+# install nightly
+rustup default stable
+rustup default nightly
+
+# toolchain loc
+~/.rustup/toolchains/
+
+# update
+rustup update
+
+# version
+rustc --version
+
+# bin loc
+ls ~/.cargo/bin/
+
+# install rusti repl
+sudo apt-get install libncursesw5-dev
+rustup install nightly-2016-08-01
+rustup run nightly-2016-08-01 cargo install --git https://github.com/murarth/rusti
+rustup run nightly-2016-08-01 ~/.cargo/bin/rusti
+
+# install ion
+cargo install --git https://github.com/redox-os/ion/
+set -o vi
+sudo vim /etc/shells
+/home/ice/.cargo/bin/ion
+chsh -s ~/.cargo/bin/ion
+
+# install clippy
+cargo install clippy
+
+# install racer
+cargo install racer
+
+# add rust src code
+rustup component add rust-src
+
+# set RUST_SRC_PATH to src dir
+$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src
+
+# install rust language server
+pip install --user python-language-server
+rustup self update
+rustup update
+rustup component add rls-preview
+rustup component add rust-analysis
+rustup component add rust-src
+
+# install rustfmt for autoformat vim
+rustup component add rustfmt-preview --toolchain=nightly
+
+# update all rust packages
+cargo install cargo-update
+cargo install-update -a

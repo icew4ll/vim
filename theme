@@ -1,0 +1,38 @@
+# setup
+
+
+# install themes ubuntu 18 {{{
+# install theme from tar.gz
+# Ultimate blue
+wget https://dl.opendesktop.org/api/files/download/id/1536480351/s/9623c0f44a355ff9fcd384b3859a130e/t/1537000347/u//Ultimate-Dark-Blue.tar.xz
+tar -xf '/home/ice/Downloads/Ultimate-Dark-Blue.tar.xz' -C '~/.themes'
+# Ultimate Maia
+cd ~/.themes
+wget 'https://dl.opendesktop.org/api/files/download/id/1536402289/s/52e36ecb08851b359026b618009ea5f3/t/1537000909/u//Ultimate-Maia-Green.tar.xz'
+ls /home/fish/Downloads/ | egrep '*.xz'
+tar -xf /home/fish/Downloads/Ultimate-Maia-Green.tar.xz -C ~/.themes
+tar -xf /home/fish/Downloads/Ultimate-Maia-Blue.tar.xz -C ~/.themes
+tar -xf /home/fish/Downloads/Telinkrin-Buttons-Right.tar.xz -C ~/.themes
+
+#https://itsfoss.com/best-gtk-themes/
+#https://itsfoss.com/best-icon-themes-ubuntu-16-04/
+# adapta
+https://www.gnome-look.org/p/1190851/
+wget 'https://www.gnome-look.org/p/1190851/startdownload?file_id=1505155106&file_name=adapta-gtk-theme-colorpack_3.91.2.144-2-ga142f1db.deb&file_type=application/x-debian-package&file_size=9297194&url=https%3A%2F%2Fdl.opendesktop.org%2Fapi%2Ffiles%2Fdownloadfile%2Fid%2F1505155106%2Fs%2F099e06e785834746745dc1eacc7a0fa8%2Ft%2F1528186813%2Fu%2F475994%2Fadapta-gtk-theme-colorpack_3.91.2.144-2-ga142f1db.deb'
+# install icons
+sudo add-apt-repository ppa:oranchelo/oranchelo-icon-theme
+sudo apt-get update
+sudo apt-get install oranchelo-icon-theme
+# }}}
+
+# install theme old {{{
+mkdir ~/.themes
+mkdir ~/.icons
+cd ~/.icons
+wget https://www.gnome-look.org/p/1166289/startdownload?file_id=1520791181&file_name=papirus-icon-theme-20180311.tar.xz&file_type=application/x-xz&file_size=7920728&url=https%3A%2F%2Fdl.opendesktop.org%2Fapi%2Ffiles%2Fdownloadfile%2Fid%2F1520791181%2Fs%2Fa916d908f9be87092e6bbe49e5be3f5c%2Ft%2F1520913993%2Fu%2F438078%2Fpapirus-icon-theme-20180311.tar.xz
+tar xf papirus-icon-theme-20180311.tar.xz
+sudo add-apt-repository ppa:noobslab/themes && sudo apt update
+sudo add-apt-repository ppa:noobslab/icons && sudo apt update
+sudo apt install arc-flatabulous-theme
+sudo apt install ambiance-crunchy
+# }}}

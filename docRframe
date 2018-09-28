@@ -1,0 +1,121 @@
+# Clojure forces arity (requires defined params)
+# Different arities of the same function can call one another, so you can easily create a zero-argument greeting that delegates to the one-argument greeting, passing in a default username
+(defn greeting
+ "Returns greeting in form of 'Hello, username', default username is 'world'."
+ ([] (greeting "world"))
+ ([username] (str "Hello, " [username])))
+
+# Variable arity
+# You can create a function with variable arity by including an ampersand in
+# the parameter list. Clojure will bind the name after the ampersand to a
+# sequence of all the remaining parameters.
+# The following function allows two people to go on a date with a variable
+# number of chaperones:
+(defn date [person1 person2 & chaperones]
+ (println person1 "and" person2 "went out with" (count chaperones) "chaperones"))
+
+# Anonymous Functions (fn not defn)
+# 3 reasons to use:
+# 1) The function is so brief and self-explanatory that giving it a name makes the code harder to read, not easier.
+# 2) The function is being used only from inside another function and needs a local name, not a top-level binding.
+# 3) The function is created inside another function for the purpose of closing over some data.
+# Indexing word function:
+(defn indexable-word? [word]
+ (> (count word) 2))
+# Then use indexable-word? function to extract words from a sentence
+# Call to "split" breaks the sentence into words
+(require '[clojure.string :as str])
+(filter indexable-word? (str/split "A fine day it is" #"\W+"))
+# One-liner anon function: (plugging call to indexable-word into filter)
+(filter (fn [w] (> (count w) 2)) (str/split "A fine day" #"\W+"))
+# Short-hand anon function using "#" (as fn) and % (as 1st param, then %2, %3 etc):
+(filter #(> (count %) 2) (str/split "A fine day it is" #"\W+"))
+=> ("fine" "day")
+
+# 2) Wanting a named function but only in the scope of a another function
+(defn indexable-words [text]
+ (let [indexable-word? (fn [w] (> (count [w]) 2))]
+  (filter indexable-word? (str/split text #"\W+"))))
+# let binds the name "indexable-word?" to the same anon function wrote earlier, this time inside the lexical scope of indexable-words
+# The combination of let and an anonymous function says the following to readers of your code: “The function indexable-word? is interesting enough to have a name but is relevant only inside indexable-words .”
+
+# 3) Creating a function dynamically at runtime
+# make-greeter will take a greeting-prefix and return a new function that composes greetings from the greeting-prefix and a name
+(defn make-greeter [greeting-prefix]
+ (fn [username] (str greeting-prefix ", " username)))
+# It makes no sense to name the fn, because it is creating a different function each time make-greeter is called.  However, you may name the results of specific calls to make-greeter using def.
+(def hello-greeting (make-greeter "Hello"))
+=> #'user/hello-greeting
+(hello-greeting "world")
+=> "Hello, world"
+# There is no need to give each greeter a name.  You can create a greeter and place it in the first function slot of a form
+((make-greeter "Howdy") "pardner")
+=> "Howdy, pardner"
+# The different greeter functions remember the value of greeter-prefix at the time they were created.  The different greeter functions are "closures" over the value of greeting-prefix
+
+## Vars, Bindings and Namespaces
+# When you define an object with def or defn, that object is stored in a Clojure var.
+# The following def creates a var named user/foo
+(def foo 10)
+  foo
+  => 10
+
+# the initial value of a var is called its root binding
+# thread local bindings @p127
+# Referring to a var directly.  The var special form returns a var itself, not the var's value:
+(var a-symbol)
+
+# Using var to return the var bound to user/foo
+(var foo)
+
+# Var is not used directly in Clojure.
+# Instead use the equivalent reader macro #', which also returns var for a symbol
+#'foo
+
+# Usually do not need to refer to var directly and ignore distinction between symbols and vars
+# Vars many abilities other than storing a value:
+# 1) The same var can be aliased into more than one namespace @p40.  This allows convenient short names.
+# 2) Vars can have metadata @p51.  Var metadata includes documentation @p18, type hints for optimization and unit tests
+# 3) Vars can be dynamically rebound on a per-thread basis @p127
+
+# Bindings
+# Vars are bound to names, but there are other bindings also.
+# In a function, argument values bind to parameter names.
+# 10 binds to the name number inside the triple function
+(defn triple [number] (* 3 number))
+  => #'user/triple
+
+(triple 10)
+  => 30
+
+# A function's param bindings have lexical scope:  they are visible only inside the text of the function body.
+# Functions are not the only ways to create lexical binding.
+# Special form "let" does nothing other than create a set of lexical bindings
+(let [bindings*] exprs*)
+
+# The bindings are then in effect for exprs and the value of the let is the value of the last expression in exprs
+  (defn square-corners [bottom left size]
+   (let [top (+ bottom size) right (+ left size)]
+    [[bottom left] [top left] [top right] [bottom right]]))
+# The "let" binds "top" and "right"
+# This saves the trouble of calculating top and right more than once (both are needed twice to generate return value)
+# The let then returns its last form, which becomes the return value of square-corners
+(square-corners 3 4 5)
+  => [[3 4] [8 4] [8 9] [3 9]]
+
+# Destructuring
+# In a database of book authors, you track both first and last name but some functions need only the first name
+  (defn greet-author-1 [author]
+   (println "Hello," (:first-name author)))
+
+  (greet-author-1 {:last-name "Vinge" :first-name "Vernor"})
+# Having to bind author is unnecessary when only need :first-name
+# Using destructuring, any place that you bind names, you can nest a vector/map in the binding to reach into a collection and bind only the part you want.
+# Here is a variant of greet-author that binds only the first name:
+  (defn greet-author-2 [{fname :first-name}]
+   (println "hello," fname))
+
+# The binding form {fname :first-name} tells Clojure to bind fname to the :first-name of the function argument.
+# Function greet-author-2 behaves the same as greet-author-1
+(greet-author-2 {:last-name "Vinge" :first-name "Vernor"})
+=> Hello Vernor

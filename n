@@ -1,0 +1,21 @@
+# install n debian 9
+curl -L https://git.io/n-install | bash
+
+# setup paths ion shell
+export N_PREFIX=$HOME/n
+export PATH=$PATH:~/.local/bin:$N_PREFIX/bin
+
+# install latest
+n latest
+
+# install versions
+n <version>
+
+# remove
+n rm <version>
+
+# remove all versions except current
+n prune
+
+# fix npm if not working
+curl -0 -L https://npmjs.com/install.sh | sudo sh

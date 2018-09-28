@@ -1,0 +1,13 @@
+# amazon-cognito-identity-js
+
+# install deps
+ya amazon-cognito-identity-js
+
+# requires json loader + webpack configure
+yad json-loader
+
+# Cognito SDK for js requires:
+1. User Pool Id
+2. User Pool App Client Id
+
+

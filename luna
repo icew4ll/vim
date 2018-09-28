@@ -1,0 +1,16 @@
+# install deb 9 luna
+# install haskell-stack
+sudo apt install haskell-stack
+stack upgrade
+
+# build luna
+git clone https://github.com/luna/luna.git
+cd ~/luna/shell
+stack install --ghc-options="-02 -j4"
+
+# add path
+/home/ice/luna/dist/bin/public/luna
+
+# set LUNA_HOME var
+export LUNA_HOME="$HOME/luna/stdlib"
+

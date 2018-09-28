@@ -1,0 +1,2 @@
+# create checksum of every file in current folder and save to file
+find -type f ! -iname "sha512checksums" -exec sha512sum "{}" + > sha512checksums

@@ -1,0 +1,226 @@
+# clojure syntax
+# avoid using mutable state
+# immutable functions are referencially transparent: same input with args results in same output
+# pure functions are modular becauses they are immutable
+
+# Data Types: integers, strings, ratios, doubles, characters, symbols, keywords
+"string" string
+'H' character
+53 long
+6.2 double
+nil null
+foo symbol
+:foo keyword
+var mutable reference to another object
+namespace maps symbols to vars
+
+# Namespace
+# Each namespace is known by a symbol name, each namespace maps symbols to vars, each var holds a reference to some mutable object
+# clojure.core namespace contains 500+ functions:
+# +, -, *, /, =(equality test), <, >, inc(increment), dec(decrement)
+
+# clojure.core evaluation rules: symbols and lists have special treatment
+# Symbols
+# when a symbol is evaluated it is it is resolved to the value of the var associated with that var in a namespace 
+# a symbol containing a slash in the middle is fully qualified: the part before the slash specifies the namespace
+dog/cat ;refers to var mapped to symbol cat in the dog namespace
+cat ;refers to a var in current namespace: clojure.core but functions can switch current namespace
+
+# Lists
+# Evaluator will try to treat list as a function call
+# This list represents a function call with 3 arguments
+# The function invoked is stored in var resolved from symbol foo
+# The arguments are the number 51, string "hello", object stored in var resolved from symbol bar 
+# If var resolved from symbol foo does not store a function will result in exception 
+# If the function of foo expects a number of args other than 3 will result in exception
+(foo 51 "hello" bar)
+
+# Macros
+# Macro is a special type of function that is invoked @ compile time, not execution
+# When evaluator sees a list beginning with a symbol that maps to a var storing a macro, the list represents a macro call not a regular function call, so evaluator will pass the arg unevaluated ie pass reader data itself
+# The macro call then should return reader data which gets inserted in place of macro call list and new reader data itself is evaluated
+# If foo resolves to macro, then symbol bar will not be resolved but instead just itself passed as a third arg to the function
+(foo 51 "hello" bar)
+# If the macro returns a list with 3 symbols (baz x y)
+# This list gets inserted in place of the macro call and evaluated like any other list
+# Assuming baz resolves to a regular function, that function would be called with the resolved values x and y as args
+# A macro may return a list which is another macro call and the process would repeat until a non macro call is returned
+
+# Special Forms
+# When the symbol at the start of a list does not resolve to a var, before throwing exception, evaluator checks if it matches of the 16 special form names.  If so list is evaluated with the rules unique to that special form
+# def ;creates and modifies var mappings in the current namespace
+# example:  if the current namespace has no var mapped to the symbol alice this def form will create the var and give it the value 3, otherwise this def modifies the existing var to have the value 3.
+(def alice 3) ;assign value of 3 to var alice
+# def ;evaluation order outside > in, def form is evaluated before call to +
+# however, when evaluated a def form in turn evaluates its enclosed expression because it needs return value
+# the call to + finishes evaluating before the def finishes evaluating
+(def james (+ 8 4)) ;assign value returned by (+ 8 4) to var of james
+
+# fn
+# returns a new function object
+# parameters are denoted as symbols in a vector
+# when called, the function returns the last expression in its body
+# parameters is 0+ symbols naming parameters of the function
+# body is 1+ expressions that will run when the function is invoked
+# function encloses params in vector for distinguishment, once function object is created there is no vector associated with the parameters
+# there is no return statement, a function call implicitly returns the value of the last expression executed
+(fn [parameters] body)
+
+# if a symbol in a function body has the same name as one of the params then it resolves to that param
+# params x y z are locally bound to function, so occurences of these symbols in body resolve to parameters
+# body calls 2 functions: foo with args y z, bar with args z x.  Neither foo nor bar are local bound in function so those symbols must resolve to vars in current namespace
+# when symbols in function body are resolved in the current namespace, they resolve to the vars not to the value in those vars.  When the vars change their value, the values used in the function change too
+# i.e. if we modify the var of symbol foo to reference a different function, future invocations of the function created by this fn form will execute this new function instead of the foo var referenced previously
+# this undermines functional purity and should be avoided
+(fn [x y z]
+  (foo y z)
+  (bar z x))
+
+# if the last param is preceded with a &, it receives a variable (0+) args as a list
+# i.e. function that takes 2+ args
+# the last param (rest parameters) takes every argument past the 2nd bundled into an ordered collection
+(fn [x y & z]
+  (do-stuff x y z)
+  (bar z x))
+
+# functions are lexically scoped
+(fn [x y & z]
+  (bar y x)
+  (fn [x]
+    (do-stuff x z))) ;x of the interior function, z of the enclosing function
+
+# assigns the function object to the var of symbol foo in the current namespace
+(def foo
+  (fn [x y z]
+    (do-stuff z x y)))
+
+# the defn macro equivalent
+(defn foo [x y z]
+  (do-stuff z x y))
+
+# if special form
+# takes 3 expressions 
+(if condition expression2 expression3)
+# 1) condition: if is eval, then condition is eval and when condition returns anything otherthan false or nil the second expression is eval and its value returned from if
+# 2) if condition returns false or nil the third expression is eval and returned from if 
+(if (alice) (bob) (carol))
+# when alice returns false or nil, eval carol and return its value
+# when alice returns anything else eval bob and return its value
+(if (alice) (bob))
+# defaults to nil when expression3 is omitted
+
+# do special form
+# runs a body of expressions in order
+# returns the value returned by the last expression in body
+(do ;general form
+  (foo)
+  (bar)
+  (baz)) ;this do returns value returned by baz
+
+# when alice is neither false nor nil, execute (bob) then (carol)
+(if (alice)
+  (do
+    (bob)
+    (carol)))
+
+# let special form
+# variables created in clojure are immutable
+# locally binds values of expressions to symbols for duration of body
+# returns the value returned by the last expression in the body
+(let [bindings] body)
+
+# each binding is a symbol followed by an expression
+# value returned by foo is bound to symbol x, value 3 bound to symbol y
+# body of let has 2 expressions (bar y x) and (baz x)
+# x and y symbols resolve to locally bound values
+(let [x (foo) y 3]
+  (bar y x)
+  (baz x))
+
+# equivalent do, except foo is called twice
+(do 
+  (bar 3 (foo))
+  (baz (foo)))
+# lexically scoped
+
+# recur special form
+# jumps execution back to last recursion point with new binding values
+# may only be used in tail position
+(recur arguments)
+
+
+
+# List: ordered collection, singly-linked list, not suitable for random access of elements
+(1 2 3)
+
+# Vectors: ordered collection, tree of nodes, suitable for random access of elements
+[1 2 3]
+
+# Maps: unordered collection of key-value pairs,
+# Map below has two key-value pairs: "foo" with value of 3 and 5 with value of 7
+# Key may be strings, numbers, keywords, list, vector, or map
+{"foo" 3 5 7}
+
+# Example:
+# list containing 4 elements: symbol defn, symbol HelloWorld, empty vector, another list with symbol print and string "Hello world!" 
+# Generally indent start of nested parens
+; this is a comment
+(defn HelloWorld []
+  (print "Hello, world!"))
+
+# define function object
+(def hello (fn [] "Hello world"))
+-> #'user/hello
+(hello)
+-> "Hello world"
+
+# defn
+# macro for defining functions
+# Clojure supports arity overloading in a single function object, self-reference, and variable-arity functions using &:
+(defn argcount
+  ([] 0)
+  ([x] 1)
+  ([x y] 2)
+  ([x y & more] (+ (argcount x y) (count more))))
+-> #'user/argcount
+(argcount)
+-> 0
+(argcount 1)
+-> 1
+(argcount 1 2)
+-> 2
+(argcount 1 2 3 4 5)
+-> 5
+
+# let
+# creates local names for values inside function
+# locals created with let are not variables:  values never change!
+(defn make-adder [x]
+  (let [y x]
+    (fn [z] (+ y z))))
+(def add2 (make-adder 2))
+(add2 4)
+-> 6
+
+# immutable data structures
+# lists, vectors, sets, maps
+# cannot be changed, "adding or removing" means creating a new collection but with a diff
+# Persistance: old version of collection is still available after change and maintains performance guarantees
+(let [my-vector [1 2 3 4]
+      my-map {:fred "ethel"}
+      my-list (list 4 3 2 1)]
+  (list
+    (conj my-vector 5)
+    (assoc my-map :ricky "lucy")
+    (conj my-list 5)
+    ;the originals are intact
+    my-vector
+    my-map
+    my-list))
+-> ([1 2 3 4 5] {:ricky "lucy", :fred "ethel"} (5 4 3 2 1) [1 2 3 4] {:fred "ethel"} (4 3 2 1))
+
+
+
+
+
+

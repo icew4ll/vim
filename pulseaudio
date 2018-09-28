@@ -1,0 +1,2 @@
+# restart pulseaudio
+pulseaudio -k

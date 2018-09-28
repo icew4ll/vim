@@ -1,0 +1,2 @@
+# php info
+php -i

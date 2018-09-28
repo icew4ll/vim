@@ -1,0 +1,6 @@
+# build requires go env installed
+mkdir -p ~/go/src/github.com/syncthing
+cd ~/go/src/github.com/syncthing
+git clone https://github.com/syncthing/syncthing
+cd syncthing
+go run build.go

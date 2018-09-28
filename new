@@ -1,0 +1,25 @@
+(ns zerg.core
+  (:require [reagent.core :as reagent]
+            [re-frame.core :as re-frame]
+            [re-frisk.core :as re-frisk]))
+
+(enable-console-print!)
+
+(defn zerg []
+  [:ul.navbar
+   [:li.navitem [:a {:href "#"} "Nightshell"]]
+   [:li.navitem [:a {:href "#"} "Blog"]]
+   [:li.navitem [:a {:href "#"} "Portfolio"]]
+   [:li.navitem [:a {:href "#"} "About"]]])
+
+(defn mount-root []
+  (reagent/render-component [zerg]
+                            (. js/document (getElementById "app"))))
+
+(defn on-js-reload []
+  (mount-root))
+
+(defn ^:export run []
+  (re-frisk/enable-re-frisk!
+    {:x 0 :y 0})
+  (mount-root))

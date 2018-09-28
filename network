@@ -1,0 +1,4 @@
+# serve on computer only
+127.0.0.1
+# serve on LAN
+0.0.0.0

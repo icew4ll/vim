@@ -1,0 +1,20 @@
+# install debian 9 go 1.9.2
+go get -u github.com/ipfs/ipfs-update
+ipfs-update versions
+ipfs-update install latest
+ipfs init
+ipfs daemon
+
+# add file
+echo "hello world" > hello
+cat hello
+ipfs add hello
+https://ipfs.io/ipfs/QmT78zSuBmuS4z925WZfrqQ1qHaJ56DQaTfyMUF7F8ff5o
+
+
+
+wget https://dl.google.com/go/go1.9.2.src.tar.gz
+tar zxvf go*.gz
+go get -u -d github.com/ipfs/go-ipfs
+cd $GOPATH/src/github.com/ipfs/go-ipfs
+make install

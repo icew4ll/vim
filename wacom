@@ -1,0 +1,4 @@
+# install wacom drivers 16.04
+sudo apt-get update
+sudo apt-get install xserver-xorg-input-wacom
+reboot

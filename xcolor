@@ -1,0 +1,2 @@
+# install xcolor ubuntu 18
+sudo apt install libxcb-shape0-dev libx11-xcb-dev

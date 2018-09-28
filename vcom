@@ -1,0 +1,62 @@
+# scrolling {{{
+# up and down one line
+ctrl y, ctrl e
+
+# move down 10 lines
+10 j
+
+# up and down 1/2 page
+ctrl u, ctrl d
+
+# up and down full page
+ctrl b, ctrl f
+
+# center on current line
+zz
+
+# bookmark location
+mg
+
+# return to bookmark
+'g
+
+# }}}
+
+
+# check vim addons
+:version
+vim --version
+
+# version of python
+:python3 import sys; print(sys.version)
+
+# source vimrc
+:source $MYVIMRC
+
+# vim lint js
+# option 1) install globally
+npm install -g eslint-config-airbnb \
+    babel-eslint \
+    eslint-plugin-react
+
+# option 2) use project specific eslint
+let g:syntastic_javascript_eslint_exe='$(npm bin)/eslint'
+
+# fix paste indentation
+:set paste
+
+# find and replace
+:s/foo/bar/g  Change each 'foo' to 'bar' in the current line
+:%s/foo/bar/g   Change each 'foo' to 'bar' in all the lines
+:5,12s/foo/bar/g  Change each 'foo' to 'bar' for all lines from line 5 to line 12 (inclusive)
+:.,$s/foo/bar/g   Change each 'foo' to 'bar' for all lines from the current line (.) to the last line ($) inclusive
+:.,+2s/foo/bar/g  Change each 'foo' to 'bar' for the current line (.) and the two next lines (+2)
+:g/^baz/s/foo/bar/g   Change each 'foo' to 'bar' in each line starting with 'baz'
+
+# console window
+q: "search in normal mode"
+q/ "search forward"
+q? "search backward"
+
+# display normal mode mappings
+:nmap

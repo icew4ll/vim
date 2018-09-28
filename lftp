@@ -1,0 +1,19 @@
+# test ftp login
+lftp -c "open -u user,pass example.net; ls"
+
+# install
+sudo apt install lftp
+
+# login one liner
+lftp -u user,pass domain
+lftp -u user,pass domain
+
+# connect
+lftp ftp://miki@192.168.122.65
+lftp ftp://miki@192.168.122.65
+lftp 'ftp://nipponexpressmx@216.230.240.167'
+216.230.240.167
+nipponexpressm010001
+nipponexpressmx
+Nppemx01
+Connection attempt failed with "EHOSTUNREACH - No route to host"

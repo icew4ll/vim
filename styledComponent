@@ -1,0 +1,10 @@
+# declare style
+# required: must start with capital letter
+const Nav = styled.nav`
+padding: 10px;
+background: black;
+`;
+
+# component
+<Nav>
+</Nav>

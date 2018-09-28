@@ -1,0 +1,14 @@
+# autoformater
+npm install -g js-beautify
+
+# eslint vim vue {{{
+# Install vim plugin
+'posva/vim-vue'
+npm i -g eslint eslint-plugin-vue
+:SyntasticInfo
+
+# }}}
+
+# python formatter {{{
+sudo apt-get install python-autopep8
+# }}}

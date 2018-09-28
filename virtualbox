@@ -1,0 +1,3 @@
+# install virtualbox
+vim /etc/apt/sources.list.d/virtualbox.list
+deb http://download.virtualbox.org/virtualbox/debian stretch contrib

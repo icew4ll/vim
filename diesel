@@ -1,0 +1,62 @@
+# install diesel cli {{{
+cargo install diesel_cli --no-default-features --features "postgres sqlite"
+cd examples/diesel
+echo "DATABASE_URL=file:test.db" > .env
+diesel migration run
+sudo apt-get install libsqlite3-dev libpq-dev sqlite3
+# }}}
+
+# actix diesel sqlite3 {{{
+sudo apt install sqlite3 libsqlite3-dev
+cargo install diesel_cli --no-default-features --features sqlite
+git clone https://github.com/actix/actix-web
+cd actix-web/examples/diesel
+echo "DATABASE_URL=file:test.db" > .env
+diesel migration run
+cd ~/m/actix-web/examples/diesel
+cargo run
+# Started http server: 127.0.0.1:8080/NAME
+sqlite3 test.db
+sqlite> .tables
+sqlite> select * from users;
+# }}}
+
+# redis session {{{
+# install redis 1st
+cd ~/m/actix-web/examples/redis-session
+cargo run
+# }}}
+
+# create new role {{{
+sudo -u postgres psql
+CREATE USER palantir WITH CREATEDB PASSWORD 'LOTR';
+
+# Psql assumes db has same name as role used to login
+# create db name matching role created above
+sudo -u postgres createdb palantir
+
+# new project
+cargo new palantir
+
+# v .env
+[dependencies]
+diesel = { version = "0.11.0", features = ["postgres"] }
+diesel_codegen = { version = "0.11.0", features = ["postgres"] }
+dotenv = "0.8.0"
+
+# build
+cargo build
+
+# Setup db with info above:
+# echo DATABASE_URL=postgres://username:password/diesel_demo > .env ]
+echo DATABASE_URL=postgres://palantir:LOTR@localhost/palantir > .env
+
+# setup
+diesel setup
+
+# create migration for table
+# migrations allow an evolving database over time
+# each migration can be applied (up.sql) and reverted (down.sql)
+diesel migration generate create_posts
+
+# }}}

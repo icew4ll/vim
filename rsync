@@ -1,0 +1,34 @@
+# rsync remote to remote
+# sshfs
+#https://unix.stackexchange.com/questions/183504/how-to-rsync-files-between-two-remotes
+ssh -R localhost:50000:host2:22 host1 'rsync -e "ssh -p 50000" -vuar /var/www localhost:/var/www'
+# 2 step proxy ssh
+ssh -v -R 50000:host2:22 host1
+# full
+ssh -R 50000:host2:22 host1 'rsync -e "ssh -p 50000" -vuar /host1/path localhost:/host2/path'
+# v4 .105: wp104
+# v3 .214: 102
+# rsync backup local
+# Make directory
+mkdir -p /media/oak/scorp/rsync/Documents; mkdir -p /media/oak/scorp/rsync/Downloads; mkdir -p /media/oak/scorp/rsync/git; mkdir -p /media/oak/scorp/rsync/atom; mkdir -p /media/oak/scorp/rsync/Music; mkdir -p /media/oak/scorp/rsync/Pictures; mkdir -p /media/oak/scorp/rsync/Videos; mkdir -p /media/oak/scorp/rsync/vim
+
+# rsync local
+rsync -avz /home/oak/Documents/* /media/oak/scorp/rsync/Documents/; rsync -avz /home/oak/Downloads/* /media/oak/scorp/rsync/Downloads/; rsync -avz /home/oak/atom/* /media/oak/scorp/rsync/atom/; rsync -avz /home/oak/git/* /media/oak/scorp/rsync/git/; rsync -avz /home/oak/Music/* /media/oak/scorp/rsync/Music/; rsync -avz /home/oak/Pictures/* /media/oak/scorp/rsync/Pictures/; rsync -avz /home/oak/Videos/* /media/oak/scorp/rsync/Videos/; rsync -avz /home/oak/vim/* /media/oak/scorp/rsync/vim/; rsync -avz /home/oak/note/* /media/oak/scorp/rsync/note
+
+# rsync dotfiles to media
+mkdir -p /media/oak/scorp/rsync/dotfiles
+rsync -avz ~/.config/fish/config.fish /media/oak/scorp/rsync/dotfiles
+rsync -avz ~/.config/nvim/init.vim /media/oak/scorp/rsync/dotfiles
+
+# rsync dot files to github
+rsync -avz ~/.config/nvim/init.vim /home/oak/git/dotfiles/init.vim && rsync -avz ~/.zshrc /home/oak/git/dotfiles/.zshrc && cd /home/oak/git/dotfiles && git add -A
+
+# rsync dot files to github via fish
+rsync -avz ~/.vimrc ~/p/git/dotfiles/.vimrc;rsync -avz ~/.config/nvim/init.vim /home/oak/p/git/dotfiles/init.vim;rsync -avz ~/.config/fish/config.fish /home/oak/p/git/dotfiles/config.fish;cd /home/oak/p/git/dotfiles;git add -A
+
+# rsync vid
+rsync -avz ~/Videos /media/zeal/41e02907-85b0-4534-aa55-4b58602151f4
+
+# rsync dotfiles
+rsync -avz ~/.vimrc ~/p/dotfiles;rsync -avz ~/.tmux.conf.local ~/p/dotfiles;rsync -avz ~/.config/nvim/init.vim ~/p/dotfiles;rsync -avz ~/.config/fish/config.fish ~/p/dotfiles;cd ~/p/dotfiles;ga
+

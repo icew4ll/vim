@@ -1,0 +1,345 @@
+# create basic files
+touch index.html && touch app.js
+
+# Verify index.html reads app from app.js
+# v index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+<div id="app"></div>
+<script src="app.js"></script>
+</body>
+</html>
+
+# v app.js
+var app = document.getElementById('app');
+app.innerHTML = '<p>Hi there</p>';
+
+# npm init
+npm init -y
+
+# npm check webpack version
+# 2.2.0-rc.3 webpack
+# 2.2.0-rc.0 webpack dev
+npm view webpack
+npm view webpack-dev-server
+
+# install webpack and webpack dev
+yarn add --dev webpack@2.2.0-rc.3 webpack-dev-server@2.2.0-rc.0
+
+# use webpack on app.js
+./node_modules/webpack/bin/webpack.js ./app.js bundle.js
+
+# load bundle.js into index.html
+# v index.html
+<script src="bundle.js"></script>
+
+# make npm run build script in package.json
+# v package.json
+"scripts": {
+  "build": "webpack app.js bundle.js"
+},
+
+#verify run build script
+  rm bundle.js
+  npm run build
+
+#install rimraf to clean build files on unix and windows
+  yarn add --dev rimraf
+
+# update build script with rimraf
+  "scripts": {
+    "build": "rimraf bundle.js && webpack app.js bundle.js"
+  },
+
+# verify run build script
+  npm run build
+
+# create project folders
+  mkdir src && mkdir dist && mv app.js ./src/
+
+# update package.json script
+  "scripts": {
+    "build": "rimraf dist && webpack src/app.js dist/bundle.js"
+  },
+
+# update index.html and remove bundle.js from root
+  <script src="dist/bundle.js"></script>
+  rm bundle.js
+
+# verify new structure, run live server
+  npm run build && pl
+
+# init eslint
+  eslint --init
+
+# create module
+  touch ./src/messages.js
+  v ./src/messages.js
+  module.exports = {
+hi: 'Modules online',
+    event: 'Event confirmed',
+  };
+
+v ./src/app.js
+var messages = require('./messages.js');
+var app = document.getElementById('app');
+app.innerHTML = '<p>' + messages.hi + " " + messages.event + '</p>';
+
+# verify modules
+npm run build && pl
+
+# add watcher to package.json and update build
+"build": "rimraf dist && webpack src/app.js dist/bundle.js --watch"
+npm run build
+pl
+
+# update messages.js to verify watching
+# should hot reload with python livereload
+
+# create webpack.config.js
+touch webpack.config.js
+
+# v webpack.config.js
+# path.join joins current directory with dist
+# publicPath specifies public url of output files when referenced in browser
+var path = require('path');
+
+module.exports = {
+entry: './src/app.js',
+       output: {
+path: path.join(__dirname, 'dist'),
+      publicPath: '/dist',
+      filename: 'bundle.js',
+       },
+};
+
+# remove entry exit config in package.json
+"build": "rimraf dist && webpack --watch"
+npm run build
+pl
+
+# hot code reload vs hot module reload (HMR)
+# hot code reload does not preserve state and hot module reload HMR does
+"dev": "webpack-dev-server",
+  npm run dev
+
+# hot module reload (HMR)
+  touch dev-server.js
+
+# v dev-server.js
+  var WebpackDevServer = require('webpack-dev-server');
+  var webpack = require('webpack');
+  var config = require('./webpack.config.js');
+  var path = require('path');
+
+  var compiler = webpack(config);
+  var server = new WebpackDevServer(compiler, {
+hot: true,
+filename: config.output.filename,
+publicPath: config.output.publicPath,
+stats: {
+colors: true,
+},
+});
+server.listen(8080, 'localhost', function() {});
+
+# v webpack.config.js
+# 3 files should be included into bundle.js for HMR
+# 'webpack/hot/dev-server',
+# 'webpack-dev-server/?client?http://localhost:8080',
+# new webpack.HotModuleReplacementPlugin(),
+var path = require('path');
+var webpack = require('webpack');
+
+module.exports = {
+entry: [
+         './src/app.js',
+       'webpack/hot/dev-server',
+       'webpack-dev-server/client?http://localhost:8080',
+],
+plugins: [
+  new webpack.HotModuleReplacementPlugin(),
+],
+output: {
+path: path.join(__dirname, 'dist'),
+      publicPath: '/dist',
+      filename: 'bundle.js',
+},
+  };
+
+# v index.js
+var messages = require('./messages.js');
+var app = document.getElementById('app');
+app.innerHTML = '<p>' + messages.hi + " " + messages.event + '</p>';
+
+if (module.hot) {
+  module.hot.accept();
+}
+
+# v package.json
+"dev": "node dev-server.js"
+
+# Separating production and development builds with environment variables, remove HMR dev code from bundle.js
+# v package.json
+"build": "rimraf dist && NODE_ENV=production webpack",
+  "dev": "NODE_ENV=development node dev-server.js"
+# v webpack.config.js
+  var path = require('path');
+  var webpack = require('webpack');
+
+  var DEVELOPMENT = process.env.NODE_ENV === 'development';
+  var PRODUCTION = process.env.NODE_ENV === 'production';
+
+  var entry = PRODUCTION
+  ? ['./src/app.js']
+  : [
+    './src/app.js',
+    'webpack/hot/dev-server',
+    'webpack-dev-server/client?http://localhost:8080',
+  ];
+
+  var plugins = PRODUCTION
+  ? []
+  : [new webpack.HotModuleReplacementPlugin()];
+
+  module.exports = {
+entry: entry,
+       plugins: plugins,
+       output: {
+path: path.join(__dirname, 'dist'),
+      publicPath: '/dist',
+      filename: 'bundle.js',
+       },
+  };
+
+# babel
+yarn add -D babel-core babel-loader babel-preset-es2015 babel-preset-stage-0
+
+# babel configuration file
+v babel.rc
+{
+  "presets": ["es2015", "stage-0"]
+}
+
+# webpack module loaders: es2015
+# v webpack.config.js
+module: {
+loaders: [{
+test: /\.js$/,
+         loaders: ['babel-loader'],
+         exclude: '/node_modules/'
+         }]
+        },
+
+# sourcemap: to be able to view code in chrom dev tools
+# add breakpoints (click code link in console then click line #)
+# v webpack.config.js
+devtool: 'source-map',
+
+# v src/button.js
+  const Button = {
+button: '<button id="myButton">Press Me</button>',
+        attachEl: () => {
+          document.getElementById('myButton').addEventListener('click',
+              () => {
+              console.log('Clicked');
+              },
+              );
+        },
+  };
+
+export default Button;
+
+# v src/app.js
+import Button from './button.js';
+
+const messages = require('./messages.js');
+
+// const newMessage = () => (`<h1>${messages.hi}, template on, ${messages.event}</h1>`);
+
+const newMessage = () => (Button.button);
+
+const app = document.getElementById('app');
+app.innerHTML = newMessage();
+
+Button.attachEl();
+
+if (module.hot) {
+  module.hot.accept();
+}
+
+# file loaders to handle image files via webpack
+yarn add -D file-loader
+
+# v src/image.js
+const proto = require('./img/proto-min.svg');
+
+const Image = `<img src="${proto}" width="400px">`;
+export default Image;
+
+# v src/image2.js
+const favi = require('./img/favicon.ico');
+
+const Image = `<img src="${favi}">`;
+export default Image;
+
+# v src/app.js
+const newMessage = () => (`
+    <h1>
+    ${messages.hi}, template on, ${messages.event}
+    ${proto}
+    ${favi}
+    </h1>
+    `);
+
+# install url loader
+yarn add -D url-loader
+
+#v webpack.config.js
+loaders: [{
+test: /\.js$/,
+         loaders: ['babel-loader'],
+         exclude: '/node_modules/'
+}, {
+test: /\.(png|jpg|gif|svg)$/,
+         loaders: ['url-loader?limit=10000&name=img/[hash:12].[ext]'],
+         exclude: '/node_modules/'
+}]
+
+# tree shaking (dead code elimination)
+# v src/math.js
+export function add(a, b) { return a + b; }
+export function subtract(a, b) { return a - b; }
+export function multiply(a, b) { return a * b; }
+
+# v src/app.js
+const newMessage = () => (multiply(4, 3));
+
+# disable babel transpile on modules to enable tree shaking
+# v babel.rc
+{
+  "presets": [
+    ["latest", { "modules": false }],
+    "stage-0"
+  ]
+}
+
+# v webpack.config.js
+const plugins = PRODUCTION
+  ? [
+    new webpack.optimize.UglifyJsPlugin({
+      comments: true,
+      mangle: false,
+      compress: {
+        warnings: true,
+      },
+    }),
+  ]
+  : [new webpack.HotModuleReplacementPlugin()];
+
+

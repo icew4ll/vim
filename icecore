@@ -1,0 +1,34 @@
+mkdir my_ice_root
+cd my_ice_root
+
+# config.yaml
+applications:
+  - name: hello_world
+    path: ./apps/hello_world
+
+# create apps/hello_world
+mkdir apps
+cd apps
+cargo new --lib hello_world
+cd hello_world
+
+# Cargo.toml
+[lib]
+name = "hello_world"
+crate-type = ["cdylib"]
+
+[dependencies]
+ia = "0.1"
+
+# hello_world config.yaml
+package_name: com.example.hello_world
+bin: target/wasm32-unknown-unknown/release/hello_world.wasm
+
+# ./src/lib.rs
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {
+        assert_eq!(2 + 2, 4);
+    }
+}

@@ -1,0 +1,3 @@
+# extract gz to directory foo
+tar -xzf bar.tar.gz -C foo
+

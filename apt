@@ -1,0 +1,3 @@
+# preqs for Ubuntu 17.04
+apt search libgstreamer
+apt list --installed

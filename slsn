@@ -1,0 +1,17 @@
+
+# passing cors headers back
+callback(null,{
+                                            statusCode: 200,
+                                            body: JSON.stringify({}),
+                                            headers: {
+'Access-Control-Allow-Origin': '*',
+
+}});
+
+# reference bucket within lambda function
+provide:
+    environment: 
+        myBucket: { "Ref": "WebAppS3Bucket" }
+
+
+

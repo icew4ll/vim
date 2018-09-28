@@ -1,0 +1,7 @@
+
+## script to install airbnb eslint globally
+export PKG=eslint-config-airbnb;
+npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm i -g "$PKG@latest"
+
+# remove previous eslint
+npm r -g eslint-config-airbnb eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react eslint

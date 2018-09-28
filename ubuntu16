@@ -1,0 +1,123 @@
+# new install gnome ubuntu 16.04
+
+# instal zsh 
+sudo apt-get install zsh
+
+# change shell zsh
+chsh -s $(which zsh)
+logout/login
+
+# install oh-my-zsh preqs
+sudo apt-get install curl git
+
+# install oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+# install neovim
+sudo add-apt-repository ppa:neovim-ppa/unstable
+sudo apt-get update
+sudo apt-get install neovim
+
+# install npm
+# check nvm versions @ https://github.com/creationix/nvm
+sudo apt-get update
+sudo apt-get install nodejs
+sudo apt-get install npm
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+sudo apt-get update
+sudo apt-get install build-essential libssl-dev
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
+source ~/.zshrc
+
+# check node versions via nvm
+nvm ls-remote
+
+# install node version via nvm (recommended latest LTS)
+nvm install 7.0.0
+
+# use node version 7.0.0 as default via nvm
+nvm alias default 7.0.0
+nvm use default
+
+# check install node versions via nvm
+nvm ls
+
+# mkdir init.vim and cd directory
+mkdir -p ~/.config/nvim/ && cd ~/.config/nvim/
+v init.vim
+<paste>
+:wq
+<reload nvim>
+
+# enable clipboard nvim
+sudo apt-get install xclip
+echo 'export PATH="$HOME/usr/bin/xclip:$PATH"' >> ~/.zshrc
+
+# install python preqs
+sudo apt-get install python-dev python-pip python3-dev python3-pip
+
+# install python providers neovim
+pip2 install neovim
+pip3 install neovim
+
+# install ruby via rbenv
+sudo apt-get update
+sudo apt-get install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+source ~/.zshrc
+
+# check rbenv install
+type rbenv
+
+# install ruby-build
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+# install ruby preqs
+sudo apt-get install -y libreadline-dev
+
+# install ruby
+rbenv install -l
+rbenv install 2.3.1
+
+# set ruby 2.3.1 as global
+rbenv global 2.3.1
+
+# verify ruby install
+ruby -v
+
+# install neovim gem
+gem install neovim
+
+# install fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+
+# install screenfetch
+sudo apt-get install screenfetch
+echo 'screenfetch' >> ~/.zshrc
+
+# install droid sans nerd font
+# patched nerd fonts @ https://github.com/ryanoasis/nerd-fonts#patched-fonts
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts && curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20for%20Powerline%20Nerd%20Font%20Complete.otf
+
+# refresh font cache
+fc-cache -fv
+
+# nvim update plugins
+:UpdateRemotePlugins
+
+# install flash
+https://get.adobe.com/flashplayer/
+Download tar.gz for linux
+extract
+cd /home/oak/Downloads/install_flash_player_11_linux.x86_64
+sudo mv libflashplayer.so /usr/lib/mozilla/plugins
+
+# set folders first in nautilus 
+gsettings set org.gnome.nautilus.preferences sort-directories-first true
+
+# move windows maximize/left/right
+winkey + up/left/right

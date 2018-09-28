@@ -1,0 +1,13 @@
+# make py file
+#!/usr/bin/env python3
+# coding: utf-8
+print('Hello user.')
+
+# set execute
+chmod +x test.py
+
+# build
+nuitka --recurse-on --python-version=3.5 test.py
+
+# linux bin
+pyinstaller -D -F -n main -c "rmMail.py"

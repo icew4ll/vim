@@ -1,0 +1,6 @@
+# install html2pdf
+sudo apt-get install wkhtmltopdf
+
+# use on website
+wkhtmltopdf https://stripe.com/docs/api stripeapi.pdf
+wkhtmltopdf https://github.com/Day8/re-frame/wiki/Creating-Reagent-Components reframeWiki

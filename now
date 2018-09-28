@@ -1,0 +1,5 @@
+# install now cli
+yarn global add now
+
+# rust
+/home/fish/m/now-examples/rust-http-microservice

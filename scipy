@@ -1,0 +1,12 @@
+
+
+# Consider adding this at the end of your ~/.bashrc file
+export PATH="$PATH:/home/your_user/.local/bin"
+
+python -m pip install --upgrade pip
+
+sudo apt-get install python-numpy python-scipy python-matplotlib ipython
+ipython-notebook python-pandas python-sympy python-nose
+
+# tensorflow
+pip install cython

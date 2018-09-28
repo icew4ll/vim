@@ -1,0 +1,40 @@
+# install java 8
+# install lein
+
+# make new figwheel project via template
+lein new figwheel figtemp --om
+--om        Adds a bare bones Om app, including Sablono.
+--reagent   Adds a bare bones Reagent app.
+cd figtemp
+lein figwheel
+v src/figtemp/core.cljs
+
+# make project directory
+mkdir ~/git/figwheel;
+cd ~/git/figwheel;
+touch project.clj;
+touch index.html;
+mkdir -p src/hello_seymore;
+touch src/hello_seymore/core.cljs
+
+# modify core.cljs
+	v src/hello_seymore/core.cljs
+(ns hello-seymore.core)
+	(.log js/console "Hey Seymore sup?!")
+
+# modify project.clj
+	v project.clj
+	(defproject hello-seymore "0.1.0-SNAPSHOT"
+	 :dependencies [[org.clojure/clojure "1.8.0"]
+	 [org.clojure/clojurescript "1.9.229"]]
+	 :plugins [[lein-figwheel "0.5.8"]]
+	 :clean-targets [:target-path "out"]
+	 :cljsbuild {
+	 :builds [{:id "dev"
+	 :source-paths ["src"]
+	 :figwheel true
+	 :compiler {:main "hello-seymore.core"}
+	 }]
+	 })])
+
+

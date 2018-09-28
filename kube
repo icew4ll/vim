@@ -1,0 +1,296 @@
+facexhugger power unleashed
+# install kubectl
+sudo snap install kubectl --classic
+kubectl version
+kubectl cluster-info
+kubectl get ingress
+kubectl get services
+kubectl get deployments
+kubectl get serviceaccounts
+kubectl -n kube-system get po
+protoss.192.168.99.100
+# delete all ingress
+kubectl delete ingress --all
+
+# new install traefik ingress
+[in]
+kubectl create -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-deployment.yaml
+[out]
+serviceaccount/traefik-ingress-controller created
+deployment.extensions/traefik-ingress-controller created
+service/traefik-ingress-service created
+ice:~/m/ingress# minikube ip
+192.168.99.100
+# info
+kubectl get services
+# v ingress.yml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: protoss
+spec:
+  rules:
+    - host: protoss.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: protoss
+              servicePort: 80
+kubectl create -f ingress.yml
+http://protoss.192.168.99.100
+# setup /etc/hosts
+echo "$(minikube ip) protoss.com" | sudo tee -a /etc/hosts
+[out]
+192.168.99.100 protoss.com
+# reset minikube, start minikube to use kubectl
+minikube delete
+minikube start
+minikube status
+minikube service list
+kubectl version
+# Error: could not find tiller
+helm status
+# check for tiller pod
+kubectl -n kube-system get po
+# if none run helm init
+
+# install traefik chart
+helm install stable/traefik --name protoss --namespace kube-system
+Error: could not find tiller
+# get traefik load balancer ip:
+# watch 'EXTERNAL-IP' status until no longer pending
+kubectl get svc protoss-traefik --namespace kube-system -w
+# get external ip
+kubectl describe svc protoss-traefik --namespace kube-system | grep Ingress | awk '{print $3}'
+# check logs
+kubectl logs --namespace kube-system tiller-deploy-2654728925-j2zvk
+# uninstall helm chart traefik
+helm delete protoss
+# uninstall helm tiller from cluster
+helm reset
+# install kube {{{
+# check minikube status
+ice:~/Downloads# minikube status
+minikube: Running
+cluster: Running
+kubectl: Correctly Configured: pointing to minikube-vm at 192.168.99.100
+# enable ingress addon
+minikube addons disable ingress
+# check minikube ingress addon
+minikube addons list
+- ingress: enabled
+# verify ingress running on pods
+kubectl get pods -n kube-system
+nginx-ingress-controller-5984b97644-thh8x   1/1     Running   0          3m
+kubectl create nginx --image=nginx
+# verify nginx pod
+kubectl get po
+# create service of type cluster-ip
+kubectl expose deployment nginx --port 80
+service/nginx exposed
+# apply ingress.yml
+kubectl apply -f ingress.yml
+# }}}
+
+# install nginx ingress
+# https://blog.n1analytics.com/free-automated-tls-certificates-on-k8s/
+helm init --service-account tiller --upgrade
+helm repo update
+
+# install fission via chart {{{
+# getting rust to work
+yarn global add microcule
+https://hook.io/pricing
+https://youtu.be/GSfeBHN1c_g
+https://www.hellorust.com/setup/wasm-target/
+rustup target add wasm32-unknown-emscripten
+cargo build --release --target wasm32-unknown-emscripten
+rustc +nightly --target wasm32-unknown-unknown -O src/main.rs
+cargo install --git https://github.com/alexcrichton/wasm-gc
+wasm-gc hello.wasm small-hello.wasm
+# preqs: install minikube
+kubectl version
+kubectl get nodes
+minikube service list
+helm install --namespace fission --set serviceType=NodePort https://github.com/fission/fission/releases/download/0.10.0/fission-all-0.10.0.tgz
+fission --help
+# install client cli
+curl -Lo fission https://github.com/fission/fission/releases/download/0.10.0/fission-cli-linux ; chmod +x fission ; sudo mv fission /usr/local/bin/
+# Create an environment
+fission env create --name nodejs --image fission/node-env
+# Get a hello world
+curl https://raw.githubusercontent.com/fission/fission/master/examples/nodejs/hello.js > hello.js
+# list functions
+kubectl get pods -n fission-function
+# Register this function with Fission
+fission function create --name hello --env nodejs --code hello.js
+# Run this function
+fission function test --name hello
+Hello, world!
+# binary functions:
+# setup fission deployment with the binary environment
+fission env create --name binary-env --image fission/binary-env
+# minikube ip
+minikube ip
+192.168.99.100:31348
+# fission router port
+kubectl -n fission get svc router -o jsonpath='{...nodePort}'
+31348
+# required for minikube examples
+# build go binary with correct architecture
+env GOOS=linux GOARCH=386 go build -o hello-go-func hello.go
+# upload function
+fission function create --name hello-go --env binary-env --code hello-go-func
+fission function create --name hello-rust --env binary-env --code fiss
+# map /hello
+fission route create --url /hello-go --function hello-go
+fission route create --url /hello-rust --function hello-rust
+# curl it
+curl -H 'X-GO: AWESOME!' http://$FISSION_ROUTER/hello-go
+curl -H 'X-GO: AWESOME!' http://192.168.99.100:31348/hello-go
+# }}}
+# install kubernetes {{{
+sudo apt install libvirt-clients libvirt-daemon-system qemu-kvm
+usermod -a -G libvirt fish
+cat /etc/group | grep libvirt
+newgrp libvirt
+# install minikube
+sudo apt install virtualbox virtualbox-ext-pack
+minikube start
+sudo wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 -O  /usr/local/bin/minikube
+sudo chmod +x /usr/local/bin/minikube
+minikube
+# install kubectl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+sudo sh -c 'echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list'
+sudo apt-get update
+sudo apt-get install -y kubectl
+kubectl version -o json
+minikube start
+# check clusterinfo
+kubectl cluster-info
+# minikube config file
+~/.minikube/machines/minikube/config.json
+# view config
+kubectl config view
+# view running nodes
+kubectl get nodes
+# view pods
+kubectl get pods
+# access vm via ssh
+minikube ssh
+# stop a cluster
+minikube stop
+# delete local cluster
+minikube delete
+# list addons
+minikube addons list
+# dashboard
+minikube dashboard
+# }}}
+# links {{{
+# traefik
+https://www.katacoda.com/courses/traefik/deploy-load-balancer
+# fission
+https://github.com/fission/fission/tree/master/examples/binary
+https://docs.fission.io/0.7.2/installation/installation/
+https://gist.github.com/ssudake21/cd9dc79296f2a8099d10342842d4f649
+# faas general
+https://blog.alexellis.io/first-faas-python-function/
+https://github.com/openfaas/faas/blob/master/guide/traefik_integration.md
+https://hackernoon.com/build-a-serverless-memes-function-with-openfaas-f4210a53abe8
+https://medium.com/@lizrice/getting-started-with-openfaas-on-minikube-8d51987f5bbb
+https://kubernetes.io/docs/setup/minikube/#installation
+https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#kvm-driver
+https://computingforgeeks.com/
+# helm is package manager for kubernetes
+https://docs.helm.sh/using_helm/#quickstart-guide
+https://github.com/openfaas/faas-netes/issues/59
+https://github.com/openfaas/faas-netes/blob/master/HELM.md
+# openfaas chart
+https://github.com/openfaas/faas-netes/blob/master/chart/openfaas/README.md
+# plugin to enable kubernetes as openfaas backend
+https://github.com/openfaas/faas-netes
+# openfaas helm chart deployment guide
+https://github.com/openfaas/faas-netes/blob/master/chart/openfaas/README.md
+# deployment
+https://docs.openfaas.com/deployment/kubernetes/
+# minikube getting started
+https://medium.com/devopslinks/getting-started-with-openfaas-on-minikube-634502c7acdf
+# openfaas create function
+https://rancher.com/blog/2018/2018-04-23-evaluation-of-serverless-frameworks-for-kbe/
+# fission (alpha)
+https://github.com/fission/fission
+https://github.com/kubeless/kubeless
+https://medium.com/@natefonseka/kubeless-vs-fission-the-kubernetes-serverless-match-up-41f66611f54d
+https://platform9.com/fission/
+https://www.nkode.io/2017/09/12/serverless-frameworks.html
+# }}}
+# install openfaas via helm {{{
+# install gofish
+curl -fsSL https://raw.githubusercontent.com/fishworks/gofish/master/scripts/install.sh | bash
+gofish init
+gofish install helm
+helm init
+# Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
+# To prevent this, run `helm init` with the --tiller-tls-verify flag.
+# install openfaas chart via helm
+kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
+# add openfaas helm chart
+helm repo add openfaas https://openfaas.github.io/faas-netes/
+# deploy openfaas from helm chart repo
+helm repo update \
+ ; helm upgrade openfaas --install openfaas/openfaas \
+    --namespace openfaas  \
+    --set functionNamespace=openfaas-fn
+# verify openfaas started
+kubectl --namespace=openfaas get deployments -l "release=openfaas, app=openfaas"
+# verify install
+# find openfaas gateway
+minikube service list
+openfaas    | gateway-external     | http://192.168.99.100:31112
+faas-cli list --gateway http://192.168.99.100:31112/
+# adding a function
+faas-cli invoke lizfaas --gateway http://192.168.99.100:31112/
+# remove openfaas
+helm delete --purge openfaas
+# remove associated objects
+kubectl delete namespace/openfaas
+kubectl delete namespace/openfaas-fn
+minikube service list
+# }}}
+# old {{{
+# openfaas
+1) openshift
+2) docker
+3) kubernetes
+
+# minishift: requires hv to start vm on which to provision openshift cluster
+# 1. requires kvm install
+# https://linuxconfig.org/install-and-set-up-kvm-on-ubuntu-18-04-bionic-beaver-linux
+# # ubuntu 18
+sudo apt remove qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virt-manager
+# setup kvm driver
+# https://docs.okd.io/latest/minishift/getting-started/setting-up-virtualization-environment.html#setting-up-kvm-driver
+# https://github.com/dhiltgen/docker-machine-kvm/releases
+sudo curl -L https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm -o /usr/local/bin/docker-machine-driver-kvm
+sudo chmod +x /usr/local/bin/docker-machine-driver-kvm
+sudo apt install libvirt-bin qemu-kvm
+# add yourself to libvirtd group
+sudo usermod -a -G libvirt fish
+# update current session
+newgrp libvirt
+sudo addgroup libvirtd
+sudo usermod -a -G libvirtd fish
+# sudo groupdel libvirtd
+# install minishift
+wget https://github.com/minishift/minishift/releases/download/v1.23.0/minishift-1.23.0-linux-amd64.tgz
+# extract
+# verbose
+# gnuzip
+# file
+tar -xvzf /home/fish/Downloads/minishift-1.23.0-linux-amd64.tgz -C /home/fish/Downloads/
+/home/fish/Downloads/minishift start
+qemu-system-x86_64 --version
+# }}}

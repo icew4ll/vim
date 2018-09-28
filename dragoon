@@ -1,0 +1,13 @@
+# deps
+
+yad webpack-dev-server@2.2.0 webpack@2.2.0 opener extract-text-webpack-plugin sw-precache-webpack-plugin clean-webpack-plugin copy-webpack-plugin html-webpack-plugin
+
+yad babel-loader babel-core babel-plugin-inferno babel-preset-stage-3 babel-preset-es2015
+
+yad autoprefixer 
+
+yad typescript tslint ts-node awesome-typescript-loader @types/node @types/source-map @types/uglify-js @types/webpack
+
+ya inferno inferno-router history md-colors inferno-mobx mobx inferno-component 
+ 
+

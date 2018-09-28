@@ -1,0 +1,26 @@
+# guides
+https://askubuntu.com/questions/921321/how-can-i-install-ethminer-on-ubuntu-17-04
+https://www.meebey.net/posts/ethereum_gpu_mining_on_linux_howto/
+
+# install eth miner (for gpu miner)
+# binary release @ https://github.com/ethereum-mining/ethminer/releases
+tar -xzf ~/Downloads/ethminer-0.12.0.dev2-Linux.tar.gz -C /usr/local
+
+# nvidia drivers
+sudo apt-get install nvidia-cuda-dev nvidia-cuda-toolkit nvidia-nsight
+
+# install ethereum and geth
+sudo add-apt-repository -y ppa:ethereum/ethereum
+sudo apt-get update
+sudo apt-get install ethereum
+
+# install geth
+#
+geth account new
+geth --rpc --rpccorsdomain localhost 2>> geth.log &
+ethminer -G  // -G for GPU, -M for benchmark
+tail -f geth.log
+
+# run eth miner
+geth --rpc --rpcaddr "127.0.0.1" --rpcport "8545"
+ethminer -G --cuda-parallel-hash 4

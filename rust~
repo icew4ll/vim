@@ -1,0 +1,69 @@
+# IDE VIM
+= note: /usr/bin/ld: cannot find -lpq
+/usr/bin/ld: cannot find -lmysqlclient
+collect2: error: ld returned 1 exit status
+sudo apt install libmysqlclient-dev
+rustup self update
+rustup update nightly
+rustup component add rls-preview --toolchain nightly
+rustup component add rust-analysis --toolchain nightly
+rustup component add rust-src --toolchain nightly
+
+# install rust
+curl https://sh.rustup.rs -sSf | sh
+
+# install nightly
+rustup default stable
+rustup default nightly
+
+# toolchain loc
+~/.rustup/toolchains/
+
+# update
+rustup update
+
+# version
+rustc --version
+
+# bin loc
+ls ~/.cargo/bin/
+
+# install rusti repl
+sudo apt-get install libncursesw5-dev
+rustup install nightly-2016-08-01
+rustup run nightly-2016-08-01 cargo install --git https://github.com/murarth/rusti
+rustup run nightly-2016-08-01 ~/.cargo/bin/rusti
+
+# install ion
+cargo install --git https://github.com/redox-os/ion/
+set -o vi
+sudo vim /etc/shells
+/home/ice/.cargo/bin/ion
+chsh -s ~/.cargo/bin/ion
+
+# install clippy
+cargo install clippy
+
+# install racer
+cargo install racer
+
+# add rust src code
+rustup component add rust-src
+
+# set RUST_SRC_PATH to src dir
+$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src
+
+# install rust language server
+pip install --user python-language-server
+rustup self update
+rustup update
+rustup component add rls-preview
+rustup component add rust-analysis
+rustup component add rust-src
+
+# install rustfmt for autoformat vim
+rustup component add rustfmt-preview --toolchain=nightly
+
+# update all rust packages
+cargo install cargo-update
+cargo install-update -a

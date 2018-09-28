@@ -1,0 +1,28 @@
+# install {{{
+yarn global add vuepress
+npm install -g vuepress
+
+# create a markdown file
+echo '# Hello VuePress' > README.md
+
+# start writing
+vuepress dev
+
+# build to static files
+vuepress build
+
+# }}}
+# config {{{
+# config file: enable title + search
+# search indexes title, h2, h3
+mkdir .vuepress
+v .vuepress/config.js
+module.exports = {
+    title: 'Hello VuePress',
+    description: 'Just playing around'
+}
+# }}}
+# theme {{{
+# Define sidebar per folder section
+https://vuepress.vuejs.org/default-theme-config/#multiple-sidebars
+# }}}

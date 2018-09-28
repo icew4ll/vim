@@ -1,0 +1,2 @@
+#  make iso debian 9
+genisoimage -o output_image.iso directory_name

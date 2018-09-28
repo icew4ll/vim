@@ -1,0 +1,17 @@
+# colors
+deep red: #8A3C3C
+charcoal purp: #34282C
+light red: #F9C4C4
+
+.uk-offcanvas-bar {
+  background: #8A3C3C;
+}
+
+.uk-navbar-toggle {
+  color: red;
+}
+
+.uk-navbar {
+  color: #F9C4C4;
+}
+

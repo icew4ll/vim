@@ -1,0 +1,27 @@
+{
+  "name": "sealion",
+  "version": "0.1.0",
+  "description": "Preact Starter",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server -d --hot --inline --progress",
+    "start": "superstatic build -p 9999 --host 0.0.0.0 --gzip -c '{\"rewrites\": [{\"source\":\"**\",\"destination\":\"index.html\"}],\"headers\":[{\"source\":\"**\",\"headers\":[{\"key\":\"Cache-Control\",\"value\":\"max-age=86400\"}]}]}'",
+    "prestart": "npm run build",
+    "build": "cross-env NODE_ENV=production webpack -p --progress",
+    "prebuild": "rm -rf build mkdirp build",
+    "test": "eslint src tests/**/*.js",
+    "push-surge": "npm run build && surge ./build -d sealion.surge.sh"
+  },
+  "keywords": [
+    "preact",
+    "preact-compat",
+    "yarn"
+  ],
+  "license": "MIT",
+  "author": "Silicon Magi <nightshell@yandex.com>",
+  "devDependencies": {
+  
+  },
+  "dependencies": {
+ 
+  }
+}

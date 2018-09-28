@@ -1,0 +1,2 @@
+# expect one liner
+expect -c "spawn /usr/bin/scp Sean_Lilly.zip adaptive@10.10.12.17:/opt/ams/epf_3_4/Sean_Lilly.zip; sleep 5; expect -re \"password\"; send \"ad\r\n\"; set timeout -1; expect -re \"100%\";"

@@ -1,0 +1,43 @@
+# make project files
+PJ=lagoon
+mkdir $PJ && cd $PJ
+mkdir -p ./app/components; mkdir -p ./app/containers/App; mkdir -p ./app/stores; mkdir -p ./app/assets/img
+touch ./app/app.js; touch ./app/index.html; touch ./app/containers/App/index.js; touch ./app/stores/AppState.js
+touch .babelrc; touch .eslintrc; touch .gitignore
+touch package.json; touch webpack.config.js; touch devserver.js
+
+# v app/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <div id="app"></div>
+  <script app="dist/bundle.js"></script>
+</body>
+</html>
+
+# package.json
+{
+  "name": "alnasl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "build": "rimraf dist && NODE_ENV=production webpack",
+    "start": "NODE_ENV=development node dev-server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}
+
+
+
+

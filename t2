@@ -1,0 +1,50 @@
+<<<<<<< HEAD
+# kube: use manual
+# helm install method not working
+kubectl apply -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-ds.yaml
+kubectl --namespace=kube-system get pods
+# one is now able to access traefik on port 80 of minikube
+bash -c 'curl $(minikube ip)'
+=======
+# install traefik kube helm
+https://github.com/helm/charts/tree/master/stable/traefik
+https://docs.traefik.io/user-guide/kubernetes/
+https://multinode-kubernetes-cluster.readthedocs.io/en/latest/03-k8s-helm_and_packages.html
+https://medium.com/@carlosedp/multiple-traefik-ingresses-with-letsencrypt-https-certificates-on-kubernetes-b590550280cf
+https://itnext.io/creating-a-full-monitoring-solution-for-arm-kubernetes-cluster-53b3671186cb?source=user_profile---------4----------------&gi=ef5c962dae98
+https://tuananh.org/2017/04/04/setting-up-traefik-as-ingress-controller-for-kubernetes/
+https://blog.ptrk.io/using-drone-on-kubernetes-to-deploy-a-basic-application/
+https://www.praqma.com/stories/proxying-kubernetes/
+https://github.com/kubeapps/kubeapps
+https://www.youtube.com/watch?v=0AuKmfAZ1H4
+https://www.youtube.com/watch?v=Psm9aOWzfWk
+https://www.youtube.com/watch?v=hqE5c5pyfrk
+https://www.youtube.com/watch?v=ojZT1sKCGQs
+>>>>>>> 643b844666e95718e5780bfed9c00949958ff3ed
+# install traefik docker with example config
+docker run -d -p 8080:8080 -p 80:80 -v $PWD/traefik.toml:/etc/traefik/traefik.toml traefik
+coreos
+internet
+traefik > tcp mail, ssh
+etcd: cannot downgrade, verify k8s support
+vlans and interface bonding on physical level
+flannel for k8s/container subnets
+kubedns for service discovery
+# upgrades
+networking Calico?
+service discovery with CoreDNS
+# TLS (cfssl cert management)
+all communication within ETCD and k8s cluster secured by TLS
+intra-comm use self generated CA
+only external services (ingress) lets encrypt or commercial certs
+# security
+protect access to api on master and nodes (via proxy)
+- ip tables firewall
+- client certificate authentication
+RBAC for resource access control
+NetworkPolicy resources to control intra-pod and external communication (doesn't work with flannel but does with Calico)
+# tips
+use UTC as timezone everywhere
+# traefik must run on master node
+master node is only node exposed to public

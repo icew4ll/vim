@@ -1,0 +1,50 @@
+# aws cognito
+aws cognito-idp create-user-pool --pool-name night-test
+
+# replace var
+%s/var/const
+%s/AWSCognito.CognitoIdentityServiceProvider/AmazonCognitoIdentity/g
+
+# setup user pool via console
+name: night0
+attribute: email required
+policy: default
+verifications: mfa off, require email verify on
+message custom: default
+tags: default
+devices: default
+apps: name nightshell, uncheck generate client token
+triggers: default
+review
+
+var poolData = {
+UserPoolId : UserPoolId, // Your user pool id here
+             ClientId : '...' // Your client id here
+};
+var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+
+var attributeList = [];
+
+var dataEmail = {
+Name : 'email',
+       Value : 'email@mydomain.com'
+};
+
+var dataPhoneNumber = {
+Name : 'phone_number',
+       Value : '+15555555555'
+};
+var attributeEmail = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
+var attributePhoneNumber = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataPhoneNumber);
+
+attributeList.push(attributeEmail);
+attributeList.push(attributePhoneNumber);
+
+userPool.signUp('username', 'password', attributeList, null, function(err, result){
+    if (err) {
+    alert(err);
+    return;
+    }
+    cognitoUser = result.user;
+    console.log('user name is ' + cognitoUser.getUsername());
+    });

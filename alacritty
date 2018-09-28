@@ -1,0 +1,12 @@
+# install ubuntu 16
+sudo apt install cmake libfreetype6-dev libfontconfig1-dev xclip
+curl https://sh.rustup.rs -sSf | sh
+git clone https://github.com/jwilm/alacritty.git
+cd alacritty
+rustup override set stable
+rustup update stable
+cargo build --release
+
+# create desktop entry
+sudo cp target/release/alacritty /usr/local/bin/
+cp Alacritty.desktop ~/.local/share/applications

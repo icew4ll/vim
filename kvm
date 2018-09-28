@@ -1,0 +1,2 @@
+# install kvm ubuntu 18
+sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virt-manager

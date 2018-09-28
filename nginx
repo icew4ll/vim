@@ -1,0 +1,26 @@
+# install {{{
+
+# install nginx from source
+http://nginx.org/en/download.html
+wget http://nginx.org/download/nginx-1.12.1.tar.gz
+
+# install preqs for compiling source
+sudo apt install build-essential libpcre3 libpcre3-dev openssl libssl-dev
+yum -y groupinstall "Development Tools"
+
+# decompress
+tar -xvf nginx-1.12.1.tar.gz  
+cd nginx-1.12.1/ 
+
+
+# html hosting location
+ls -l /usr/share/nginx/html
+
+# location of log files
+ls -l /var/log/nginx
+
+# version of nginx
+nginx -V
+
+
+# }}}

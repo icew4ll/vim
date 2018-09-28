@@ -1,0 +1,28 @@
+# install s3cmd
+sudo apt-get install s3cmd
+s3cmd --version
+s3cmd --configure
+
+# list aws s3 bucket
+s3cmd ls
+
+# list s3 bucket objects
+s3cmd ls s3://night-dev-zergs3-9hxv27xdysnv
+
+# upload production zerg.js to bucket
+s3cmd put /home/oak/git/zerg/resources/public/js/compiled/zerg.js s3://night-dev-zergs3-9hxv27xdysnv 
+s3cmd put /home/oak/git/zerg/resources/public/css/style.css s3://night-dev-zergs3-9hxv27xdysnv -m "text/css"
+
+# resources zerg
+v /home/oak/git/zerg/resources/public/index.html
+v /home/oak/git/zerg/resources/public/css/style.css
+v /home/oak/git/zerg/resources/public/js/compiled/zerg.js
+
+# list cloudfront dist point
+s3cmd cflist 
+
+# cf resources
+https://d3fk9rmuefewkk.cloudfront.net/zerg.js
+https://d3fk9rmuefewkk.cloudfront.net/style.css
+
+

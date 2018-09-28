@@ -1,0 +1,22 @@
+# info {{{
+https://github.com/fatedier/frp/releases
+wget https://github.com/fatedier/frp/releases/download/v0.18.0/frp_0.18.0_linux_amd64.tar.gz
+cd ~/Downloads
+tar zxvf ~/Downloads/frp_0.18.0_linux_amd64.tar.gz
+./frpc -c ./frpc.ini
+# }}}
+# frpc.ini http file server {{{
+# frpc.ini
+[common]
+server_addr = x.x.x.x
+server_port = 7000
+
+[test_static_file]
+type = tcp
+remote_port = 6000
+plugin = static_file
+plugin_local_path = /tmp/file
+plugin_strip_prefix = static
+plugin_http_user = abc
+plugin_http_passwd = abc
+# }}}

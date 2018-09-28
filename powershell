@@ -1,0 +1,13 @@
+# copy
+highlight + right-click
+# paste
+right-click
+
+# tail
+Get-Content filenamehere -Wait -Tail 30
+
+# get windows version
+Get-WmiObject -Class Win32_OperatingSystem | ForEach-Object -MemberName Caption
+Microsoft Windows Server 2012 R2 Standard
+
+

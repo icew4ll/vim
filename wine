@@ -1,0 +1,32 @@
+# new install wine staging
+wget https://dl.winehq.org/wine-builds/Release.key
+sudo apt-key add Release.key
+sudo apt-add-repository 'https://dl.winehq.org/wine-builds/ubuntu/'
+sudo apt-get update
+sudo apt-get install winehq-staging
+
+# install wine staging
+sudo dpkg --add-architecture i386
+sudo add-apt-repository ppa:wine/wine-builds
+sudo apt-get update
+sudo apt-get install --install-recommends winehq-staging
+
+rm -fr ~/.wine
+export WINEARCH=win32
+export WINEPREFIX="/home/cyrex/.wine"
+winecfg
+
+" install latest wine devel {{{
+sudo dpkg --add-architecture i386
+sudo add-apt-repository ppa:wine/wine-builds
+sudo apt-get update
+sudo apt-get install --install-recommends winehq-devel
+winecfg
+
+" }}}
+
+# winetricks
+
+wget  https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
+chmod +x winetricks
+sh winetricks api-ms-win-crt-runtime-l1-1-0 api-ms-win-crt-stdio-l1-1-0 api-ms-win-crt-math-l1-1-0 ucrtbase vcruntime140

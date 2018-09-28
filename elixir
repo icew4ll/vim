@@ -1,0 +1,30 @@
+# install on solus
+sudo eopkg install elixir
+
+# install hex
+mix local.hex
+
+# verify install
+1) erl
+2) elixir -v
+
+# install phoenix
+1) mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez
+
+# instlal inotify-tools
+sudo eopkg install inotify-tools
+
+# install postgresql
+sudo eopkg install postgresql
+sudo systemctl daemon-reload
+sudo systemctl enable postgresql
+sudo systemctl start postgresql
+sudo systemctl status postgresql
+sudo createuser -U postgres -s zeal
+
+# init new phoenix
+mix phx.new phnx
+cd phnx
+mix ecto.create
+mix phx.server
+iex -S mix phx.server

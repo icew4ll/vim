@@ -1,0 +1,122 @@
+# make s3 in cloudformation
+# http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html#gettingstarted.templatebasics.simple
+# cloudformation: resources
+AWS::ProductIdentifier::ResourceType
+AWS::S3::Bucket
+
+# cf: make s3 bucket
+Resources:
+  HelloBucket:
+    Type: AWS::S3::Bucket
+
+# cf: set props on s3 bucket
+# s3 bucket props: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html#aws-properties-bucket-prop
+# prop types ref: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-product-property-reference.html
+Resources:
+  HelloBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+
+# use ref function to refer to an identifying property of a resource: e.g. physical name of resource or identifier
+# logical name: name used for resource within template
+# physical name: when aws creates resource it generates this name based on logical name, stack name, unique id
+# use to set props on one resource based on the name or prop of another
+# e.g. making a cloudfront backed by S3 bucket in same template
+# http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html
+
+# cf: create cloudfront distribution backed by S3 origin
+# specify bucket location via DNS-style address
+# Fn::GetAtt function to get attributes from resources whos values will be used in template
+# Fn::GetAtt function takes 2 params: the logical name of the resource and the name of the attribute to be retrieved
+# Fn::GetAtt ref: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getatt.html
+# Template creates cloudfront dist resource that specifies the name of S3 bucket resources using Fn::GetAtt function to get bucket's DomainName attribute
+Resources:
+  myBucket:
+    Type: AWS::S3::Bucket
+    myDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName:
+              Fn::GetAtt:
+                - myBucket
+                - DomainName
+              Id: myS3Origin
+              S3OriginConfig: {}
+              Enabled: 'true'
+              DefaultCacheBehavior:
+                TargetOriginId: myS3Origin
+                ForwardedValues:
+                  QueryString: 'false'
+                ViewerProtocolPolicy: allow-all
+
+# constructed values and output values
+# Fn::Join function constructs Target subproperty of the HealthCheck property for the ElasticLoadBalancer resource by concatenating the WebServerPort parameter with other literal strings to form the value needed
+# Fn::Join function takes two parameters: a delimiter that separates the values you want to concatenate and an array of values in the order that you want the to appear.
+# In the example: Fn::Join function specifies an empty string as the delimiter and HTTP:, the value of the WebServerPort parameter, and a / character as the values to concatenate.  If WebServerPort had a value of 8888, Target property would be the value:  HTTP:8888/
+Resources:
+  ElasticLoadBalancer:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      AvailabilityZones:
+        Fn::GetAZs: ''
+      Instances:
+      - Ref: Ec2Instance1
+      - Ref: Ec2Instance2
+      Listeners:
+      - LoadBalancerPort: '80'
+        InstancePort:
+          Ref: WebServerPort
+        Protocol: HTTP
+      HealthCheck:
+        Target:
+          Fn::Join:
+          - ''
+          - - 'HTTP:'
+            - Ref: WebServerPort
+            - "/"
+        HealthyThreshold: '3'
+        UnhealthyThreshold: '5'
+        Interval: '30'
+        Timeout: '5'
+
+# cloudformation: aws s3 template
+                    http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/quickref-s3.html
+
+# cloudformation: aws s3
+                    http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html
+
+                    # s3 cors
+                    http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html
+
+                    # graphql example
+resources:
+  Resources:
+    WebsiteS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: <your-s3-bucket-name>
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+    WebsiteS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: WebsiteS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+              Resource:
+                - Fn::Join:
+                  - ''
+                - - 'arn:aws:s3:::'
+                - Ref: WebsiteS3Bucket
+                - "/*"

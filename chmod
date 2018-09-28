@@ -1,0 +1,6 @@
+# chmod settings
+2^0=1 --eXecute
+
+2^1=2 --Write
+
+2^2=4 --Read

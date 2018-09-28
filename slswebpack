@@ -1,0 +1,126 @@
+# install sls webpack via npm in service directory
+cd ~/git/night
+npm install serverless-webpack
+
+# edit yml include to include plugin
+v serverless.yml
+plugins:
+  - serverless-webpack
+
+# simulate api gateway local
+serverless webpack serve
+
+# run a function local
+serverless webpack invoke --function <function-name>
+
+# automatic bundling
+# once sls webpack is installed deploy will automatically bundle with webpack
+serverless deploy
+
+# bundle with webpack and see result
+serverless webpack --out dist
+
+# make webpack.config.js
+v webpack.config.js
+module.exports = {
+  entry: './handler.js',
+  target: 'node',
+  module: {
+    loaders: [{
+      test: /\.js$/,
+      loaders: ['babel'],
+      include: __dirname,
+      exclude: /node_modules/,
+    }]
+  }
+};
+
+# make .babelrc
+{
+  "plugins": ["transform-runtime"],
+  "presets": ["es2015", "stage-0"]
+}
+
+# make package.json
+{
+  "name": "serverless-webpack-babel-example",
+  "version": "1.0.0",
+  "description": "Serverless webpack example using Babel",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nicola Peduzzi <thenikso@gmail.com> (http://nikso.net)",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-runtime": "^6.12.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-polyfill": "6.13.0",
+    "serverless-webpack": "^1.0.0-beta.2",
+    "webpack": "^1.13.1"
+  },
+  "dependencies": {
+    "babel-runtime": "6.11.6"
+  }
+}
+
+# multi entry yml
+service: serverless-webpack-multiple-entries-example
+
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+
+functions:
+  first:
+    handler: first.hello
+    events:
+      - http:
+          method: GET
+          path: first
+  second:
+    handler: second.hello
+    events:
+      - http:
+          method: GET
+          path: second
+
+# multi entry webpack
+var path = require('path');
+
+module.exports = {
+  entry: {
+    first: './first.js',
+    second: './second.js'
+  },
+  target: 'node',
+  output: {
+    libraryTarget: 'commonjs',
+    path: path.join(__dirname, '.webpack'),
+    filename: '[name].js'
+  },
+};
+
+# multi entry package.json
+{
+  "name": "serverless-webpack-multiple-entries-example",
+  "version": "1.0.0",
+  "description": "Serverless webpack example",
+  "main": "first.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nicola Peduzzi <thenikso@gmail.com> (http://nikso.net)",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-webpack": "^1.0.0-beta.2",
+    "webpack": "^1.13.1"
+  }
+}

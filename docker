@@ -1,0 +1,292 @@
+# usage {{{
+#https://docs.docker.com/engine/reference/run/#example-run-htop-inside-a-container
+# auto restart docker
+sudo docker run --restart=always -d prometheus
+# list all docker process
+docker ps -a
+# stop all docker containers
+bash -c 'docker stop $(docker ps -aq)'
+# Delete all containers
+bash -c 'docker rm $(docker ps -a -q)'
+# Delete all images
+bash -c 'docker rmi $(docker images -q)'
+# force delete
+docker rmi -f (docker images -q)
+
+# verify
+docker images
+
+# verify image commands
+docker history [img]
+
+# list docker volumes
+docker volume ls
+
+# build from dockerfile with name 'prometheus'
+docker build -t prometheus ~/m/lab/prom/
+
+# run image
+docker run -d -p 9090:9090 --name prometheus prometheus
+docker run --restart=always -d -p 9090:9090 --name prometheus prometheus
+
+# verify
+docker logs prometheus
+# }}}
+
+# install v2 solyd {{{
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates wget software-properties-common
+wget https://download.docker.com/linux/debian/gpg
+sudo apt-key add gpg
+echo "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable" | sudo tee -a /etc/apt/sources.list.d/docker.list
+sudo apt update
+# check install candidate is latest stable
+sudo apt-cache policy docker-ce
+sudo apt-get -y install docker-ce
+
+# usage
+sudo systemctl start docker
+sudo systemctl stop docker
+sudo systemctl restart docker
+sudo systemctl status docker
+# enable autostart on system boot
+sudo systemctl enable docker
+
+# verify docker install
+sudo docker run hello-world
+
+# enable nonroot user to run docker
+sudo groupadd docker
+sudo useradd ice
+sudo usermod -aG docker ice
+# Log out and log back in
+# You should now be able to run Docker commands without prefixing sudo.
+docker run hello-world
+
+# }}}
+
+# httpd {{{
+#
+vim /etc/apache2/apache2.conf
+ServerName localhost
+/etc/init.d/apache2 restart
+
+# }}}
+
+# quickstart {{{
+# docker run docker container, background, print port
+docker run -d -P seqvence/static-site
+
+# info
+docker info
+
+# build Dockerfile
+# have docker file in empty directory
+# only add files necessary for build
+docker build - < Dockerfile
+
+# change repo name (alias) Docker image number
+# use first 3 characters of IMAGE ID
+docker tag ca7 appache
+
+# install packages on ubuntu container
+docker run -it ubuntu bash
+apt-get -qq update
+apt-get -qq -y install curl
+
+# access shell of container
+docker run -it web /bin/bash
+docker run -it seqvence/static-site /bin/bash
+
+# remove all bash
+docker rm -f $(docker ps -a -q)
+
+# remove all fish
+docker rm -f (docker ps -a -q)
+
+# remove all images
+bash -c 'docker rmi $(docker images -q)'
+
+
+# }}}
+
+# docker install debian 9 repo {{{
+sudo apt-get update
+sudo apt-get install \
+     apt-transport-https \
+     ca-certificates \
+     curl \
+     gnupg2 \
+     software-properties-common
+bash
+curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo apt-key add -
+sudo vim /etc/apt/sources.list
+deb [arch=amd64] https://download.docker.com/linux/debian stretch stable
+sudo apt update
+sudo apt-get install docker-ce
+sudo usermod -aG docker $USER
+# }}}
+
+# install docker salent 2, debian 9{{{
+
+# download latest
+# @ https://download.docker.com/linux/debian/dists/stretch/pool/stable/amd64/
+wget https://download.docker.com/linux/debian/dists/stretch/pool/stable/amd64/docker-ce_17.09.1~ce-0~debian_amd64.deb
+cd ~/Downloads
+sudo dpkg -i docker-ce_17.09.1~ce-0~debian_amd64.deb
+sudo docker run hello-world
+sudo groupadd docker
+sudo usermod -aG docker $USER
+logout login
+docker run hello-world
+
+# enable docker on boot
+sudo systemctl enable docker
+
+# preqs repo not working
+sudo apt-get install \
+     apt-transport-https \
+     ca-certificates \
+     curl \
+     gnupg2 \
+     software-properties-common
+
+# add key
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+
+# verify key
+sudo apt-key fingerprint 0EBFCD88
+
+# install repo
+# https://download.docker.com/linux/debian/dists/stretch/stable/
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian/ stretch stable"
+# }}}
+
+# install docker ubuntu 16.04.3 {{{
+# # Uninstall old versiones
+1) sudo apt-get remove docker docker-engine docker.io
+
+# preqs for 14.04 only
+sudo apt-get update
+
+sudo apt-get install \
+  linux-image-extra-$(uname -r) \
+  linux-image-extra-virtual
+
+# install preqs
+2) sudo apt-get update
+3) sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+
+# add docker GPG key
+4) curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+# verify fingerprint
+sudo apt-key fingerprint 0EBFCD88
+
+pub   4096R/0EBFCD88 2017-02-22
+      Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid                  Docker Release (CE deb) <docker@docker.com>
+sub   4096R/F273FCD8 2017-02-22
+
+# add docker to repo
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+# verify docker is in repo list of sources
+nvim /etc/apt/sources.list
+deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+# deb-src [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+
+# install docker binaries from repo
+sudo apt-get update
+sudo apt-get install docker-ce
+
+# use docker commands without having to sudo
+sudo groupadd docker
+sudo usermod -aG docker $USER
+
+# inspect membership of docker group
+id xeno
+grep 'docker' /etc/group
+
+# docker status
+sudo systemctl status docker
+
+# start docker on boot
+sudo systemctl enable docker
+
+# }}}
+
+# setup container {{{
+# install docker image
+# -d run container in background
+# -P publish the network ports the container exposes on the machine
+docker run -d -P seqvence/static-site
+docker run -d -P nginx
+docker run -d -P ubuntu
+
+# list docker images
+docker images
+
+# list docker images by tag
+docker images ubuntu
+
+# list docker containers running in background
+# port 80 on the container will be mapped to random port on local machine
+docker ps
+
+# verify web server running with browser
+localhost:32769
+
+# install docker compose
+# Compose is a tool for defining and running multi-container Docker applications
+# Verify install script defines latest Docker Compose @ https://github.com/docker/compose/releases
+sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+# apply executable permissions to binary
+sudo chmod +x /usr/local/bin/docker-compose
+
+# verify install of Docker Compose
+docker-compose --version
+
+# compose allows to describe a deployment of multiple docker containers
+# configured by yml text file 'docker-compose.yml'
+web-server:
+  container_name: web
+  image: seqvence/static-site
+  ports:
+    - "8080:80"
+  mem_limit: 500M
+  restart: always
+
+# run docker file via docker compose
+docker-compose up -d
+
+# verify container is active
+docker-compose up -d
+
+# verify static site on port 8080
+localhost:8080
+
+# access shell of container
+docker run -it web /bin/bash
+docker run -it seqvence/static-site /bin/bash
+
+# restart docker service
+sudo service docker restart
+
+# docker logs
+docker logs web
+
+# }}}
+
+# testing {{{
+#https://medium.com/@aelsabbahy/tutorial-how-to-test-your-docker-image-in-half-a-second-bbd13e06a4a9
+curl -fsSL https://goss.rocks/install | sh
+# }}}

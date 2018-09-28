@@ -1,0 +1,21 @@
+# secure copy all files in current local directory to remote
+scp -r ./* 'root@someipaddy.com:/var/www/html/epic'
+
+
+           rsync -avz ./www.example.com root@216.230.240.95:/root/ssl_work_dir
+
+
+/etc/httpd/conf/ssl.crt/example.com.2017.crt
+
+cp -r /root/ssl_work_dir/www.example.com/www.example.com.2017.key .
+
+# declare all conf files to use
+# Load config files in the "/etc/httpd/conf.d" directory, if any.
+IncludeOptional conf.d/*.conf
+/etc/httpd/conf/httpd.conf
+
+# TODO
+copy cabundle
+SSLCertificateFile /etc/httpd/conf/ssl.crt/www.example.com.2017.crt
+SSLCertificateKeyFile /etc/httpd/conf/ssl.key/www.example.com.2017.key
+SSLCertificateChainFile /etc/httpd/conf/ssl.crt/www.example.com.2017.cabundle.crt

@@ -1,0 +1,16 @@
+# list s3 buckets
+aws s3 ls
+
+# sync s3 bucket with local
+aws s3 sync <source> <target> [--options]
+aws s3 sync . s3://my-bucket/path
+The above example synchronizes the contents of an Amazon S3 folder named path in my-bucket with the current working directory
+
+# delete base mapping
+aws apigateway delete-base-path-mapping --domain-name 'nightshell.com' --base-path '(none)' --region us-east-1
+
+# create base mapping
+aws apigateway create-base-path-mapping --domain-name 'nightshell.com' --base-path '(none)' --region us-east-1 --rest-api-id b3fxkhond2 --stage dev
+
+https://b3fxkhond2.execute-api.us-east-1.amazonaws.com/dev/
+

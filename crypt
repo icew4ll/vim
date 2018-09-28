@@ -1,0 +1,7 @@
+# encrypting a file via 7z
+7z a -p '/media/oak/scorp/rsync/dot.7z' '/media/oak/scorp/rsync/dotfiles'
+7z a -p '/home/zeal/Documents/steemit.7z' '/home/zeal/Documents/steemit'
+
+# extracting file via 7z
+7z x '/media/oak/scorp/rsync/dot.7z' '/media/oak/scorp/rsync/'
+7z x '/home/zeal/Documents/steemit.7z' '/home/zeal/Documents/'

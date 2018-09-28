@@ -1,0 +1,17 @@
+# install serverless offline
+npm i babel-preset-stage-2 babel-preset-es2015 serverless-offline --save-dev
+
+# install sls offline + optimize
+npm i babel-preset-stage-2 babel-preset-es2015 serverless-plugin-optimize serverless-offline --save-dev
+
+# sls offline
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    babelOptions:
+      presets: ["es2015", "stage-2"]
+
+# enable debugging
+export SLS_DEBUG=*

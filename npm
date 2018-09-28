@@ -1,0 +1,51 @@
+# check for updates
+npm install -g npm-check-updates
+ncu
+
+
+npm i -D babel-preset-latest babel-preset-stage-0 babel-core babel-loader json-loader webpack eslint uglify-js
+npm i -S amazon-cognito-identity-js modernizr fg-loadcss
+touch .babelrc
+echo '{ "presets": ["latest", "stage-0"] }' > .babelrc
+mkdir src
+touch ./src/entry.js
+
+# babel promise
+npm i -D babel-polyfill
+import "babel-polyfill";
+
+# list global npm packages
+npm list -g --depth=0
+
+# babel fetch and promise
+npm install --save es6-promise whatwg-fetch
+npm install --save-dev imports-loader exports-loader
+plugins: [
+  new webpack.ProvidePlugin({
+Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
+fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+})
+]
+
+# install local
+npm i -S
+-D babel-preset-latest
+npm i -D babel-preset-latest
+
+# remove local
+npm r -D
+
+# Uninstall npm global package
+npm uninstall -g gulp less-plugin-clean-css less
+
+# install npm-check-updates
+# check update dependencies
+npm install npm-check-updates -g
+
+# cd to folder and run
+cd ~/git/night
+npm-check-updates
+
+# update all deps
+npm-check-updates -u
+

@@ -1,0 +1,50 @@
+# install preqs
+# for rust
+sudo apt install build-essential cmake checkinstall
+# for python
+sudo apt install libssl-dev bzip2 libbz2-dev libsqlite3-dev zlib1g-dev libncurses5 libncurses5-dev libncursesw5
+# install rust
+curl https://sh.rustup.rs -sSf | sh
+rustup self update
+rustup install nightly
+rustup default nightly
+# install ion shell (requires nightly)
+wget https://github.com/redox-os/ion/releases/download/1.0.5/linux-amd64-musl.tar.xz
+tar -xf linux-amd64-musl.tar.xz
+mv ./ion ~/.cargo/bin/
+sudo sh -c 'echo "/home/ice/.cargo/bin/ion" >> /etc/shells'
+chsh -s /home/ice/.cargo/bin/ion
+# install python
+wget https://www.python.org/ftp/python/3.6.5/Python-3.6.5.tgz
+tar xvf Python-3.6.5.tgz
+cd Python-3.6.5
+./configure --enable-optimizations --enable-shared --enable-loadable-sqlite-extensions
+make -j8
+sudo make altinstall
+# config for libpython3.6m.so.1.0
+sudo vim /etc/ld.so.conf
+sudo sh -c 'echo "include /usr/local/lib" >> /etc/ld.so.conf'
+sudo ldconfig
+# install pip3
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python3.6 get-pip.py
+# install neovim preqs
+sudo apt install python-dev python-pip
+pip2 install neovim
+# fix language client
+curl --location https://github.com/autozimu/LanguageClient-neovim/releases/download/0.1.81/languageclient-0.1.81-x86_64-unknown-linux-musl --output ~/.config/nvim/repos/github.com/autozimu/LanguageClient-neovim/bin/languageclient && chmod 755 ~/.config/nvim/repos/github.com/autozimu/LanguageClient-neovim/bin/languageclient
+# install gotop
+wget https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.10.2.linux-amd64.tar.gz
+go get -u github.com/cjbassi/gotop
+# setup git
+git config --global user.email "icew4ll@tuta.io"
+git config --global user.name "fishbowl"
+# gen new key
+ssh-keygen -t rsa -b 4096 -C "icew4ll@tuta.io"
+ssh-add ~/.ssh/id_rsa
+# update key
+xclip -sel clip < ~/.ssh/id_rsa.pub
+
+# github add key
+settings > ssh and GPG keys > new ssh key > paste key

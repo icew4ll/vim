@@ -1,0 +1,4 @@
+# xonsh install
+sudo vim /etc/shells
+~/.local/bin/xonsh
+chsh -s ~/.local/bin/xonsh

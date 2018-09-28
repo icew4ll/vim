@@ -1,0 +1,36 @@
+# {{{ list tables
+.table
+
+# show options
+.show
+
+# turn headers on
+.headers ON
+
+# display rows in column style
+.mode column
+
+# view table
+select *
+from Emails
+where 1;
+# }}}
+
+# {{{ setup sqlite
+  conn = sqlite3.connect('neo.db')
+c = conn.cursor()
+  c.execute('drop table if exists Emails')
+  c.execute('CREATE TABLE {tn} (\
+        {c1} {t1} PRIMARY KEY,\
+        {c2} {t2})'.format(
+          tn='Emails',
+          c1='email',
+          t1='TEXT',
+          c2='count',
+          t2='INTEGER',
+          )
+      )
+
+  conn.commit()
+conn.close()
+# }}}

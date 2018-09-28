@@ -1,0 +1,19 @@
+# adjust mouse scroll speed
+about:config
+mousewheel.min_line_scroll_amount
+40
+
+# adjust session save interval
+browser.sessionstore.interval
+15000 (15sec), 1800000 (recommended)
+
+# search
+handler.expose
+
+# create handler for magnet links
+right click new boolean, false
+network.protocol-handler.expose.magnet
+modified boolean false
+
+# extensions
+vimfx

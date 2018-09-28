@@ -1,0 +1,14 @@
+# list packages
+conda list
+
+# update anaconda
+conda update conda
+conda update anaconda
+conda update spyder
+conda update pandas
+conda update python
+conda update numpy
+conda update ipython
+
+
+

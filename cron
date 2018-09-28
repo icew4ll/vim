@@ -1,0 +1,7 @@
+# list cronjobs
+crontab -u ice -l
+
+# edit contab
+crontab -e
+2) vim.gtk
+*/1 * * * *   ice  python /home/ice/m/sys/neon.py all

@@ -1,0 +1,2 @@
+# install redis ubuntu 17.04
+sudo apt install redis-server

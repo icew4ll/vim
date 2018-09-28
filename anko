@@ -1,0 +1,28 @@
+# install android studio preview
+download @ https://developer.android.com/studio/preview/index.html
+unzip android-studio-ide-171.4220116-linux.zip
+mv android-studio asp
+sudo mv asp /usr/local/bin
+
+# fish quick launch
+abbr -a asp /usr/local/bin/asp/bin/studio.sh
+
+# create new android project
+1) file > new > project
+2) enable kotlin support (android studio 3^)
+3) api 15/16
+4) empty activity
+5) open app > java > root > MainActivity
+6) ctrl + shft + a > convert Java file to Kotlin file
+7) gradle build module app > implementation "org.jetbrains.anko:anko:0.10.1" (or latest version)
+
+# shortcuts
+ctrl + alt + m = extract function
+
+# bug: please select Android SDK
+File -> Settings -> Android SDK -> Android SDK Location Edit -> Next, Next (Android SDK is up to date.), Finished
+
+# setup kotlin as 2.3.3
+1) install kotlin plugin file > settings > plugins > jetbrains plugin > kotlin > install
+2) tools > kotlin > configure kotlin in project > android with gradle > [select version: 1.1.3-2]
+3)

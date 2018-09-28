@@ -1,0 +1,5 @@
+# todomvc
+git clone -b client-only https://github.com/untangled-web/untangled-todomvc/;
+cd untangled-todomvc;
+v .
+JVM_OPTS="-Ddev -Dtest" lein run -m clojure.main script/figwheel.clj

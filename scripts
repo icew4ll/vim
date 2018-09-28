@@ -1,0 +1,8 @@
+# bulk rename fish
+for file in *.md
+mv -v -- "$file" (basename $file .md).txt
+end )
+
+for file in *.md
+mv "$file" (echo "$file" | sed '$s/\.md$/.txt/')
+end )

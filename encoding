@@ -1,0 +1,7 @@
+# fix font unicode in terminals
+1) edit .bashrc and .zshrc to have the following
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+2) logout

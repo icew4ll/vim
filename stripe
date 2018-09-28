@@ -1,0 +1,27 @@
+# create customer
+curl https://api.stripe.com/v1/customers \                                 
+   -u sk_test_Mcl3AJhTBBVson30qLACVXv5: \
+   -d source=tok_19JJ3lI0U5lhqjBaPlAHECcW \
+   -d description="Michael Harris" \
+   -d email="michael.harris.04@example.com"
+
+# charge customer
+curl https://api.stripe.com/v1/charges \                           
+   -u sk_test_Mcl3AJhTBBVson30qLACVXv5: \
+   -d amount=2000 \                        
+   -d currency=usd \                
+   -d customer=cus_9cYA64S86vmkHl    
+
+# subscription
+curl https://api.stripe.com/v1/plans \                             
+   -u sk_test_Mcl3AJhTBBVson30qLACVXv5: \
+   -d amount=999 \                         
+   -d interval=month \              
+   -d name="Ruby Express" \                
+   -d currency=usd \
+   -d id=ruby-express-455
+
+curl https://api.stripe.com/v1/customers/cus_9cYA64S86vmkHl/subscriptions \
+   -u sk_test_Mcl3AJhTBBVson30qLACVXv5: \
+   -d plan=ruby-express-455    
+

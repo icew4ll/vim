@@ -1,0 +1,7 @@
+# check python version vim is compiled with
+vim --version | grep python
++python3
+# install pyyaml for system's version of python
+sudo apt install python3-pip
+pip3 install pyyaml
+:YAMLFormat

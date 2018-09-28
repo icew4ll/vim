@@ -1,0 +1,7 @@
+# mouse speed
+sudo apt-get install imwheel
+https://gist.githubusercontent.com/SergKolo/b41992fbe9a9f6e6e51f42f6dd666a1c/raw/d9723a3059722f86636e8ac145d77f4c58089771/dynamic_mouse_speed.py
+python3 ~/vim/dynamic_mouse_speed.py -s 5
+
+
+

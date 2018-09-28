@@ -1,0 +1,2 @@
+# build binary with cxfreeze
+cxfreeze rmMail.py --target-dir rmMail

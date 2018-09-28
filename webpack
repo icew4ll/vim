@@ -1,0 +1,26 @@
+# webpack watch
+npm i -D webpack
+node_modules/.bin/webpack --watch
+
+# install style loader
+yarn add -D style-loader css-loader
+
+autoprefixer
+postcss
+cssnext
+babel-polyfill
+chalk - terminal colors
+compression
+sanitize.css
+intl babel-plugin-react-intl
+invariant warning minimist compression sanitize.css
+
+yarn add react react-dom react-helmet react-redux react-router react-router-redux react-router-scroll redux redux-immutable reselect rxjs redux-observable babel-polyfill whatwg-fetch styled-components immutable lodash  
+
+yarn add -D babel-eslint babel-cli babel-plugin-istanbul babel-plugin-react-intl babel-plugin-react-transform babel-plugin-transform-react-constant-elements babel-plugin-transform-react-inline-elements babel-plugin-transform-react-remove-prop-types babel-preset-latest babel-preset-react babel-preset-react-hmre chai chai-enzyme coveralls enzyme eslint-config-airbnb-base eslint-import-resolver-webpack eventsource-polyfill expect expect-jsx exports-loader html-loader html-webpack-plugin image-webpack-loader imports-loader json-loader karma karma-chrome-launcher karma-coverage karma-firefox-launcher karma-ie-launcher karma-mocha karma-mocha-reporter karma-safari-launcher karma-sourcemap-loader karma-webpack lint-staged mocha ngrok null-loader offline-plugin plop pre-commit psi react-addons-test-utils shelljs sinon webpack-hot-middleware 
+
+yarn remove -D babel-plugin-react-intl 
+
+yarn remove -D chai chai-enzyme enzyme expect expect-jsx karma karma-chrome-launcher karma-coverage karma-firefox-launcher karma-ie-launcher karma-mocha karma-mocha-reporter karma-safari-launcher karma-sourcemap-loader karma-webpack mocha ngrok offline-plugin plop pre-commit psi shelljs sinon
+
+yarn remove null-loader lint-staged json-loader imports-loader image-webpack-loader html-webpack-plugin html-loader exports-loader eventsource-polyfill eslint-import-resolver-webpack

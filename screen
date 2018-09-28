@@ -1,0 +1,20 @@
+# screen attach to detached session
+screen -r PID
+
+# screen detach
+Ctrl + A then d
+
+# screen attach to attached session
+screen -rd PID
+
+# screen create and reattach
+screen -S kibunusa-migrate
+screen -r kibunusa-migrate
+
+# create screen session named migration-test
+screen -S migration-test
+
+# detach from screen
+Ctrl+A then press "d"
+# Verify screen session exists
+screen -ls

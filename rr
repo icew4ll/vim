@@ -1,0 +1,73 @@
+" Install Rlang ubuntu 17.04 {{{
+
+# add keyserver
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+
+# add repo
+sudo add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu zesty/'
+
+# update repos
+sudo apt update
+
+# install r-base
+sudo apt-get install r-base
+
+# start r as root
+sudo -i R
+
+# install packages
+install.packages('ggplot2')
+
+" }}}
+
+" Install R Studio Desktop 17.04 {{{
+
+# preqs for Ubuntu 17.04
+apt search libgstreamer
+apt list --installed
+sudo gdebi /home/zeal/Downloads/libgstreamer0.10-0_0.10.36-1.5_amd64.deb
+
+# install
+sudo apt-get install gdebi-core
+wget https://download1.rstudio.org/rstudio-1.0.143-amd64.deb
+sudo gdebi rstudio-1.0.143-amd64.deb
+
+# uninstall
+sudo apt-get remove rstudio
+sudo apt-get remove rstudio-server
+
+" }}}
+
+" Vim Plugin rlang {{{
+# r-plugin must be installed @ ~/.vim/r-plugin
+
+# install screen.vma
+# download http://www.vim.org/scripts/script.php?script_id=2711
+vim ~/Downloads/screen.vba
+:so %
+
+# vimball install
+# open in vim Nvim-R.vmb
+:source %
+# press space several times to continue
+
+# to view currently loaded plugins
+:scriptnames
+
+# to remove a vimball
+:RmVimball Foobar
+
+# ZIP METHOD
+# Download @ http://www.vim.org/scripts/script.php?script_id=2628
+cd ~/Downloads
+# Download here: http://www.vim.org/scripts/download_script.php?src_id=20996
+unzip vim-r-plugin-0.9.9.7.zip -d ~/.vim
+
+# Backup .dotfiles
+cd
+cp .tmux.conf.local ./bak/
+cp .vimrc ./bak
+
+
+" }}}
+

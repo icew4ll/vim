@@ -1,0 +1,31 @@
+# repl
+java -cp /home/oak/Downloads/clojure-1.8.0/clojure-1.8.0.jar clojure.main
+
+# java interop
+# .beginDot indicates to clojure this is a Java method
+(.toUpperCase "hello")
+
+# browser repl fireplace
+# eval and print motion
+cp
+
+# populate quasi repl with motion
+cq
+
+# reload namespace on object
+cpr
+
+# go file
+gf
+
+# go source
+[d
+
+# eval and print innermost form
+cpp
+
+# populate quasi repl with innermost form
+cqq
+
+# documentation on cursor object
+shift + k

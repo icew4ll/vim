@@ -1,0 +1,49 @@
+# install language server
+# markdown proselint not executable
+pip install proselint
+# neovimrc
+let g:racer_cmd = '$HOME/.cargo/bin/racer'
+" let g:racer_experimental_completer = 1
+let g:deoplete#sources#rust#racer_binary='$HOME/.cargo/bin/racer'
+let g:deoplete#sources#rust#rust_source_path='$HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
+# install racer autocompletions for deoplete
+# must not use variables in path
+export RUST_SRC_PATH='/home/ice/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
+# test racer install via commandline
+racer complete std::io::B
+[enter]
+# location of language server plugin
+~/.config/nvim/repos/github.com/autozimu/LanguageClient-neovim/bin
+# install language client and make it executable
+curl --location https://github.com/autozimu/LanguageClient-neovim/releases/download/0.1.81/languageclient-0.1.81-x86_64-unknown-linux-musl --output ~/.config/nvim/repos/github.com/autozimu/LanguageClient-neovim/bin/languageclient && chmod 755 ~/.config/nvim/repos/github.com/autozimu/LanguageClient-neovim/bin/languageclient
+# new neovim install ubuntu 16.04 {{{
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt-get update
+sudo apt-get install neovim
+sudo apt-get install python-dev python-pip python3-dev python3-pip
+pip2 install neovim
+# }}}
+
+
+# install ruby
+sudo apt-get update
+sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev nodejs rbenv
+rbenv install 2.4.0
+rbenv global 2.4.0
+ruby -v
+
+# install ruby dev headers for ubuntu 16.10
+sudo apt-get install ruby-dev
+sudo gem install neovim
+
+# install nix
+$ curl https://nixos.org/nix/install | sh
+Make sure to follow the instructions output by the script. You may want to verify the integrity of the installation script using GPG:
+$ curl -O https://nixos.org/nix/install
+$ curl -O https://nixos.org/nix/install.sig
+$ gpg2 --verify ./install.sig
+$ sh ./install
+
+# install neovim with nix
+nix-env -iA nixos.neovim
+nix-env -iA nixos.python35Packages.neovim

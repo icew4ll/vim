@@ -1,0 +1,2 @@
+# install commandline
+npm install --global --production lisky

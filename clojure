@@ -1,0 +1,46 @@
+# check java version
+java -version
+
+# check ppa
+# may have to remove any previously installed ppa of java
+cd /etc/apt/sources.list.d
+
+# install dep: java 8
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+
+# set oracle-java-8 as default
+sudo apt install oracle-java8-set-default
+
+# build with clojure JAR
+aria2c -d /home/oak/Downloads https://github.com/clojure/clojurescript/releases/download/r1.9.293/cljs.jar
+mkdir /home/oak/git/clojure
+cp ~/Downloads/cljs.jar ~/git/clojure
+cd ~/git/clojure
+mkdir -p src/hello_world;touch src/hello_world/core.cljs
+
+v ~/git/clojure/src/hello_world/core.cljs
+(ns hello-world.core)
+(enable-console-print!)
+(println "Hello world!")
+
+v ~/git/clojure/src/hello_world/build.clj
+(require 'cljs.build.api)
+
+(cljs.build.api/build "src"
+  {:main 'hello-world.core
+   :output-to "out/main.js"})
+java -cp ~/git/clojure/cljs.jar:src clojure.main ~/git/clojure/src/hello_world/build.clj
+firefox file:///home/oak/git/clojure/index.html
+
+# install lein
+mkdir ~/bin
+sudo curl -o ~/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein 
+sudo chmod a+x ~/bin/lein
+
+# new re-frame proj
+lein new re-frame terran +garden +routes +test +re-frisk
+cd terran;
+lein clean;
+lein figwheel dev

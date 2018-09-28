@@ -1,0 +1,58 @@
+# install atom rust {{{
+sudo add-apt-repository ppa:webupd8team/atom
+# }}}
+
+# Python {{{
+sudo add-apt-repository ppa:jonathonf/python-3.6
+python3 --version
+pip3 install --upgrade pip
+pip3 install autopep8
+
+# activate virtual env
+venv
+pip3 install pep8 flake8 jedi
+pep8 --version
+flake8 --version
+
+# apm
+apm install script predawn-syntax autocomplete-python file-icons minimap
+linter-flake8 python-autopep8
+
+# }}}
+
+# vue {{{
+# install preqs
+apm install language-vue linter linter-eslint linter-ui-default intentions busy-signal vue-autocomplete
+
+# enable linting html
+1) edit > pref > packages > linter eslint > Lint HTML Files
+
+# }}}
+
+# old settings {{{
+apm install atom-typescript
+apm install linter
+apm install seti-ui
+apm install monokai-seti
+apm install open-recent
+apm install todo-show
+apm install minimap
+apm install highlight-selected
+apm install minimap-highlight-selected
+apm install autoclose-html
+apm install pigments
+apm install linter-csslint
+apm install linter-htmlhint
+apm install linter-jshint
+apm install linter-sass-lint
+apm install auto-detect-indentation
+apm install atom-beautify
+apm install emmet
+apm install color-picker
+apm install file-icons
+apm install vim-mode-plus
+
+apm uninstall atom-beautify atom-typescript auto-detect-indentation autoclose-html busy-signal color-picker emmet file-icons highlight-selected intentions language-vue linter linter-csslint linter-htmlhint linter-jshint linter-sass-lint linter-ui-default minimap minimap-highlight-selected monokai-seti open-recent pigments seti-ui todo-show vim-mode-plus
+
+apm uninstall atom-beautify atom-typescript auto-detect-indentation autoclose-html busy-signal color-picker emmet file-icons highlight-selected intentions language-vue linter linter-csslint linter-htmlhint linter-jshint linter-sass-lint linter-ui-default minimap minimap-highlight-selected monokai-seti open-recent pigments seti-ui todo-show vim-mode-plus
+# }}}

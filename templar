@@ -1,0 +1,41 @@
+yad babel-loader babel-core babel-plugin-inferno babel-preset-stage-3 babel-preset-es2015
+
+yad typescript tslint ts-node awesome-typescript-loader @types/node @types/source-map @types/uglify-js @types/webpack
+
+ya inferno inferno-router history inferno-mobx mobx inferno-component inferno-compat styled-components
+
+yarn add -D json-loader css-loader sass-loader to-string-loader raw-loader file-loader url-loader style-loader string-replace-loader source-map-loader node-sass normalize.css
+
+yarn add -D copy-webpack-plugin html-webpack-plugin script-ext-html-webpack-plugin webpack-merge rimraf assets-webpack-plugin add-asset-html-webpack-plugin
+
+yarn add -D v8-lazy-parse-webpack-plugin webpack-md5-hash
+
+yarn add -D awesome-typescript-loader@3.0.0-beta.18
+yarn add -D webpack@2.2.0
+yarn add -D webpack-dev-middleware@1.9.0
+yarn add -D webpack-dev-server@2.2.0
+yad react-hot-loader@3.0.0-beta.6
+
+yad webpack-dll-bundles-plugin@1.0.0-beta.5
+yad extract-text-webpack-plugin@2.0.0-beta.5
+
+parse5 protractor npm-run-all istanbul-instrumenter-loader imports-loader find-root expose-loader exports-loader
+
+# ts loader
+{
+test: /tsx?$/, //testing from common
+         use: [{
+loader: 'babel-loader',
+        options: {
+presets: [['es2015', { modules: false }], 'stage-3'],
+         plugins: [['inferno', {"imports": true}], 'react-hot-loader/babel'],
+        },
+         }, {
+loader: 'ts-loader',
+         }],
+},
+
+alias: {
+      'react': 'inferno-compat',
+      'react-dom': 'inferno-compat'
+    },

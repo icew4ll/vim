@@ -1,0 +1,8 @@
+# navbar active
+
+(defn ui-active []
+ (= @active-panel :home-panel) (js/console.log "blog")
+ (= @active-panel :blog-panel) (js/console.log "blog")
+ (= @active-panel :portfolio-panel) (js/console.log "port")
+ (= @active-panel :about-panel) (js/console.log "about")
+ )

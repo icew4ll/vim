@@ -1,0 +1,34 @@
+# install postregres ub 16 {{{
+sudo apt-get install postgresql postgresql-contrib
+# change linux user password
+# linux user is used to access db
+sudo passwd postgres
+# login with postgres unix
+su - postgres
+# change password for postgres db user
+psql -d template1 -c "ALTER USER postgres WITH PASSWORD 'newpassword';"
+# as postgres linux user
+createdb thrust
+# connect to db
+psql thrust
+# connection string must be valid for thrust
+postgres://postgres@localhost/thrust
+# }}}
+# usage {{{
+# create table
+CREATE TABLE employees (employee_id int, first_name varchar, last_name varchar);
+# insert row
+INSERT INTO employees VALUES (1, 'John', 'Doe');
+# view contents of table
+SELECT * FROM employees;
+# }}}
+# view table information
+# user should be created via CREATE USER palantir WITH CREATEDB PASSWORD 'LOTR';
+sudo -u postgres psql
+\c [ user ]
+\d
+\dS
+\dt
+
+# query all values from table
+select * from posts;

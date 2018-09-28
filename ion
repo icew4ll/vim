@@ -1,0 +1,15 @@
+# add shells
+sudo sh -c 'vim /etc/shells'
+# change shell
+grep fish /etc/passwd
+sudo usermod --shell /home/fish/.cargo/bin/ion fish
+grep fish /etc/passwd
+# ion scripts
+1) v sc.ion
+2) enter commands:
+#!/home/ice/.cargo/bin/ion
+echo 'a'
+echo 'b'
+3) chmod 755 sc.ion
+4) v initrc
+5) alias sc='~/m/lab/sc.ion'

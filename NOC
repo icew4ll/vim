@@ -1,0 +1,404 @@
+# trace {{{
+# find command for PID
+ps e -p 7707
+
+# system call trace
+strace -p 3761
+strace -p 1370
+strace -p 1184
+# lib trace
+ltrace -p 1370
+grep xmlrpc ./logs/access_log | cut -d' ' -f1 | sort | uniq -c | sort -rn | head
+cat /proc/10744/cmdline
+less /proc/10744/cmdline
+less /proc/2533
+ps ax  | grep find
+ps h -eo s,pid | awk '{ if ($1 == "S" || $1 == "D") { print $2 } }'
+tail -f /var/log/messages | grep 'proftpd' | grep 'USER' | awk -F" " '{$1=$2=$3=$4=$5=$6="";print $0}'
+vi /etc/crontab
+crontab -e
+crontab -e
+# log locations
+/var/log/inotify.log
+/var/log/httpd/error_log
+# }}}
+
+# study {{{
+1) nginx setup linux host website via domain name
+2) setup sql
+3) apache setup linux
+4) apache web root /var/www/
+5) .htaccess file used only in apache not nginx
+6) typically apache is the webserver and nginx is reverse proxy or load balancer
+7) ssh to server
+8) arp
+
+NGINX specs
+1) nginx can serve http, https, imap, pop3, smtp
+2) reverse proxy
+3) load balancer
+
+NGINX install
+1) precompiled binaries
+2) compile from source
+
+# }}}
+
+# system info{{{
+
+# check hostname
+# check kernel version
+# release
+# architecture
+uname -a
+
+# kernel version
+uname -v
+
+# kernel release
+uname -r
+
+# ip address
+ip addr **newer tool recommended**
+ip addr wlp6s0
+ifconfig
+
+# disk space
+# a: all resources
+# h: human readable formatting
+df -h
+
+# process
+# newer recommended method
+# status
+systemctl status udev
+
+# check status
+service udev status
+
+# start
+service udev start
+
+# stop
+service udev stop
+
+# disk size of directory
+du -sh [folder]
+
+# check open ports/listening network sockets/services listening on tcp/udp ports
+# 0.0.0.0:80 means all public addresses, on port 80
+# 127.0.1.1 is local machine (not accessible outside of machine)
+netstat
+# filter tcp/udp/listening/program/numeric
+netstat -tulpn
+# reveal pid with sudo
+sudo netstat -tulpn
+
+# cpu usage
+# ps aux to find status of process
+# S: interruptable sleep state, waiting for event to complete
+# D: uninterruptable sleep state
+# R: running state
+# Z: defunct process, zombie process, completed execution but has process entry
+# T: stopped state
+# <: process is high priority
+# N: low priority
+ps aux | grep udev
+top
+htop
+
+# mount
+# check drives
+sudo fdisk -l
+# standard location to mount '/mnt'
+# mount drive sdX to /mnt
+mount /dev/sdX /mnt
+# unmount device
+umount /dev/sdX
+# list mounted devices
+mount
+# automount devices
+less /etc/fstab
+
+# list shells
+cat /etc/shells
+
+# daemon
+# service that runs in background, that has no controlling terminal
+# listens and acts on service requests
+# daemons typically end with 'd'
+# daemons have '?' in tty field
+ps -ef
+
+# inspect physical/swap memory usage in megabytes
+free -m
+
+# inspect virtual memory
+vmstat -a
+
+# check disk
+e2fsck -f /dev/sdX
+
+# steps below work only for LVM partitions
+# unmount device
+umount /dev/sdX
+
+# resize disk to 3 gigs
+resize2fs /dev/sdX 3G
+
+# resize logical partition
+lvreduce -L 3GB /dev/sdX
+
+# mount
+# lvm: logical volume manager
+mount /dev/sdX /lvm
+
+# serial ports/comm ports
+/dev/ttyS0 (COM 1 in windows)
+ls -l /dev/ttyS*
+
+# parallel ports (printer ports)
+ls -l /dev/lp*
+
+# permissions
+# change permissions of files and directories
+chmod
+
+# change owner of files and directories
+chown
+
+# change group ownership of files and directories
+chgrp
+
+# table
+users: 'u'
+groups: 'g'
+other: 'o'
+all: 'a'
+add: '+'
+remove: '-'
+replace: '='
+
+chmod g+wx,o-wx,u=rwx filename
+chown username filename
+
+# symbolic links
+# point to programs, directories, files but do not contain target data
+# symbolic link and target file have different permissions, sizes, names
+# soft links can be created for files and directories
+# soft links can be linked across filesystems
+ln -s /home/xeno/p /home/xeno/sp
+
+# hard links
+# point to physical file on disk, not path name
+# link persists if original file is renamed or moved
+# only for files not directories
+
+# environment variables
+# global settings that control behavior of Shell, software and processes
+# path where software is installed is stored as environment variable
+# used to pass information into processes that are spawned from shell
+# system variables
+env
+# PATH is a system variable that contains path for all binaries
+
+# redirection
+# used to pass output of one operation as input to another operation
+# w: who is online
+w > log
+# redirect contents of file1 and file2 to file3.txt (overwrites contents)
+cat file1 file2 > file3.txt
+# redirect and append contents to file.txt
+cat >> file.txt
+
+# grep
+# search for string in text file
+# supports pattern based searching
+grep searchString filename
+
+# return line number of search query
+grep -n searchString filename
+
+# count occurences of string
+grep -c searchString filename
+
+# process
+# pid process id
+kill pid
+
+# list all files ending in txt with permissions
+ls -lah *.txt
+
+# find string 'edureka' in all files ending in .txt
+find / -name *.txt | xargs grep -i edureka
+
+# login as sudo
+su -
+
+# run linux program in background when starting linux server
+# processes that receive nohup signal will be terminated when logging out of
+# program, until then the process runs in the background
+nohup
+
+# syslogd
+# daemon that tracks system information and saves it to specific log files
+
+# inode
+# contents of file are stored in data blocks
+# information (meta data) about files are stored in inode
+# inode info: file size, mode/permissions, ownerid, groupid, number of
+# hardlinks, time last accessed, time last modified, time inode last modified
+
+# nice
+# set priority for processor intensive job to execute in less time
+# priority range: -20(highest) - 19(lowest)
+# 0 is default
+# NI column
+# inspect priority
+ps -fl cat
+
+# set priority of cat > file to 10
+nice -10 cat > file
+# set priority of cat > file to -10
+nice --10 cat > file
+
+# renice if process already in use
+renice -n -19 -p
+
+# shadow passwords
+# enhanced security
+# passwords stored in /etc/passwd
+# implementing shadow passwords results in all passwords stored and encrypted
+# in a new file /etc/shadow and passwords in original file are replaced with 'x'
+ls -l /etc/passwd
+ls -l /etc/shadow
+
+# }}}
+
+# networking {{{
+
+# keywords
+1) DNS server
+2) DHCP
+3) default gateway
+4) subnet mask
+
+# ping
+# establishes basic connectivity:  host is reachable
+1) send signal to device
+2) if device is active it will respond to sender
+
+# tracert
+# trace route (hops) taken to reach a host
+1) route packet takes to destination
+2) if takes 10 routers to get to google.com, you can say it took 10 hops
+
+# ipconfig/ifconfig
+1) find ip configuration of host
+2) ip address can be static or dynamic
+*) ifconfig -a: view all network configuration & settings
+*) ifconfig wlp6s0: network config for specific device
+*) ifconfig wlp6s0 up: enable device
+*) ifconfig wlp6s0 down: disable device
+
+# nslookup
+# DNS used to resolve domain names to ip address: google.com : 74.125.115.147
+*) most common networking issues involve DNS
+*) inspect hostname from ip address
+*) inspect ip address from hostname
+2) lookups ip address(es) associated with a domain name
+
+3) if utility is unable to resolve host there is a DNS issue
+4) can be used to query specific DNS servers to determine issue with default DNS servers configured on host
+5) authoritative answer comes from nameserver that is considered authoritative for the domain which it's returning a record
+6) non-authoritative answer comes from everywhere else
+7) to find authoritative servers:
+> set query=ns
+> stackoverflow.com
+
+# gateway
+1) route -n
+2) 'U': route is up
+3) 'G': route is gateway
+
+# netstat
+# most useful for finding connections to and from host
+*) usage: netstat -lt
+1) inspect state of active network connections on host
+2) verify status of listening port on host
+3) check which remote hosts are connected to a local host on a specific port
+4) determine which host services are associated with specific active ports
+5) netstat -g: find all multicast groups (network) subscribed by this host
+6) netstat -nap | grep port: display process id of application which is using that port
+7) netstat -a: display all connections including TCP and UDP
+8) netstat -t: display only TCP connections
+9) netstat -u: display only UDP connections
+10) netstat -l: list only listening ports
+11) netstat -a | less: display all, pipe with less
+
+# hostname
+1) hostname: machine hostname
+2) hostname -d: domain name
+3) hostname -f: fully qualified host and domain name
+4) hostname -i: displays machine ip address
+
+# ip address
+curl 'icanhazip.com'
+# }}}
+
+# netstat {{{
+# netstat
+# info about: network connections, routing tables, interface stats, masquerade
+# connections, multicast memberships
+# apps that listening to what port and bind to what port
+
+# list all ports
+netstat -a | more
+
+# list all tcp ports
+netstat -at | more
+
+# list all udp ports
+netstat -au | more
+
+# list sockets in listening state
+netstat -l | more
+netstat -lt | more # tcp
+netstat -lu | more # udp
+
+# stats
+netstat -s
+netstat -sc # stats continuous
+
+# display PID and program names in netstat
+# find which PID binding to which port
+netstat -lp
+
+# kernel routing info
+netstat -r
+
+# find which port a program is running
+netstat -ap | grep ssh
+netstat -apn | grep ':80'
+
+# list network interfaces
+netstat -i
+netstat -ie
+
+# list all unix listening ports
+netstat -lx
+
+# display promiscous mode
+# accept all packets no filter
+# updates every 5 sec, only tcp
+netstat -ac 5 | grep tcp
+
+# display IPv4 IPv6
+# group memberships
+netstat -g
+
+# display RAW Network stats
+netstat --statistics --raw
+
+
+# }}}

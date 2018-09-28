@@ -1,0 +1,8 @@
+# install taskell binary
+wget https://github.com/smallhadroncollider/taskell/releases/download/1.3.2/taskell-1.3.2_x86-64-linux.tar.gz
+tar -xzf taskell-1.3.2_x86-64-linux.tar.gz
+mv taskell /usr/local/bin/
+
+# deb install
+https://github.com/smallhadroncollider/taskell/releases/download/1.3.2/taskell-1.3.2_x86-64-linux.deb
+dpkg -i taskell-1.3.2_x86-64-linux.deb

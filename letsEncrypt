@@ -1,0 +1,27 @@
+# zerossl get domain-key, csr
+https://zerossl.com/free-ssl/#csr
+clickitaudio.dev
+clickitaudio.test
+1) enter domains
+2) 2048-bit key (2048 req for aws api gateway)
+3) generate
+
+
+# gen pub
+https:// erossl.com/free-ssl/#crt
+xclip -sel clip < ~/Downloads/csr.txt
+[paste right box]
+[dns verification]
+[accept TOS]
+[next]
+[download account key (private) ]
+
+
+# update
+sudo apt update
+sudo apt install git
+sudo apt upgrade
+sudo git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
+cd /opt/letsencrypt
+sudo -H ./letsencrypt-auto certonly --standalone -d clickitaudio.dev -d
+clickitaudio.dev

@@ -1,0 +1,31 @@
+# gnome ubuntu 16.04 services
+systemctl list-units
+systemctl list-units --all
+systemctl list-unit-files
+
+# enable/disable service
+sudo systemctl enable nginx.service
+sudo systemctl disable nginx.service
+
+# logs
+journalctl
+journalctl -b //from current boot
+journalctl -k //logs kernel
+
+# query status/logs
+systemctl status nginx.service
+journalctl -u nginx.service
+
+# query dependancies
+systemctl list-dependencies nginx.service
+systemctl list-dependencies --all nginx.service
+systemctl show nginx.service //low lvl info
+
+# modify unit
+sudo systemctl edit nginx.service
+sudo systemctl edit --full nginx.service //full file
+sudo systemctl daemon-reload //reload service
+
+
+
+

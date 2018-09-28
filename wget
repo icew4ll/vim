@@ -1,0 +1,13 @@
+# fish script
+
+wget --tries=inf --timestamping --recursive --level=inf --convert-links --page-requisites --no-parent  "https://www.pandastrike.com/posts/20160613-ssl-cert-aws-api-gateway-zerossl-letsencrypt"
+
+# bash
+crwl() {
+    wget --tries=inf --timestamping --recursive --level=inf --convert-links --page-requisites --no-parent "$@"
+
+}
+
+
+# offline mirror website
+wget --mirror --convert-links --adjust-extension --page-requisites --no-parent https://medium.com/@ahmedrizwan/kotlin-retrofit-rxandroid-realm-39d7be5dc9dc

@@ -1,0 +1,16 @@
+# command to display virtual cpus
+"" | Select @{n='TotalPhysicalProcessors';e={(,( gwmi Win32_Processor)).count}}, @{n='TotalPhysicalProcessorCores'; e={ (gwmi Win32_Processor | measure -Property NumberOfLogicalProcessors -sum).sum}}, @{n='TotalVirtualCPUs'; e={ (Get-VM | Get-VMProcessor | measure -Property Count -sum).sum }}, @{n='TotalVirtualCPUsInUse'; e={ (Get-VM | Where { $_.State -eq 'Running'} | Get-VMProcessor | measure -Property Count -sum).sum }}, @{n='TotalMSVMProcessors'; e={ (gwmi -ns root\virtualization\v2 MSVM_Processor).count }}, @{n='TotalMSVMProcessorsForVMs'; e={ (gwmi -ns root\virtualization\v2 MSVM_Processor -Filter "Description='Microsoft Virtual Processor'").count }}
+
+# virtual processors
+#Number of virtual processors
+This is the amount of cores that the virtual machine can see and use.  The maximum number that can be specified is the maximum number of cores on the hardware
+# what is
+Virtual CPU’s can be allocated to a virtual machine.  The amount of virtual processors available are determined by the number of cores available on the hardware. So as an example, if you have a 4 socket server where each processor has 8 cores, this will present 32 logical processors. As a result you will be able to allocate a maximum of 32 virtual CPUs to a virtual server.  Each virtual CPU maps down to a physical core.
+
+If you have 16 cores total (excluding HT at the moment) then when you allocate a vCPU you use that number divided by what you have of time, not cores, not sockets, not threads.
+
+1 vCPU is 1 piece of time from the 16 slots (these slots can be shared though, so it's not as direct mapping)
+
+4 vCPU is 4 pieces of time slots, from the 16, the hypervisor manages how it's dished out, it could be physical mapping of core to vCPU one time and pieces of cores over multiple physical CPUs the next, it's purely asking for x number of time slots to complete it's task.
+
+Found on Spiceworks: https://community.spiceworks.com/topic/1988186-hyper-v-2016-virtual-processors-how-many-per-vm?utm_source=copy_paste&utm_campaign=growth

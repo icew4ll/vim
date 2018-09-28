@@ -1,0 +1,16 @@
+# initialize node
+npm init
+
+# add chromeless via yarn
+yarn add chromeless
+
+# find chromium path
+which chromium-browser
+/usr/bin/chromium-browser
+
+# set env var via fish
+set -x CHROME_PATH /usr/bin/chromium-browser
+
+# erase env var
+set -e key
+

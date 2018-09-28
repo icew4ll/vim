@@ -1,0 +1,13 @@
+# scan for open IP addresses
+nmap -sn 216.230.250.0/24
+
+# add to sources
+vim /etc/apt/sources.list
+
+deb http://deb.debian.org/debian-security stable/updates main
+deb-src http://deb.debian.org/debian-security stable/updates main
+deb http://ftp.debian.org/debian stretch-backports main
+deb-src http://ftp.debian.org/debian stretch-backports main
+
+sudo apt update
+sudo apt install nmap

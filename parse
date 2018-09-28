@@ -1,0 +1,131 @@
+# sed {{{
+# print all, except 2,3,4
+cat files.py | sed -r '2,4d'
+
+# print lines 2,3,4
+cat files.py | sed -r '2,4d'
+
+# print all, delete lines with 'import'
+cat files.py | sed -r '/import/d'
+
+# substitute first instance of 'import' with 'NULL'
+cat files.py | sed -r 's/import/NULL/'
+
+# substitute all instances of 'import' with 'NULL'
+cat files.py | sed -r 's/import/NULL/g'
+
+# substitute all instances of 'import' with 'NULL', case insensitive
+cat files.py | sed -r 's/import/NULL/gi'
+
+# substitute all instances of 'os' with 'NULL', only lines 2-4
+cat files.py | sed -r '2,4 s/os/NULL/g'
+
+# substitute all instances of 'os' with 'NULL', only lines 2 + 4 lines
+cat files.py | sed -r '2,+4 s/os/NULL/g'
+
+# substitute all instances of 'os' with 'NULL', only lines 2 to end of file
+cat files.py | sed -r '2,$ s/os/NULL/g'
+
+# remove all instances of os
+cat files.py | sed -r 's/os//g'
+# }}}
+
+# regex {{{
+# egrep - regex version of grep
+# find all lines with a
+cat files.py | egrep -E 'a'
+
+# '^' matches beginning of line
+cat files.py | egrep -E '^#'
+
+# '$' matches end of line
+cat files.py | egrep -E 'd$'
+
+# quantifiers
+# ? 
+# relates to the 'a' character (or character class) before it
+# beginning of line = '#'
+# '#' is optional
+# end of line = '#' or doesn't
+cat files.py | egrep -E '^#?$'
+
+# '+' quantifiers only available with 'egrep -E'
+# relates to the 'a' character (or character class) before it
+# '#' appears 1 or more times
+cat files.py | egrep -E '^#+$'
+
+# lines starting with 2 '#' or more
+# lines ending with 2 '#' or more
+cat files.py | egrep -E '^###+$'
+
+# lines starting with 2 '#' and one optional '#'
+# lines ending with 2 '#' and one optional '#'
+cat files.py | egrep -E '^###?$'
+
+# lines starting with 2 '#', then one or more optional '#'
+# lines ending with 2 '#', then one or more optional '#'
+cat files.py | egrep -E '^###*$'
+
+# grouping
+# lines beginning w/ 'import os'
+# lines ending w/ 'import os'
+cat files.py | egrep -E '^(import os)$'
+
+# lines beginning and ending w/ 'import os' or '# verify pwd'
+cat files.py | egrep -E '^(import os|# verify pwd)$'
+
+# lines beginning with 'import'
+# OR
+# lines ending with 'pwd'
+cat files.py | egrep -E '^import|pwd$'
+
+# character classes
+# lines beginning with 'i' or '#'
+cat files.py | egrep -E '^[i#]'
+
+# lines beginning and ending with a or b, once or more 
+cat files.py | egrep -E '^[ab]+$'
+
+# lines beginning and ending with a or b, optionally once or more 
+cat files.py | egrep -E '^[ab]*$'
+
+# lines beginning with a space
+cat files.py | egrep -E '^[[:space:]]'
+
+# lines beginning with one or more spaces
+cat files.py | egrep -E '^[[:space:]]{1,}'
+
+# lines beginning with 5 to 7 spaces
+cat files.py | egrep -E '^[[:space:]]{5,7}'
+
+# lines beginning with up to 7 spaces
+cat files.py | egrep -E '^[[:space:]]{,7}'
+
+# lines beginning with 'o' 1 to 2 times
+cat files.py | egrep -E '^[o]{1,2}'
+
+# lines not beginning with 'o' 1 to 2 times
+cat files.py | egrep -E '^[^o]{1,2}'
+
+# replace one or more spaces with '*' globally
+cat files.py | sed -r 's/[[:space:]]+/*/g'
+
+# back references
+#1: replace spaces with '*' globally
+#2: replace 'import' or 'os' w/ 'NULL' + 'import' or 'os' respectively
+cat files.py | sed -r -e 's/[[:space:]]+/*/g' -e 's/(import|os)/NULL\1/g'
+
+# multiple back references
+# 2nd reference access by '\2'
+cat files.py | sed -r -e 's/[[:space:]]+/*/g' -e 's/(import|os)e(print)/NULL\1\2/g'
+
+# lines matches 'import' because dot can be any character
+cat files.py | sed -r 's/(impo.t)/*/g'
+
+# lines matches 'import' or 'impart'
+cat files.py | sed -r 's/(imp[oa]rt)/*/g'
+
+# lines not matching 'import' or 'impart' but 'imprrt'
+cat files.py | sed -r 's/(imp[^oa]rt)/*/g'
+
+# }}}

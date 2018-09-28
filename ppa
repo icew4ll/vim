@@ -1,0 +1,21 @@
+# ppa list ubuntu 16.04
+ls /etc/apt/sources.list.d
+cd /etc/apt/sources.list.d
+
+
+# remove ppa
+sudo rm -i /etc/apt/sources.list.d/PPA_Name.list
+sudo rm -i /etc/apt/sources.list.d/doctormo-ubuntu-wacom-plus-yakkety.list
+sudo rm -i /etc/apt/sources.list.d/nathan-renniewaldock-ubuntu-flux-yakkety.list
+
+# vim
+sudo add-apt-repository ppa:jonathonf/vim
+sudo apt update
+sudo apt install vim
+
+That’s all. If you want to uninstall it, use the commands below:
+
+sudo apt remove vim
+sudo add-apt-repository --remove ppa:jonathonf/vim
+
+

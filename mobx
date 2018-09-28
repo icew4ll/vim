@@ -1,0 +1,46 @@
+# necessary plugins for mobx
+yarn add -D babel-plugin-transform-decorators-legacy babel-plugin-transform-class-properties
+
+# update babel.js
+module.exports = {
+	presets: [
+		['es2015', {loose: true}],
+		'stage-2'
+	],
+	plugins: [
+		'inferno',
+		'transform-decorators-legacy',
+		'transform-class-properties'
+	]
+};
+
+# install mobx + inferno bindings
+yarn add mobx inferno-mobx inferno-component
+
+
+
+# refactor
+yarn remove immutable react-redux react-router-redux redux redux-immutable redux-observable reselect rxjs webpack-hot-middleware babel-plugin-transform-react-constant-elements babel-plugin-transform-react-inline-elements babel-plugin-transform-react-remove-prop-types babel-preset-react-hmre babel-plugin-react-transform babel-cli coveralls eslint-config-airbnb-base react-addons-test-utils
+
+yarn remove babel-preset-stage-0 whatwg-fetch
+
+# presets react es2015
+# plugins transform-decorators-legacy
+transform-class-properties
+
+# mobx router
+import { Provider } from 'mobx-react';
+import usersStore from './stores/usersStore';
+import itemsStore from './stores/itemsStore';
+
+const stores = { usersStore, itemsStore };
+
+ReactDOM.render(
+  <Provider {...stores}>
+    <Router history={history}>
+      <Route path="/" component={App}>
+      </Route>
+    </Router>
+  </Provider>,
+  document.getElementById('app')
+);

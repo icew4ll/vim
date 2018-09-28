@@ -1,0 +1,73 @@
+# linux:  live usb from iso
+# inspect usb drive identity
+sudo fdisk -l
+sudo dd 'if=/home/fish/Downloads/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9(1).ISO' of=/dev/sdb bs=8M
+sudo dd if=/home/ice/Downloads/debian-9.3.0-amd64-netinst.iso of=/dev/sdb bs=8M
+sudo dd if=/home/fish/Downloads/ubuntu-16.04.4-server-amd64.iso of=/dev/sdb bs=8M
+sudo dd if=/home/fish/Downloads/ubuntu-16.04.5-server-amd64.iso of=/dev/sdb bs=8M
+sudo dd if=/home/fish/Downloads/ubuntu-18.04-desktop-amd64.iso of=/dev/sdb bs=8M
+sudo dd if=/home/fish/Downloads/ubuntu-18.04-desktop-amd64.iso of=/dev/sdb bs=8M
+
+# create bootable windows iso via usb
+# https://thornelabs.net/2013/06/10/create-a-bootable-windows-7-usb-drive-in-linux.html
+# unmount usb
+df -h
+sudo umount /dev/sdb1
+
+# fdisk
+sudo fdisk /dev/sdb
+
+# list partition
+p
+
+# delete all partions
+d > enter
+
+# new partition, primary, use all sectors
+n > p > enter(3x)
+
+# partition type
+t > 7 (HPFS/NTFS/exFAT
+
+# enable boot flag
+a
+
+# verify boot flag, ntfs type
+p
+
+# write changes
+w
+
+# make ntfs
+sudo apt-get install ntfs-3g
+sudo umount /dev/sdb1
+sudo mkfs.ntfs -f /dev/sdb1
+
+# ms-sys, preqs, download
+sudo apt-get install gcc make gettext checkinstall
+https://sourceforge.net/projects/ms-sys/files/ms-sys%20development/
+cd ~/Downloads
+tar xvzf ms-sys-2.5.3.tar.gz
+cd ms-sys-2.5.3
+make
+sudo checkinstall
+# sudo make install
+
+# write ms-sys
+sudo ms-sys -7 /dev/sdb
+
+# mount usb drive
+sudo mkdir -p /mnt/usb
+sudo mount /dev/sdb1 /mnt/usb
+
+# mount iso
+sudo mkdir -p /mnt/iso
+sudo mount -o loop '/home/fish/Downloads/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9(1).ISO' /mnt/iso
+
+# copy iso to usb
+sudo cp -av /mnt/iso/* /mnt/usb/
+
+# unmount
+sudo umount /mnt/iso
+sudo umount /mnt/usb
+sudo umount /dev/sdb

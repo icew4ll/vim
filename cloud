@@ -1,0 +1,36 @@
+# deploy sls function
+serverless deploy function -f home
+
+# compress
+gzip -9 -n
+
+# bucket
+s3://night-dev-mazdas3-v2bpo388b5qy
+
+# css encoding
+s3://night-dev-mazdas3-v2bpo388b5qy --content-encoding 'gzip' --content-type 'text/css'
+
+# js encoding
+s3://night-dev-mazdas3-v2bpo388b5qy --content-encoding 'gzip'
+
+# minify cs
+mbc
+cleancss -o $MW/css/style-min.css $MW/css/style.css && echo minify && gzip -9 -n $MW/css/style-min.css && echo gzip && mv $MW/css/style-min.css.gz $MW/css/style-m-c.css && echo mv
+
+cleancss -o /home/oak/git/mazda/resources/public/css/style-min.css /home/oak/git/mazda/resources/public/css/style.css
+
+# compress
+gzip -9 -n /home/oak/git/mazda/resources/public/css/style-min.css; 
+gzip -9 -n /home/oak/git/mazda/resources/public/js/compiled/app.js 
+
+mv /home/oak/git/mazda/resources/public/css/style-min.css.gz /home/oak/git/mazda/resources/public/css/style-a-min.css
+mv /home/oak/git/mazda/resources/public/js/compiled/app.js.gz /home/oak/git/mazda/resources/public/js/compiled/app-a.js
+
+# upload aws s3
+aws s3 cp /home/oak/git/mazda/resources/public/css/style-m-c.css s3://night-dev-mazdas3-v2bpo388b5qy --content-encoding 'gzip' --content-type 'text/css'
+
+aws s3 cp /home/oak/git/mazda/resources/public/js/compiled/app-c1.js s3://night-dev-mazdas3-v2bpo388b5qy --content-encoding 'gzip'
+
+# sync folder
+cd folder
+aws s3 sync . s3://night-dev-mazdas3-v2bpo388b5qy

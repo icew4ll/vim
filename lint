@@ -1,0 +1,12 @@
+# install global
+npm i -g eslint 
+
+# list global npm packages
+npm list -g --depth=0
+
+# install airbnb eslint
+eslint --init
+
+# airbnb style guide
+npm i -g eslint eslint-plugin-react eslint-plugin-jsx-a11y eslint-plugin-import eslint-config-airbnb eslint-plugin-flowtype babel-eslint
+

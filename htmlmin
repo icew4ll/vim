@@ -1,0 +1,3 @@
+# install html minifier
+npm install html-minifier -g
+

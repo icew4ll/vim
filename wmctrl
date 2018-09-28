@@ -1,0 +1,11 @@
+# install wmctrl for window management
+sudo apt-get install wmctrl
+
+# list windows
+wmctrl -l
+
+# switch window focus to Firefox
+wmctrl -a Firefox
+
+# switch windows focus to terminator
+wmctrl -a oak@prof

@@ -1,0 +1,4 @@
+# amethyst game engine rust
+git clone https://github.com/amethyst/amethyst
+sudo apt install libasound2-dev libx11-xcb-dev
+cargo run --example animation

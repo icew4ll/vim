@@ -1,0 +1,87 @@
+# psql install ubuntu 18 {{{
+#https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
+sudo apt update; sudo apt install postgresql postgresql-contrib
+sudo -u postgres psql -V
+sudo systemctl status postgresql
+sudo systemctl stop postgresql
+# create role and db with same name
+sudo -u postgres psql
+CREATE DATABASE webapp;
+CREATE USER webapp WITH ENCRYPTED PASSWORD 'psalms';
+GRANT ALL PRIVILEGES ON DATABASE webapp TO webapp;"
+# }}}
+# psql list db
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04
+# https://www.cyberciti.biz/faq/how-to-install-setup-postgresql-9-6-on-debian-linux-9/
+# setup password for postgres
+sudo passwd postgres
+# change role to superuser
+sudo -u postgres psql -c "ALTER ROLE act SUPERUSER CREATEROLE CREATEDB LOGIN ENCRYPTED PASSWORD 'pass';"
+# setup password for psql session of postgres user
+sudo -u postgres psql -d template1 -c "ALTER USER postgres WITH PASSWORD 'passhere';"
+# check psql version 10.4
+sudo -u postgres psql -c 'SELECT version();'
+sudo -u postgres psql -V
+# tables?
+sudo -u postgres psql -c '\dt'
+# view roles
+sudo -u postgres psql -c '\du'
+# list db
+sudo -u postgres psql -c '\l'
+# list tables
+sudo -u postgres psql -c '\d'
+# select roles
+sudo -u postgres psql -c 'SELECT rolname FROM pg_roles;'
+# create role
+sudo -u postgres psql -c 'CREATE ROLE act;'
+# create role
+sudo -u postgres createuser --interactive
+sudo -u postgres createuser --pwprompt --interactive vivek
+# create db
+sudo -u postgres createdb act
+sudo -u postgres createdb -O userNameHere dbNameHere
+# login to db sales with user vivek
+psql -U vivek -d sales
+sudo -u postgres psql -U vivek -d sales
+# create matching linux user
+sudo adduser act
+# usage new linux user
+sudo -u act psql
+# check current connection
+\conninfo
+
+# install postregres ub 16 {{{
+sudo apt update; sudo apt install postgresql postgresql-contrib
+# change linux user password
+# linux user is used to access db
+sudo passwd postgres
+# login with postgres unix
+su - postgres
+# change password for postgres db user
+psql -d template1 -c "ALTER USER postgres WITH PASSWORD 'newpassword';"
+# as postgres linux user
+createdb webapp
+# connect to db
+psql thrust
+# connection string must be valid for thrust
+postgres://postgres@localhost/thrust
+# }}}
+# usage {{{
+# create table
+CREATE TABLE employees (employee_id int, first_name varchar, last_name varchar);
+# insert row
+INSERT INTO employees VALUES (1, 'John', 'Doe');
+# view contents of table
+SELECT * FROM employees;
+# }}}
+# view table information
+# user should be created via CREATE USER palantir WITH CREATEDB PASSWORD 'LOTR';
+sudo -u postgres psql
+\c [ user ]
+\d
+\dS
+\dt
+
+# query all values from table
+select * from posts;
+# }}}

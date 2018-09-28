@@ -1,0 +1,15 @@
+# install sls plugin optimize
+cd ~/git/night
+npm install serverless-plugin-optimize babel-preset-es2016 --save-dev
+
+# add to yml
+plugins:
+  - serverless-plugin-optimize
+package:
+  individually: true
+custom:
+  optimize:
+    prefix: 'dist'
+    presets: ['es2016']
+
+

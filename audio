@@ -1,0 +1,10 @@
+# record as ogg
+sudo apt install vorbis-tools
+arecord -f cd -t raw | oggenc - -r -o out.ogg
+
+# record microphone
+arecord -f cd -t wav | aplay
+
+# untested example
+arecord -f cd -d 3600 -t wav | lame --preset 56 -mm - `date
++%Y%m%d%H%M`.mp3

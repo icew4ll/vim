@@ -1,0 +1,18 @@
+
+# enable KSM
+echo 1 >/sys/kernel/mm/ksm/run
+echo 1000 >/sys/kernel/mm/ksm/sleep_millisecs
+sudo sh -c 'echo 1 >/sys/kernel/mm/ksm/run'
+sudo sh -c 'echo 1000 >/sys/kernel/mm/ksm/sleep_millisecs'
+
+To stop netdata run:
+
+  systemctl stop netdata
+
+To start netdata run:
+
+  systemctl start netdata
+
+
+Uninstall script generated: ./netdata-uninstaller.sh
+Update script generated   : ./netdata-updater.sh

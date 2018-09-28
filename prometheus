@@ -1,0 +1,625 @@
+# grafana {{{
+docker run -d --name grafana \
+  --network host \
+  -p 3000:3000 \
+  grafana/grafana
+
+docker run -d --name blackbox \
+  --read-only \
+  --network host \
+  -p 9115:9115 \
+  -v $HOME/m/bb/blackbox.yml:/etc/blackbox_exporter/config.yml \
+  prom/blackbox-exporter
+
+docker run -d --name prometheus \
+  --network host \
+  -v prometheus-data:/prometheus \
+  -p 9090:9090 \
+  -v $HOME/m/bb/prometheus.yml:/etc/prometheus/prometheus.yml \
+  prom/prometheus \
+  --config.file=/etc/prometheus/prometheus.yml
+
+# }}}
+# blackbox production {{{
+# blackbox.yml {{{
+modules:
+  http_2xx:
+    prober: http
+    http: null
+
+# }}}
+# prometheus.yml {{{
+scrape_configs:
+- job_name: prometheus
+  scrape_interval: 1m
+  static_configs:
+  - targets:
+    - localhost:9090
+- job_name: blackbox
+  params:
+    module:
+    - http_2xx
+  scrape_interval: 2m
+  scrape_timeout: 10s
+  metrics_path: /probe
+  scheme: http
+  static_configs:
+  - targets:
+    - http://test.com
+  relabel_configs:
+  - source_labels:
+    - __address__
+    target_label: __param_target
+  - source_labels:
+    - __param_target
+    target_label: instance
+  - target_label: __address__
+    replacement: 127.0.0.1:9115
+
+# }}}
+# run blackbox {{{
+docker run -d --name blackbox \
+    --read-only \
+    --network host \
+    -p 9115:9115 \
+    -v $HOME/m/bb/blackbox.yml:/etc/blackbox_exporter/config.yml \
+    prom/blackbox-exporter
+# }}}
+# create docker volume for prometheus {{{
+docker volume create --name prometheus-data
+# }}}
+# run prometheus {{{
+docker run -d --name prometheus \
+    --network host \
+    -v prometheus-data:/prometheus \
+    -p 9090:9090 \
+    -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml \
+    prom/prometheus \
+    --config.file=/etc/prometheus/prometheus.yml
+# }}}
+# }}}
+# blackbox Dockerfile {{{
+# wget prometheus {{{
+wget https://github.com/prometheus/prometheus/releases/download/v2.2.0/prometheus-2.2.0.linux-amd64.tar.gz
+# }}}
+# prometheus Dockerfile {{{
+FROM centos
+
+ADD prometheus-2.2.0.linux-amd64.tar.gz /
+
+RUN cd /prometheus-* && \
+  mv prometheus /bin/ && \
+  mv promtool /bin/ && \
+  mkdir /usr/share/prometheus/ && \
+  mv console_libraries /usr/share/prometheus/console_libraries/ && \
+  mv consoles/ /usr/share/prometheus/consoles/ && \
+  mkdir /etc/prometheus && \
+  cd && \
+  rm -rf /prometheus-*
+
+COPY prometheus.yml /etc/prometheus/prometheus.yml
+
+RUN ln -s /usr/share/prometheus/console_libraries /usr/share/prometheus/consoles/ /etc/prometheus/
+
+WORKDIR /usr/share/prometheus
+
+EXPOSE 9090
+
+ENTRYPOINT ["/bin/prometheus"]
+CMD ["--config.file=/etc/prometheus/prometheus.yml", \
+  "--storage.tsdb.path=/prometheus-storage", \
+  "--web.external-url=http://localhost/"]
+# }}}
+# prometheus.yml {{{
+global:
+  scrape_interval: 15s
+scrape_configs:
+- job_name: prometheus
+  scrape_interval: 5s
+  static_configs:
+  - targets:
+    - localhost:9090
+- job_name: blackbox
+  params:
+    module:
+    - http_2xx
+  scrape_interval: 2m
+  scrape_timeout: 10s
+  metrics_path: /probe
+  scheme: http
+  static_configs:
+    - targets:
+      - http://prometheus.io    # Target to probe with http.
+      - https://prometheus.io   # Target to probe with https.
+      - http://accounting.example.com # Target to probe with http on port 8080.
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: 127.0.0.1:9115  # The blackbox exporter's real hostname:port.
+
+# }}}
+# run prometheus {{{
+docker build -t prometheus .
+docker run -d -p 9090:9090 --network host --name prometheus prometheus
+# }}}
+# wget blackbox {{{
+wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.12.0/blackbox_exporter-0.12.0.linux-amd64.tar.gz
+tar --strip-components=1 -zxvf blackbox_exporter-0.12.0.linux-amd64.tar.gz
+# }}}
+# blackbox Dockerfile {{{
+FROM centos
+
+COPY blackbox_exporter /bin/blackbox_exporter
+COPY blackbox.yml /etc/blackbox_exporter/config.yml
+
+EXPOSE 9115
+ENTRYPOINT ["/bin/blackbox_exporter"]
+CMD ["--config.file=/etc/blackbox_exporter/config.yml"]
+# }}}
+# blackbox.yml {{{
+modules:
+  http_2xx:
+    prober: http
+    http:
+  http_post_2xx:
+    prober: http
+    http:
+      method: POST
+  tcp_connect:
+    prober: tcp
+  pop3s_banner:
+    prober: tcp
+    tcp:
+      query_response:
+      - expect: "^+OK"
+      tls: true
+      tls_config:
+        insecure_skip_verify: false
+  ssh_banner:
+    prober: tcp
+    tcp:
+      query_response:
+      - expect: "^SSH-2.0-"
+  irc_banner:
+    prober: tcp
+    tcp:
+      query_response:
+      - send: "NICK prober"
+      - send: "USER prober prober prober :prober"
+      - expect: "PING :([^ ]+)"
+        send: "PONG ${1}"
+      - expect: "^:[^ ]+ 001"
+  icmp:
+    prober: icmp
+# }}}
+# run blackbox {{{
+docker build -t blackbox .
+docker run -d -p 9115:9115 --network host --name blackbox blackbox
+# }}}
+# }}}
+# blackbox docker {{{
+# vim blackbox.yml
+vim blackbox.yml
+# # docker image
+docker run -d --name blackbox \
+  --read-only \
+  --network host \
+  -p 9115:9115 \
+  -v $(pwd)/blackbox.yml:/etc/blackbox_exporter/config.yml \
+  prom/blackbox-exporter
+
+# create docker volume for prometheus
+docker volume create --name prometheus-data
+# run prometheus
+# simple
+./prometheus --config.file=prometheus.yml
+# vim prometheus.yml
+# docker make
+docker run -d --name prometheus \
+  --network host \
+  -v prometheus-data:/prometheus \
+  -p 9090:9090 \
+  -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml \
+  prom/prometheus \
+  --config.file=/etc/prometheus/prometheus.yml
+
+# }}}
+# blackbox volume {{{
+# download
+wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.12.0/blackbox_exporter-0.12.0.linux-amd64.tar.gz
+tar zxvf blackbox_exporter-0.12.0.linux-amd64.tar.gz
+mv blackbox_exporter-0.12.0.linux-amd64 blackbox_exporter
+# blackbox.yml {{{
+vim blackbox.yml
+modules:
+  accounting.example.com:
+    prober: http
+    timeout: 5s
+    http:
+      fail_if_not_matches_regexp:
+        - "Login"
+# }}}
+cp blackbox.yml blackbox_exporter
+# if update blackbox.yml
+# only remove container not image
+cp blackbox.yml blackbox_exporter
+[run docker command]
+# docker image
+docker run -d --name blackbox \
+--read-only \
+-p 9115:9115 \
+-v $(pwd)/blackbox.yml:/etc/blackbox_exporter/config.yml \
+prom/blackbox-exporter
+# download prometheus
+wget https://github.com/prometheus/prometheus/releases/download/v2.2.0-rc.1/prometheus-2.2.0-rc.1.linux-amd64.tar.gz
+tar zxvf prometheus-2.2.0-rc.1.linux-amd64.tar.gz
+mv prometheus-2.2.0-rc.1.linux-amd64 prometheus
+# create docker volume for prometheus
+docker volume create --name prometheus-data
+# run prometheus
+# simple
+./prometheus --config.file=prometheus.yml
+# docker make
+docker run -d --name prometheus \
+-v prometheus-data:/prometheus \
+-p 9090:9090 \
+-v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml \
+prom/prometheus \
+--config.file=/etc/prometheus/prometheus.yml
+# }}}
+# blackbox exporter {{{
+#https://medium.com/the-telegraph-engineering/how-prometheus-and-the-blackbox-exporter-makes-monitoring-microservice-endpoints-easy-and-free-of-a986078912ee
+# preqs
+# install docker compose bin
+# make docker file
+# build from dockerfile with name 'prometheus'
+docker build -t prometheus .
+
+# run image
+docker run -d -p 9090:9090 --name prometheus prometheus
+
+# build blackbox
+docker build -t blackbox ~/m/lab/blackbox
+docker run -d -p 9115:9115 --name blackbox blackbox
+
+# test
+./prometheus-2.2.0-rc.1.linux-amd64/prometheus \
+--config.file=/etc/prometheus/prometheus.yml \
+--storage.tsdb.path=/prometheus-storage \
+--web.external-url=http://localhost/
+
+# }}}
+# queries {{{
+http_requests_total{job="node",instance="localhost:9100",status="400"}
+http_requests_total{job="node",status=400}
+node_disk_bytes_read{device="sda",instance="localhost:9100",job="node"}
+# }}}
+# config {{{
+sudo systemctl daemon-reload
+sudo systemctl status prometheus
+sudo systemctl start prometheus
+sudo systemctl restart prometheus
+sudo vim /etc/prometheus/prometheus.yml
+sudo vim /etc/prometheus/alert.rules
+
+# }}}
+# prom install daemon {{{
+# create users
+sudo useradd --no-create-home --shell /bin/false prometheus
+sudo useradd --no-create-home --shell /bin/false node_exporter
+sudo useradd --no-create-home --shell /bin/false alertmanager
+
+# setup dirs for bins
+sudo mkdir /etc/prometheus
+sudo mkdir /var/lib/prometheus
+# setup user group ownership
+sudo chown prometheus:prometheus /etc/prometheus
+sudo chown prometheus:prometheus /var/lib/prometheus
+
+# dl binary
+cd ~
+curl -LO https://github.com/prometheus/prometheus/releases/download/v2.2.0-rc.0/prometheus-2.2.0-rc.0.linux-amd64.tar.gz
+
+# check sha
+# 91fca931e21784866737f272a6477e4ed2713040e9b4e5f2088cfe4b1a6f9bac
+sha256sum prometheus-*.tar.gz
+
+# unpack
+tar xvf prometheus-*.tar.gz
+
+# copy bins
+sudo cp prometheus-*/prometheus /usr/local/bin/
+sudo cp prometheus-*/promtool /usr/local/bin/
+
+# set ownership
+sudo chown prometheus:prometheus /usr/local/bin/prometheus
+sudo chown prometheus:prometheus /usr/local/bin/promtool
+
+# copy consoles and libs
+sudo cp -r prometheus-*/consoles /etc/prometheus
+sudo cp -r prometheus-*/console_libraries /etc/prometheus
+
+# set ownership
+sudo chown -R prometheus:prometheus /etc/prometheus/consoles
+sudo chown -R prometheus:prometheus /etc/prometheus/console_libraries
+
+# cleanup
+rm -rf prometheus-*.tar.gz prometheus-*
+
+# edit config
+sudo vim /etc/prometheus/prometheus.yml
+# with content below
+global:
+scrape_interval: 15s
+
+scrape_configs:
+- job_name: 'prometheus'
+scrape_interval: 5s
+static_configs:
+- targets: ['localhost:9090']
+
+# set ownership on config
+sudo chown prometheus:prometheus /etc/prometheus/prometheus.yml
+
+# running
+sudo -u prometheus /usr/local/bin/prometheus \
+--config.file /etc/prometheus/prometheus.yml \
+--storage.tsdb.path /var/lib/prometheus/ \
+--web.console.templates=/etc/prometheus/consoles \
+--web.console.libraries=/etc/prometheus/console_libraries
+
+# setup daemon
+sudo vim /etc/systemd/system/prometheus.service
+# with content below
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+ExecStart=/usr/local/bin/prometheus \
+--config.file /etc/prometheus/prometheus.yml \
+--storage.tsdb.path /var/lib/prometheus/ \
+--web.console.templates=/etc/prometheus/consoles \
+--web.console.libraries=/etc/prometheus/console_libraries
+
+[Install]
+WantedBy=multi-user.target
+
+# reload daemon
+sudo systemctl daemon-reload
+
+# start daemon
+sudo systemctl start prometheus
+
+# status
+sudo systemctl status prometheus
+
+# enable prometheus daemon on boot
+sudo systemctl enable prometheus
+
+# }}}
+# install node exporter {{{
+cd
+curl -LO https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz
+
+#check sha
+1ce667467e442d1f7fbfa7de29a8ffc3a7a0c84d24d7c695cc88b29e0752df37
+sha256sum node_*.tar.gz
+
+# export
+tar xvf node_exporter-*.tar.gz
+
+# copy bins
+sudo cp node_exporter-*/node_exporter /usr/local/bin
+sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
+
+# cleanup
+rm -rf node_exporter-*.tar.gz node_exporter-*
+
+# create
+sudo vim /etc/systemd/system/node_exporter.service
+
+# with following content
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+
+# restart systemd
+sudo systemctl daemon-reload
+
+# start process
+sudo systemctl start node_exporter
+sudo systemctl status node_exporter
+
+# enable start on boot
+sudo systemctl enable node_exporter
+
+# configure prometheus to scrape node exporter
+sudo vim /etc/prometheus/prometheus.yml
+
+# with following content
+- job_name: 'node_exporter'
+  scrape_interval: 5s
+  static_configs:
+    - targets: ['localhost:9100']
+
+# restart prom
+sudo systemctl restart prometheus
+sudo systemctl status prometheus
+
+# }}}
+# install alertmanager {{{
+# download bin
+cd
+curl -LO https://github.com/prometheus/alertmanager/releases/download/v0.14.0/alertmanager-0.14.0.linux-amd64.tar.gz
+
+#check sha
+caddbbbe3ef8545c6cefb32f9a11207ae18dcc788e8d0fb19659d88c58d14b37
+sha256sum alertmanager*.tar.gz
+
+# export
+tar xvf alertmanager-*.tar.gz
+
+# copy bins
+sudo cp alertmanager*/alertmanager /usr/local/bin
+sudo cp alertmanager*/simple.yml /etc/prometheus
+sudo chown prometheus:prometheus /usr/local/bin/alertmanager
+sudo chown prometheus:prometheus /etc/prometheus/simple.yml
+
+sudo chown alertmanager:alertmanager /usr/local/bin/alertmanager
+sudo chown alertmanager:alertmanager /etc/prometheus/simple.yml
+
+# cleanup
+rm -rf alertmanager*
+
+# run it test
+sudo -u alertmanager /usr/local/bin/alertmanager --config.file /etc/prometheus/simple.yml
+
+# create daemon
+sudo vim /etc/systemd/system/alertmanager.service
+
+# with the following content
+[Unit]
+Description=Alertmanager
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+ExecStart=/usr/local/bin/alertmanager \
+--config.file=/etc/prometheus/simple.yml
+
+[Install]
+WantedBy=multi-user.target
+
+# restart systemd
+sudo systemctl daemon-reload
+
+# start process
+sudo systemctl start alertmanager
+sudo systemctl status alertmanager
+
+# enable start on boot
+sudo systemctl enable node_exporter
+
+# configure prometheus to scrape node exporter
+sudo vim /etc/prometheus/prometheus.yml
+
+# with following content
+      - job_name: 'node_exporter'
+      scrape_interval: 5s
+      static_configs:
+      - targets: ['localhost:9100']
+
+# restart prom
+      sudo systemctl restart prometheus
+      sudo systemctl status prometheus
+
+# }}}
+# binary {{{
+# download latest precompiled binary
+wget https://github.com/prometheus/prometheus/releases/download/v2.2.0-rc.0/prometheus-2.2.0-rc.0.linux-amd64.tar.gz
+tar xvfz prometheus-*.tar.gz
+mv prometheus-2.2.0-rc.0.linux-amd64 prometheus
+mv prometheus ~/.bin
+
+# run binary
+./prometheus --config.file=prometheus.yml
+# 30sec after starting metrics should be available
+
+# metrics
+http://localhost:9090/metrics
+
+# expression browser
+http://localhost:9090/graph
+
+# example queries
+http_requests_total
+http_requests_total{code="200"}
+count(http_requests_total)
+
+# per second http request rate on self scraped prometheus
+rate(http_requests_total[1m])
+
+# node exporter
+# default collectors gather CPU, mem, disk, +more
+# and expose them to scraping
+wget https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz
+tar xvfz node_exporter-*.tar.gz
+cd node_exporter-*
+./node_exporter
+
+# node exporter metrics available at
+http://localhost:9100/metrics
+
+# configure prometheus to monitor the host
+# add new job definition to the scrape_configs section in our
+# prometheus.yml
+- job_name: node
+  static_configs:
+    - targets: ['localhost:9100']
+
+# locations
+cd m/prom/prometheus
+./prometheus --config.file=prometheus.yml
+
+
+# }}}
+# old {{{
+# docker explore container filesystem
+# find ID of your running container:
+docker ps
+
+# create image (snapshot) from container filesystem
+docker commit 39aefe710e1e mysnapshot
+
+# explore this filesystem using bash (for example)
+docker run -t -i mysnapshot /bin/bash
+
+
+# docker volumes
+# Create
+docker volume create test
+
+# list volumes
+docker volume ls
+
+# inspect
+docker volume inspect test
+
+# remove volume
+docker volume rm test
+
+# install binary
+wget https://github.com/prometheus/prometheus/releases/download/v2.1.0/prometheus-2.1.0.linux-amd64.tar.gz
+
+# install docker
+docker run -it 9090:9090 prom/prometheus
+
+# visit site
+localhost:9090
+
+# specify config file (yaml format)
+--config.file
+
+# dockerfile
+#}}}

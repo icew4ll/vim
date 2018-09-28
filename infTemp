@@ -1,0 +1,2 @@
+
+yarn remove @types/koa @types/koa-logger @types/koa-router @types/koa-static @types/node inferno-server koa koa-logger koa-static koa-router

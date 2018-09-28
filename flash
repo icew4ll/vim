@@ -1,0 +1,6 @@
+# install flash on ubuntu 16.04
+sudo nvim /etc/apt/sources.list
+
+# uncomment these files 
+# deb http://archive.canonical.com/ubuntu yakkety partner
+# deb-src http://archive.canonical.com/ubuntu yakkety partner

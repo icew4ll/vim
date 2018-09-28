@@ -1,0 +1,13 @@
+# openal32
+o I recently moved over to Linux. However, Wine had some issues emulating Diablo I. The main menu screen is completely black, although you can hear sound and the actual gameplay works. So I looked up how to fix this, and it required installing an ancient version of Wine and patching it. It took awhile and I figured this was quite annoying every time you do a fresh Linux install.
+
+Finally after reading the tutorial here: http://www.holarse-linuxgaming.de/wiki/diablo
+I came up with a more simple and easy fix, that is updated for the current stable version of Wine (1.6.1).
+
+Simply download the file below. Extract ddraw.dll and wined3d.dll into your Diablo I directory. Then run ddraw_renderer.sh and enter diablo.exe for the application and gdi for the rendering mode. That's all; enjoy Diablo I.
+
+It should also maybe work for other older DirectDraw games as well. It works for sure with Diablo's expansion, Hellfire. You need to install the .dlls and then enter the name of the main .exe. Do not use quotes if the .exe has spaces, as they are already included in the ddraw_renderer script (e.g. Frozen Throne.exe).
+
+Also, this is not a permanent solution. The result is somewhat glitchy but makes Diablo I playable. Use this as a temporary fix until the Wine developers discover the real fix.
+
+Download: https://www.mediafire.com/?2jicmwsx88nwsv3

@@ -1,0 +1,6 @@
+# install debian 9
+sudo apt update
+sudo apt install subversion
+sudo apt install libapache2-svn
+
+svn co svn+ssh://example.com/var/svn-repos/project_zen/trunk testcheckout

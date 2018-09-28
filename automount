@@ -1,0 +1,19 @@
+# backup fstab
+sudo cp /etc/fstab /etc/fstab.old
+
+# note uuid
+sudo blkid
+
+# note userid
+id -u <username>
+
+# note grpid
+id -g <username>
+
+# edit
+sudo vim /etc/fstab
+
+# example
+UUID=<uuid> <pathtomount> <file system> uid=<userid>,gid=<groupid>,umask=0022,sync,auto,rw 0 0
+UUID=701275EB1275B6A6 /media/zeal/Data ntfs-3g uid=1000,gid=1000,umask=0022,sync,auto,rw 0 0
+

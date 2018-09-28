@@ -1,0 +1,16 @@
+# download fonts and copy to local
+mkdir -p ~/.local/share/fonts
+cp ./*.ttf ~/.local/share/fonts
+cp ./*.otf ~/.local/share/fonts
+
+cp ~/Documents/fonts/*.ttf ~/.local/share/fonts
+cp ~/Documents/fonts/*.otf ~/.local/share/fonts
+
+# refresh font cache
+fc-cache -fv
+
+# icons
+#https://www.gnome-look.org/
+mkdir -p ~/.icons cd ~/.icons
+wget ...
+tar xf ...

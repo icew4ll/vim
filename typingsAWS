@@ -1,0 +1,102 @@
+declare module "amazon-cognito-identity-js" {
+
+  import { ClientConfig } from "aws-sdk";
+
+  export class CognitoUser {
+    /**
+     * Returns the current session details.
+     */
+    public getSession(callback: Function): void;
+
+    /**
+     * Authenticates the user.
+     */
+    public authenticateUser(params: any, callbacks: any): void;
+
+    /**
+     * Confirms the user after sign up
+     * with the confirmation code received
+     * by email or phone.
+     */
+    public confirmRegistration(code: string, somethingWhichIsTrue: boolean, callback: Function): void;
+
+    /**
+     * Confirms the user after sign up
+     * with the confirmation code received
+     * by email or phone.
+     */
+    public resendConfirmationCode(callback: Function): void;
+  }
+
+  export class CognitoUserPool {
+
+    /**
+     * Cognito user pool id.
+     */
+    public userPoolId: string;
+
+
+    client: CognitoIdentityServiceProvider;
+
+    /**
+     * Constructs a new CognitoUserPool object
+     * @param {object} data Creation options.
+     * @param {string} data.UserPoolId Cognito user pool id.
+     * @param {string} data.ClientId User pool application client id.
+     * @param {int=} data.Paranoia Random number generation paranoia level.
+     */
+    constructor(data: any);
+
+    public getCurrentUser(): CognitoUser;
+
+    /**
+     * @returns {string} the user pool id
+     */
+    getUserPoolId(): string;
+
+    /**
+     * @returns {string} the client id
+     */
+    getClientId(): string;
+
+    /**
+     * @returns {int} the paranoia level
+     */
+    getParanoia(): number;
+
+    /**
+     * sets paranoia level
+     * @param {int} paranoia The new paranoia level.
+     * @returns {void}
+     */
+    setParanoia(paranoia: number): void;
+
+    /**
+     * @typedef {object} SignUpResult
+     * @property {CognitoUser} user New user.
+     * @property {bool} userConfirmed If the user is already confirmed.
+     */
+    /**
+     * method for signing up a user
+     * @param {string} username User's username.
+     * @param {string} password Plain-text initial password entered by user.
+     * @param {(AttributeArg[])=} userAttributes New user attributes.
+     * @param {(AttributeArg[])=} validationData Application metadata.
+     * @param {nodeCallback<SignUpResult>} callback Called on error or with the new user.
+     * @returns {void}
+     */
+    signUp(username: string, password: string, userAttributes: Array<any>, validationData: Array<any>, callback: Function): void;
+
+    /**
+     * method for getting the current user of the application from the local storage
+     *
+     * @returns {CognitoUser} the user retrieved from storage
+     */
+    getCurrentUser(): CognitoUser;
+  }
+
+  export class CognitoIdentityServiceProvider {
+
+    public config: ClientConfig;
+  }
+}

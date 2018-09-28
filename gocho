@@ -1,0 +1,20 @@
+# install release
+wget https://github.com/donkeysharp/gocho/releases/download/0.1.0/gocho_0.1.0_linux64.zip
+unzip gocho_0.1.0_linux64.zip
+mv gocho $HOME/go/bin/
+
+# create node
+v $HOME/.gocho.conf
+NodeId: my-computer
+WebPort: "5555"
+LocalPort: "1337"
+ShareDirectory: $HOME/Documents/sync/
+
+# start service
+gocho start
+
+# verify node
+[my-computer-216.230.243.226 ]
+# access files in browswer:
+216.230.243.226:5555
+209.66.74.20:5555

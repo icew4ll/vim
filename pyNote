@@ -1,0 +1,8 @@
+# try vs if {{{
+1) Use try if 99% time expects no exception
+2) Use if exceptions expected  more than 50% time
+if you expect that 99 % of the time result will actually contain something
+iterable, I'd use the try/except approach. It will be faster if exceptions
+really are exceptional. If result is None more than 50 % of the time, then
+using if is probably better.
+# }}}

@@ -1,0 +1,44 @@
+# install n ubuntu 16
+curl -L https://git.io/n-install | bash
+
+# setup paths ion shell
+export N_PREFIX=$HOME/n
+export PATH=$PATH:~/.local/bin:$N_PREFIX/bin
+
+# install yarn without node
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update
+sudo apt-get install --no-install-recommends yarn
+npm install -g typescript
+
+# install go debian 9
+cd ~/Downloads/
+mkdir ~/go
+wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz
+sudo tar -xvf
+sudo mv go /usr/local
+
+# config environment
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+# verify install
+go version
+go env
+
+# run install.py
+cd /home/rev/.vim/plugged/YouCompleteMe
+sudo apt install python-dev python3-dev build-essential cmake
+./install.py --rust-completer --js-completer --go-completer
+
+# set python interpreter to python 2 path
+let g:ycm_server_python_interpreter = '/usr/bin/python2.7'
+
+# for c build only!
+ERROR: msbuild or xbuild is required to build Omnisharp.
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+echo "deb http://download.mono-project.com/repo/ubuntu stable-xenial main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+sudo apt-get update
+sudo apt-get install mono-devel

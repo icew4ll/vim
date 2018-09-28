@@ -1,0 +1,198 @@
+sudo apt install libav-tools
+sudo apt install git fish
+sudo apt install chromium chromium-l10n
+sudo apt-get install libncurses5 libncurses5-dev libncursesw5
+omf
+fisher
+fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+fisher fzf nvm
+nvm ls-remote
+nvm install 9.2.0
+nvm alias default 9.2.0
+nvm use default
+
+# install python from source debian 9
+sudo apt-get install libssl-dev bzip2 libbz2-dev libsqlite3-dev zlib1g-dev
+sudo apt-get install libncurses5 libncurses5-dev libncursesw5
+wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tgz
+tar xvf Python-3.6.4.tgz
+cd Python-3.6.4
+./configure --enable-optimizations --enable-shared --enable-loadable-sqlite-extensions
+make -j8
+sudo make altinstall
+
+# config for libpython3.6m.so.1.0
+sudo vim /etc/ld.so.conf
+# add below line to above file
+include /usr/local/lib
+# refresh settings
+sudo ldconfig
+
+# verify install
+which python3.6
+/usr/local/bin/python3.6
+
+# install pip3
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python3.6 get-pip.py
+
+# install pip packages
+pip3.6 install --user autopep8 flake8 pipenv
+
+# install vim from source
+sudo apt-get install build-essential cmake libncurses5-dev libncursesw5-dev checkinstall
+sudo apt install libncurses5-dev libgnome2-dev libgnomeui-dev \
+libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
+libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
+python3-dev ruby-dev lua5.1 lua5.1-dev libperl-dev git
+
+sudo apt remove vim vim-runtime gvim
+sudo apt remove vim-tiny vim-common vim-gui-common vim-nox
+cd ~
+git clone https://github.com/vim/vim.git
+cd vim
+./configure --with-features=huge \
+--enable-multibyte \
+--enable-rubyinterp=yes \
+--enable-python3interp=yes \
+--with-python3-config-dir=/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu \
+--enable-perlinterp=yes \
+--enable-luainterp=yes \
+--enable-gui=gtk2 \
+--enable-cscope \
+--prefix=/usr/local
+make VIMRUNTIMEDIR=/usr/local/share/vim/vim80
+sudo checkinstall
+sudo apt-mark hold vim
+
+# install docker
+sudo apt-get update
+# preqs
+sudo apt-get install \
+apt-transport-https \
+ca-certificates \
+curl \
+software-properties-common
+# key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# repo
+sudo add-apt-repository \
+"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+$(lsb_release -cs) \
+stable"
+# install
+sudo apt-get update
+sudo apt-get install docker-ce
+sudo groupadd docker
+sudo usermod -aG docker $USER
+logout/login
+docker run hello-world
+
+# directory structure
+https://unix.stackexchange.com/questions/11544/what-is-the-difference-between-opt-and-usr-local
+
+
+sudo apt install zsh git curl youtube-dl libssl-dev redshift rsync audacious
+vi /etc/apt/sources.list
+deb http://httpredir.debian.org/debian/ stretch main contrib non-free
+sudo apt update
+sudo apt install linux-headers-$(uname -r|sed 's/[^-]*-[^-]*-//') nvidia-driver
+
+# install firefox source
+cd ~/Downloads
+wget https://download-installer.cdn.mozilla.net/pub/firefox/releases/57.0.4/linux-x86_64/en-US/firefox-57.0.4.tar.bz2
+tar xjf firefox-*.tar.bz2
+sudo mv firefox /opt
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+mkdir /home/able/.oh-my-zsh/custom/themes
+cd /home/able/.oh-my-zsh/custom/themes
+http://raw.github.com/caiogondim/bullet-train-oh-my-zsh-theme/master/bullet-train.zsh-theme
+vi ~/.zshrc
+
+mkdir -p ~/.local/share/fonts
+
+# install repo
+sudo apt-install vim-gtk
+npm install -g typescript
+curl https://sh.rustup.rs -sSf | sh
+
+# install ycm
+cd ~/.vim/plugged/YouCompleteMe
+./install.py --rust-completer --js-completer
+
+# install vim from source
+sudo apt-get install build-essential cmake libncurses5-dev libncursesw5-dev checkinstall
+sudo apt install libncurses5-dev libgnome2-dev libgnomeui-dev \
+    libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
+    libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
+    python3-dev ruby-dev lua5.1 lua5.1-dev libperl-dev git
+
+sudo apt remove vim vim-runtime gvim
+sudo apt remove vim-tiny vim-common vim-gui-common vim-nox
+cd ~
+git clone https://github.com/vim/vim.git
+cd vim
+./configure --with-features=huge \
+            --enable-multibyte \
+            --enable-rubyinterp=yes \
+            --enable-python3interp=yes \
+            --with-python3-config-dir=/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu \
+            --enable-perlinterp=yes \
+            --enable-luainterp=yes \
+            --enable-gui=gtk2 \
+            --enable-cscope \
+            --prefix=/usr/local
+make VIMRUNTIMEDIR=/usr/local/share/vim/vim80
+sudo checkinstall
+sudo apt-mark hold vim
+
+# uninstall
+sudo dpkg -r vim
+
+# install nvm
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+
+# verify nvm loaded in .zshrc
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+# install plug vim
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# install zsh themes
+cd $ZSH_CUSTOM/themes/
+wget https://raw.githubusercontent.com/ergenekonyigit/lambda-gitster/master/lambda-gitster.zsh-theme
+wget https://raw.githubusercontent.com/zakaziko99/agnosterzak-ohmyzsh-theme/master/agnosterzak.zsh-theme
+curl -o - https://raw.githubusercontent.com/denysdovhan/spaceship-zsh-theme/master/install.zsh | zsh
+
+# setup root password su
+sudo passwd
+
+# install hp printer drivers
+sudo apt install task-print-server
+sudo apt install cups
+[add printer HP via linux applet]
+
+# install yarn
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update; sudo apt install yarn
+
+# add bin dir to PATH
+yarn global bin
+
+# install postman
+wget https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz
+sudo tar -xzf postman.tar.gz -C /opt
+rm postman.tar.gz
+sudo ln -s /opt/Postman/Postman /usr/bin/postman
+postman
+
+# install gstreamer mp3 codecs
+sudo apt install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools

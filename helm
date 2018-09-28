@@ -1,0 +1,58 @@
+# install kubernetes + helm {{{
+# install minikube
+sudo apt install virtualbox virtualbox-ext-pack
+sudo wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 -O  /usr/local/bin/minikube
+sudo chmod +x /usr/local/bin/minikube
+minikube
+# install kubectl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+sudo sh -c 'echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list'
+sudo apt-get update
+sudo apt-get install -y kubectl
+kubectl version -o json
+minikube start
+# check clusterinfo
+kubectl cluster-info
+# minikube config file
+~/.minikube/machines/minikube/config.json
+# view config
+kubectl config view
+# view running nodes
+kubectl get nodes
+# access vm via ssh
+minikube ssh
+# stop a cluster
+minikube stop
+# delete local cluster
+minikube delete
+# list addons
+minikube addons list
+# dashboard
+minikube dashboard
+
+# install gofish
+curl -fsSL https://raw.githubusercontent.com/fishworks/gofish/master/scripts/install.sh | bash
+gofish init
+gofish install helm
+helm init
+# install traefik
+helm install stable/traefik --name trae --namespace kube-system
+kubectl get svc trae-traefik --namespace kube-system -w
+kubectl describe service my-release-traefik -n kube-system | grep Ingress | awk '{print $3}'
+helm delete --purge trae
+#
+#
+#
+#
+#
+helm install stable/traefik
+# using a values.yaml file
+helm install --values values.yaml stable/traefik
+kubectl get svc prodding-duck-traefik --namespace default -w
+# Once 'EXTERNAL-IP' is no longer '<pending>'
+kubectl describe svc prodding-duck-traefik --namespace default | grep Ingress | awk '{print $3}'
+# create service and ingress to expose traefik web ui
+kubectl apply -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/ui.yaml
+#
+bash -c 'echo "$(minikube ip) traefik-ui.minikube" | sudo tee -a /etc/hosts'
+# }}}

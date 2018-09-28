@@ -1,0 +1,102 @@
+# git reset all commits {{{
+git checkout --orphan latest_branch
+git add -A
+git commit -am "commit message"
+git branch -D master
+git branch -m master
+git push -f origin master
+git push --set-upstream origin master
+# }}}
+
+# git global settings
+git config --global user.name "user"
+git config --global user.email "email"
+git config --global push.default simple
+git config -l
+
+# set new origin
+git remote set-url origin git@github.com:icew4ll/dot.git
+
+# git store credentials
+$ git config credential.helper store
+$ git push http://example.com/repo.git
+Username: <type your username>
+Password: <type your password>
+
+# git clone
+git clone https://github.com/serverless/serverless-graphql sgraph
+
+# new repo
+git init
+git add -A
+git commit -m "first commit"
+git remote add origin git@github.com:icew4ll/new.git
+git push -u origin master
+
+# git pull
+# combines git fetch and git merge
+git pull
+
+# git update fork with upstream
+git remote add upstream https://github.com/davezuko/react-redux-starter-kit
+
+# fetch branches from remote
+git fetch upstream
+
+# use master branch
+git checkout master
+
+# no rewrite history of my master branch (for those who have cloned mine)
+git merge upstream/master
+
+# Rewrite your master branch so that any commits of yours that
+# aren't already in upstream/master are replayed on top of that
+# other branch:
+git rebase upstream/master
+
+
+# git ignore
+# add to .gitignore
+node_modules/
+
+# global git ignore
+git config --global core.excludesfile '~/.gitignore'
+v ~/.gitignore
+
+# reset staged changes
+git reset
+
+# reset local commits
+git reset HEAD^
+
+# reset local to match repo state
+git reset --hard origin/master
+
+# remove file from repo
+git rm --cached mylogfile.log
+git rm --cached -r mydirectory
+
+# setting up ssh key for github
+ls -al ~/.ssh
+//verify the following do not exist
+id_dsa.pub
+id_ecdsa.pub
+id_ed25519.pub
+id_rsa.pub
+
+# generate new ssh
+ssh-keygen -t rsa -b 4096 -C "email@yandex.com"
+ssh-add ~/.ssh/id_rsa
+
+# copy ssh to clipboard
+sudo apt-get install xclip
+xclip -sel clip < ~/.ssh/id_rsa.pub
+
+# github add key
+settings > ssh and GPG keys > new ssh key > paste key
+
+# config repo for ssh
+git@github.com:icew4ll/genesis.git
+
+# config repo to use https
+https://github.com/USERNAME/REPOSITORY.git

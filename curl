@@ -1,0 +1,11 @@
+# head request
+curl -I https://nightshell.com
+
+# GET request
+curl https://nightshell.com
+
+# POST request
+curl -i -X POST http://nightshell.com
+curl -vvv -X POST -d '{"description": "test task"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/user/$UserId/task
+
+

@@ -1,0 +1,7 @@
+# network monitoring tools
+sudo apt install libpcap0.8 libpcap0.8-dev libncurses5 libncurses5-dev
+sudo apt install iftop
+sudo apt install bmon
+sudo iftop -P
+# usage
+bmon eno1

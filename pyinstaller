@@ -1,0 +1,7 @@
+
+# make exec binary for linux
+pyinstaller "rmMail.py"
+
+# run main
+cd dist
+./main

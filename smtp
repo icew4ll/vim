@@ -1,0 +1,15 @@
+# docker smtp
+# https://github.com/tomav/docker-mailserver
+docker pull tvial/docker-mailserver:latest
+curl -o setup.sh https://raw.githubusercontent.com/tomav/docker-mailserver/master/setup.sh; chmod a+x ./setup.sh
+curl -o docker-compose.yml https://raw.githubusercontent.com/tomav/docker-mailserver/master/docker-compose.yml.dist
+curl -o .env https://raw.githubusercontent.com/tomav/docker-mailserver/master/.env.dist
+
+# add accounts
+./setup.sh email add <email> [<password>]
+
+# gen DKIM keys
+./setup.sh config dkim
+
+# start container
+docker-compose up -d mail

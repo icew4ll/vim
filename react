@@ -1,0 +1,25 @@
+# components 
+# react component is valid when
+# 1. accepts a single "props" object argument with data
+# 2. returns a react element
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+
+# equivalent es6
+class Welcome extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}</h1>;
+  }
+}
+
+# renders "Hello Sara"
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+
+const element = <Welcome name="Sara" />;
+ReactDOM.render(
+  element,
+  document.getElementById('root')
+);

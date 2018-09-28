@@ -1,0 +1,3 @@
+# install libreoffice ubuntu 18
+sudo add-apt-repository ppa:libreoffice/ppa
+sudo apt install libreoffice-gtk2 libreoffice-gnome

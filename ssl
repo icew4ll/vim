@@ -1,0 +1,85 @@
+# ssl get cert from website
+echo | openssl s_client -showcerts -servername kokuyo-h.com -connect kokuyo-h.com:443 2>/dev/null | openssl x509 -inform pem -noout -text | grep 'Validity' -A 3
+
+echo | openssl s_client -showcerts -servername example.net -connect example.net:443 2>/dev/null | openssl x509 -inform pem -noout -text
+# check
+echo | openssl s_client -showcerts -servername kokuyo-touhoku.com -connect kokuyo-touhoku.com:443 2>/dev/null | openssl x509 -inform pem -noout -text  | grep 'Validity' -A 3
+
+# generate chain cert
+git clone https://github.com/SSLMate/mkcertchain
+sudo apt install liblwpx-paranoidagent-perl libipc-run3-perl
+# install docker ubuntu 18 {{{
+sudo apt update; and sudo apt install apt-transport-https ca-certificates curl software-properties-common
+# docker list
+bat /etc/apt/sources.list.d/docker.list
+sudo sh -c 'echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic edge" >> /etc/apt/sources.list.d/docker.list'
+# add key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt update; and sudo apt install docker-ce
+# test
+docker --version
+sudo docker run hello-world
+# run docker w/o sudo
+sudo groupadd docker
+sudo usermod -aG docker $USER
+logout
+docker run hello-world
+# configure docker run on boot
+sudo systemctl enable docker
+sudo systemctl disable docker
+# configure where docker listens
+v /etc/docker/daemon.json
+{
+  "hosts": ["fd://", "tcp://0.0.0.0:2375"]
+}
+# }}}
+
+# install zero ssl image {{{
+docker pull zerossl/client
+# setup dirs
+mkdir -p ~/Documents/le/keys
+mkdir -p ~/Documents/le/acme
+# run command
+docker run -it -v $HOME/Documents/le/keys:/data -v $HOME/Documents/le/acme:/webroot -u (id -u) --rm zerossl/client
+#  install manual {{{
+install preqs for lets encrypt
+sudo apt-get install make gcc libssl-dev liblocal-lib-perl cpanminus
+sudo apt remove liblocal-lib-perl cpanminus
+# install with CPANminus
+cpanm Crypt::LE
+# }}}
+
+# generate keys, account.key run once
+cd ~/Documents/le/keys
+openssl genrsa -out account.key 4096
+# domain key one for each domain
+openssl genrsa -out matchikon.key 2048
+
+# get cert
+le --key account.key --csr matchikon.csr --csr-key matchikon.key --crt matchikon.crt --domains "www.matchikon.fr,matchikon.fr" --generate-missing --handle-as dns --live
+
+# create dns records
+# add record
+cat /var/named/slaves/m/matchikon.fr
+_acme-challenge.www.matchikon.fr TXT dwBI3U_fIeNVDplKVXPA9jcPoH4fRA60sdANGnnK9Zg
+# ns1
+nsupdate -l
+zone matchikon.fr
+# www
+update add _acme-challenge.www.matchikon.fr 3600 TXT qq9n4hTXiSivpmJTNhB7yEymADhpw-KAs-WRSjHPNvI
+update delete _acme-challenge.www.matchikon.fr TXT dwBI3U_fIeNVDplKVXPA9jcPoH4fRA60sdANGnnK9Zg
+# root
+update add _acme-challenge.matchikon.fr 3600 TXT gcm6JaaVlWcyP21Ku4lC8hpac_RzkWB9u8EjXgmo9HQ
+update delete _acme-challenge.matchikon.fr TXT yuRSdAdBBQdSTZOX9ceAgjvOHzDMeT98063Ehaebiq0
+send
+quit
+# dns record updates after below
+rndc freeze;rndc thaw
+service named reload
+service named status
+
+# 30 sec delay
+
+# OLD
+# client
+le.pl --key account.key --csr mydomain.csr --csr-key mydomain.key --crt mydomain.crt --domains "www.mydomain.com,domain.com" --path /var/www/html/.well-known/acme-challenge/ --generate-missing --unlink --live

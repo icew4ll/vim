@@ -1,0 +1,12 @@
+# shotcut
+sudo add-apt-repository ppa:haraldhv/shotcut
+sudo apt update
+sudo apt install shotcut
+
+# pitivi
+flatpak install --user http://flatpak.pitivi.org/pitivi.flatpakref
+
+# openshot
+sudo add-apt-repository ppa:openshot.developers/ppa
+sudo apt-get update
+sudo apt-get install openshot-qt

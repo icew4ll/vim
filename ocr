@@ -1,0 +1,5 @@
+sudo apt install tesseract-ocr
+pip install --user opencv-python
+sudo apt install tesseract-ocr
+pip install --user livereload
+

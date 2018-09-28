@@ -1,0 +1,2 @@
+# wttr reports Tacoma
+curl -4 http://wttr.in/Tacoma
