@@ -1,3 +1,116 @@
+# install nginx {{{
+# 1. get nginx ingress controller
+helm init
+helm install stable/nginx-ingress --namespace kube-system
+kubectl get po -n kube-system
+kubectl get svc fashionable-bronco-nginx-ingress-controller -n kube-system
+http 192.168.99.100:31368
+http 192.168.99.100:32115
+# default backend - 404
+# 2. install joomla chart
+helm install stable/joomla --name ingress-example
+kubectl get svc --namespace default -w ingress-example-joomla
+# enable joomla service internal cluster access only
+kubectl patch svc ingress-example-joomla --type='json' -p '[{"op":"remove","path":"/spec/ports/0/nodePort"},{"op":"remove","path":"/spec/ports/1/nodePort"},{"op":"replace","path":"/spec/type","value":"ClusterIP"}]'
+# service/ingress-example-joomla patched
+# 3. Create Ingress Object
+v jing.yml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+name: joomla-ingress
+annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+rules:
+- http:
+    paths:
+    - path: /
+        backend:
+        serviceName: ingress-example-joomla
+        servicePort: 80
+kubectl apply -f jing.yml
+# }}}
+# new {{{
+# reset kubernetes
+kubectl delete daemonsets,replicasets,services,deployments,pods,rc --all
+kubectl delete --all namespaces
+minikube delete
+minikube start
+# minikube config {{{
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: /home/fish/.minikube/ca.crt
+    server: https://192.168.99.100:8443
+  name: minikube
+contexts:
+- context:
+    cluster: minikube
+    user: minikube
+  name: minikube
+current-context: minikube
+kind: Config
+preferences: {}
+users:
+- name: minikube
+  user:
+    client-certificate: /home/fish/.minikube/client.crt
+    client-key: /home/fish/.minikube/client.key
+# }}}
+# info
+kubectl -n kube-system get po
+kubectl -n kube-system describe traefik-ingress-controller-7dcd6f447-qvrfg
+kubectl describe pods --all-namespaces
+kubectl
+# setup traefik ingress minikube
+# ??needed?? kubectl apply -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-deployment.yaml
+#kubectl --namespace=kube-system get pods
+# get minikube ip
+minikube ip
+# get traefik port
+kubectl get services --namespace=kube-system
+# out: traefik-ingress-service   NodePort    10.97.53.112    <none>        80:31023/TCP,8080:30060/TCP   1m
+curl 192.168.99.100:31023
+curl 192.168.99.100:30000
+# out:  404 page not found
+kubectl apply -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/ui.yaml
+# edit /etc/hosts
+echo "$(minikube ip) traefik-ui.minikube" | sudo tee -a /etc/hosts
+# visit site
+firefox http://traefik-ui.minikube:31023/
+# config TLS
+kubectl apply -f tls.yml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-web-ui
+  namespace: kube-system
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: traefik-ui.minikube
+    http:
+      paths:
+      - backend:
+          serviceName: traefik-web-ui
+          servicePort: 80
+  tls:
+   - secretName: traefik-ui-tls-cert
+# setup TLS cert
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=traefik-ui.minikube"
+kubectl -n kube-system create secret tls traefik-ui-tls-cert --key=tls.key --cert=tls.crt
+
+
+# }}}
+# old {{{
+# logs
+fish:~# kubectl apply -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-rbac.yaml
+clusterrole.rbac.authorization.k8s.io/traefik-ingress-controller created
+clusterrolebinding.rbac.authorization.k8s.io/traefik-ingress-controller created
+
 facexhugger power unleashed
 # install kubectl
 sudo snap install kubectl --classic
@@ -8,6 +121,9 @@ kubectl get services
 kubectl get deployments
 kubectl get serviceaccounts
 kubectl -n kube-system get po
+helm list
+helm delete <namespace>
+helm reset
 protoss.192.168.99.100
 # delete all ingress
 kubectl delete ingress --all
@@ -294,3 +410,4 @@ tar -xvzf /home/fish/Downloads/minishift-1.23.0-linux-amd64.tgz -C /home/fish/Do
 /home/fish/Downloads/minishift start
 qemu-system-x86_64 --version
 # }}}
+#}}}
