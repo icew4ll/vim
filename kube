@@ -1,11 +1,36 @@
+# upgrade/install minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+  && sudo install minikube-linux-amd64 /usr/local/bin/minikube
+minikube update-check
+# http2 again
+https://www.nginx.com/blog/nginx-1-13-9-http2-server-push/
+https://hackernoon.com/setting-up-nginx-ingress-on-kubernetes-2b733d8d2f45
+https://kubernetes.github.io/ingress-nginx/user-guide/tls/
+https://www.thenativeweb.io/blog/2018-07-03-16-17-kubernetes-using-ingress-with-ssl-tls-termination-and-http2/
+
+# new2
+helm install stable/nginx-ingress
+helm install \
+    --name cert-manager \
+    --namespace kube-system \
+    stable/cert-manager
+
 # install nginx {{{
 # 1. get nginx ingress controller
+kubectl version
+kubectl cluster-info
+kubectl get ingress
+kubectl get services
+kubectl get deployments
+kubectl get serviceaccounts
+kubectl -n kube-system get po
+kubectl get pods --no-headers=true --all-namespaces | grep -v kube-system | sed -r 's/(\S+)\s+(\S+).*/kubectl --namespace \1 delete pod \2/e'
 helm init
 helm install stable/nginx-ingress --namespace kube-system
 kubectl get po -n kube-system
-kubectl get svc fashionable-bronco-nginx-ingress-controller -n kube-system
-http 192.168.99.100:31368
-http 192.168.99.100:32115
+kubectl get svc modest-opossum-nginx-ingress-controller -n kube-system
+http 192.168.99.100:30136
+http 192.168.99.100:32051
 # default backend - 404
 # 2. install joomla chart
 helm install stable/joomla --name ingress-example
@@ -25,10 +50,30 @@ spec:
 rules:
 - http:
     paths:
-    - path: /
-        backend:
+    - backend:
         serviceName: ingress-example-joomla
         servicePort: 80
+
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-web-ui
+  namespace: kube-system
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: traefik-ui.minikube
+    http:
+      paths:
+      - backend:
+          serviceName: traefik-web-ui
+          servicePort: 80
+  tls:
+   - secretName: traefik-ui-tls-cert
+
+
 kubectl apply -f jing.yml
 # }}}
 # new {{{

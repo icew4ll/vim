@@ -1,0 +1,10 @@
+# default
+http://192.168.1.1
+
+# turn off wifi
+# services
+SES / AOSS / EZ-SETUP / WPS Button
+Turning off radio
+Enable  Disable
+Turn radio off at boot
+Enable  Disable

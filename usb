@@ -2,6 +2,7 @@
 # inspect usb drive identity
 sudo fdisk -l
 sudo dd 'if=/home/fish/Downloads/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9(1).ISO' of=/dev/sdb bs=8M
+sudo dd 'if=/home/ice/Downloads/2018-10-09-raspbian-stretch-lite.img' of=/dev/sdd bs=8M
 sudo dd if=/home/ice/Downloads/debian-9.3.0-amd64-netinst.iso of=/dev/sdb bs=8M
 sudo dd if=/home/fish/Downloads/ubuntu-16.04.4-server-amd64.iso of=/dev/sdb bs=8M
 sudo dd if=/home/fish/Downloads/ubuntu-16.04.5-server-amd64.iso of=/dev/sdb bs=8M

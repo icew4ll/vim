@@ -1,0 +1,74 @@
+# setup proj
+cargo new auth
+cd auth
+cargo watch -x run
+
+# auth example
+cargo add actix actix-web bcrypt chrono diesel dotenv env_logger failure frank_jwt futures r2d2 serde_derive serde_json serde sparkpost uuid
+
+# get db string
+echo DATABASE_URL=postgres://username:password@localhost/database_name > .env
+
+# create role and db with same name
+sudo systemctl status postgresql
+sudo systemctl start postgresql
+sudo -u postgres psql
+CREATE DATABASE auth;
+CREATE USER auth WITH ENCRYPTED PASSWORD 'psalms';
+GRANT ALL PRIVILEGES ON DATABASE auth TO auth;"
+# enable local connections
+sudo bash -c 'nvim /etc/postgresql/10/main/pg_hba.conf'
+# test connection
+psql -d auth -U auth
+psql auth -h 127.0.0.1 -d auth
+psql 'postgres://auth:psalms@127.0.0.1/auth'
+# push connection to url to env
+bash -c 'echo DATABASE_URL=postgres://auth:psalms@127.0.0.1/auth > .env'
+# setup diesel
+diesel setup
+diesel migration generate users
+diesel migration generate invitations
+# insert contents
+--migrations/TIMESTAMP_users/up.sql
+CREATE TABLE users (
+  email VARCHAR(100) NOT NULL PRIMARY KEY,
+  password VARCHAR(64) NOT NULL, --bcrypt hash
+  created_at TIMESTAMP NOT NULL
+);
+
+--migrations/TIMESTAMP_users/down.sql
+DROP TABLE users;
+
+--migrations/TIMESTAMP_invitations/up.sql
+CREATE TABLE invitations (
+  id UUID NOT NULL PRIMARY KEY,
+  email VARCHAR(100) NOT NULL,
+  expires_at TIMESTAMP NOT NULL
+);
+
+--migrations/TIMESTAMP_invitations/down.sql
+DROP TABLE invitations;
+# create schema.rs
+diesel migration run
+# curl example
+curl --request POST \
+  --url http://127.0.0.1:3000/invitation \
+  --header 'content-type: application/json' \
+  --data '{"email":"test@test.com"}'
+## INFO
+# psql config
+sudo bash -c 'nvim /etc/postgresql/10/main/pg_hba.conf'
+# test connection url
+postgres://auth:psalms@127.0.0.1/auth
+# tables?
+sudo -u postgres psql -c '\dt'
+# view roles
+sudo -u postgres psql -c '\du'
+# list db
+sudo -u postgres psql -c '\l'
+# list tables
+sudo -u postgres psql -c '\d'
+# select roles
+sudo -u postgres psql -c 'SELECT rolname FROM pg_roles;'
+# create role
+sudo -u postgres psql -c 'CREATE ROLE act;'

@@ -1,5 +1,11 @@
 # setup
-
+sudo apt install curl git subversion wget
+# If the folder icons doesn't exist
+mkdir ~/.local/share/icons
+# Download quickly like a Millennium Falcon
+svn export https://github.com/Magog64/SURU-PLUS/trunk/ ~/.local/share/icons/Suru++
+# To update the next latest changes and to overwrite
+svn export --force https://github.com/Magog64/SURU-PLUS/trunk/ ~/.local/share/icons/Suru++
 
 # install themes ubuntu 18 {{{
 # install theme from tar.gz

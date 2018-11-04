@@ -1,0 +1,3 @@
+# unzip
+unzip -p ~/Downloads/2018-10-09-raspbian-stretch-lite.zip
+sudo dd if=/home/ice/Downloads/2018-10-09-raspbian-stretch-lite.img of=/dev/sdc bs=4M conv=fsync

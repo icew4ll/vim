@@ -1,0 +1,11 @@
+# install
+yarn global add vuepress
+
+# create a markdown file
+echo '# Hello VuePress' > README.md
+
+# start writing
+vuepress dev
+
+# build to static files
+vuepress build
